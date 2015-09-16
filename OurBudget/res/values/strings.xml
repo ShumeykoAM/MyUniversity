@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">OurBudget</string>
+    <string name="authentication_create_email_help">Укажите адрес своей электронной почты</string>
+    <string name="authentication_create_password_help">Укажите пароль</string>
+    <string name="authentication_create_password_help2">Подтвердите пароль</string>
+    <string name="authentication_create_remember_password_help">Запомнить пароль</string>
+    <string name="authentication_create_text_button_create">Создать учетную запись</string>
+    <string name="authentication_err_mail">Введите существующий @ адрес, он нужен для восстановления пароля.</string>
+    <string name="authentication_err_pass_diff">Пароли не совпадают</string>
+    <string name="authentication_err_pass_L6">Пароль должен состоять минимум из шести символов.</string>
+    <string name="authentication_err_test_server_connect">Нет соединения с сервером, проверьте соединение с интернетом.</string>
+    <string name="authentication_err_test_server_email">Данный email уже занят, введите другой email или авторизируйтесь.</string>
+    <string name="authentication_create_profile_success">Профиль успешно создан</string>
+</resources>

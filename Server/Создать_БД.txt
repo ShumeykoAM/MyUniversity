@@ -1,0 +1,3 @@
+http://127.0.0.1//Administration.php          или
+http://mybudgetserver.ru/Administration.php   или
+http://192.168.10.101/Administration.php      - из локалки
