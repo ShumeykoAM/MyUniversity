@@ -35,7 +35,7 @@ public class PHP_Poster
     List<NameValuePair> POST_Parm = new ArrayList<NameValuePair>(2);
     POST_Parm.add(new BasicNameValuePair("RequestType", "Тестовые параметры"));
     POST_Parm.add(new BasicNameValuePair("Логин", "  Спросили логин"));
-    String Url = "http://192.168.10.101";
+    String Url = "http://192.168.10.108";
     PHP_Poster PP = new PHP_Poster();
     String response = PP.Post(Url, POST_Parm);
   */

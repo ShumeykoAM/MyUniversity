@@ -1,4 +1,4 @@
-﻿<?php
+<?php
   //Обработчик запросов клиентов
 
   //Запускаем сессию(нужно делать на каждой странице)
@@ -19,12 +19,9 @@
       if ($result)
         $result = ($JOBJ = json_decode($_POST["Request"])) != null; //Декодируем строку в json
       if ($result)
-        $result = ($ID = $JOBJ->
-          {
-          'MESSAGE'
-          }) !=
-          null; //Получаем ID запроса
-      if ($result) {
+        $result = ($ID = $JOBJ->{'MESSAGE'}) != null; //Получаем ID запроса
+      if ($result)
+      {
         $Answer = null;
         switch ($ID) //Определим соответствующий обработчик
         {
@@ -33,12 +30,15 @@
             break;
           case E_MESSAGEID\CREATE_NEW_PROFILE:
             $Answer = NEW HandlerCreateNewProfile();
-
+            break;
 
         }
         //Если обработчик определен то сгенерируем ответ
         if ($Answer != null)
-          echo($Answer->Ansver($JOBJ));
+        {
+          $result = $Answer->Handling($JOBJ);
+          echo($result);
+        }
 
       }
     }

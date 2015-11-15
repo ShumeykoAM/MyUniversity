@@ -49,29 +49,27 @@
       $result = isset($login) and isset($password);
       if($result)
       {
-        global $link, $NAME_DB; //Такое извращение нужно что бы видеть глобальные переменные
+        global $link; //Такое извращение нужно что бы видеть глобальные переменные
 
         $login = $link->real_escape_string($login);
         $password = md5($password);
 
         //Сгенерируем ответ, проверим свободен ли логин, если да то зарегистрируем пользователя
-        $result = $link != null;
-        if($result)
-          $result = $link->select_db($NAME_DB); //Выбираем базу для использования
+        $result = ($link != null);
         if($result)
         {
           //Попытаемся найти такой логин
-          $command = "SELECT Profile_ID FROM profile WHERE Profile_Mail='".$login."';";
+          $command = "SELECT ID_Profile FROM profile WHERE Profile_Mail='".$login."';";
           $q_result = $link->query($command);
           if($q_result)
-            $result =  $q_result->num_rows == 0;
+            $result =  ($q_result->num_rows == 0);
           else
             $result = false;
         }
         if($result) //Не нашли такой логин значит можно создать профиль с таким логином
         {
           $command = "INSERT INTO profile (Profile_Mail, Profile_HASHPassword) ".
-                     "VALUES ('".$login."', '".$password."');";
+            "VALUES ('".$login."', '".$password."');";
           $result = $link->query($command);
         }
         $arr = array( 'MESSAGE' => E_MESSAGEID\CREATE_NEW_PROFILE, 'RESULT' => $result );
