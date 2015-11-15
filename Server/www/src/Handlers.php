@@ -1,17 +1,17 @@
 <?php
-  $NAME_DB = "OurBudgetDB";
-  $link = mysqli_connect("localhost", "root", "root");
 
-  interface I_Answer
+  include 'MySQLOpenHelper.php';
+
+  interface I_Handler
   {
-    public function Ansver($JOBJ);// :String;
+    public function Handling($JOBJ);// :String;
   }
 
   //Ответ на запрос теста соединения с сервером
-  class AnswerTestConnectServer
-    implements I_Answer
+  class HandlerTestConnectServer
+    implements I_Handler
   {
-    public function Ansver($JOBJ)
+    public function Handling($JOBJ)
     {
       //Проверим наличие всех параметров
       $Test_value = $JOBJ->{'TEST_VALUE'};
@@ -29,10 +29,19 @@
   }
 
   //Ответ на запрос регистрации нового профиля
-  class AnswerCreateNewProfile
-    implements I_Answer
+  class HandlerCreateNewProfile
+    implements I_Handler
   {
-    public function Ansver($JOBJ)
+    private $link;
+
+    public function __construct()
+    {
+      global $link;
+      $DB = new MySQLOpenHelper();
+      $link = $DB->getLink();
+    }
+
+    public function Handling($JOBJ)
     {
       //Проверим наличие всех параметров
       $login    = $JOBJ->{'LOGIN'};
@@ -73,7 +82,6 @@
         return "";
     }
   }
-
 
 
 ?>
