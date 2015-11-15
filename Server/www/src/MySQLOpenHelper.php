@@ -25,8 +25,8 @@
       if ($result)
       {
         //Создаем БД
-        $command1 = file_get_contents("..\\res\\sql\\CreateDataBase.ddl");
-        $result  = $link->query($command1);
+        $command = file_get_contents("..\\res\\sql\\CreateDataBase.ddl");
+        $result  = $link->query($command);
         if ($result)
           echo("БД успешно создана.<br/>");
         else
@@ -44,17 +44,12 @@
       if ($result)
       {
         //Создаем таблицы
-        $command2 = file_get_contents("..\\res\\sql\\CreateTables_1_0_0.ddl");
-
-        echo("<br/>");
-        echo($command2);
-        echo("<br/>");
-
-        $result  = $link->multi_query($command2); //Команда выполняет сразу несколько запросов
+        $command = file_get_contents("..\\res\\sql\\CreateTables_1_0_1.ddl");
+        $result  = $link->multi_query($command); //Команда выполняет сразу несколько запросов
         if ($result)
-          echo("Таблицы для версии 1_0_0 успешно созданы<br/>");
+          echo("Таблицы для версии 1_0_1 успешно созданы<br/>");
         else
-          echo("Не удалось создать таблицы для версии 1_0_0<br/>");
+          echo("Не удалось создать таблицы для версии 1_0_1<br/>");
       }
       if (!$result)
         echo($link->error); //Выведем текст ошибки sql
