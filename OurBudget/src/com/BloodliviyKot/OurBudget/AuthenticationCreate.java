@@ -72,7 +72,7 @@ public class AuthenticationCreate
     try
     {
       Request.RequestTestConnectServer request = new Request.RequestTestConnectServer();
-      request.Post("http://192.168.10.108/request_handler.php");
+      request.Post("http://192.168.10.108/RequestHandler.php");
       Answer.AnswerTestConnectServer answer =
         (Answer.AnswerTestConnectServer)request.GetAnswerFromPost();
       result = request.TestValue == answer.TestValue;
@@ -89,7 +89,7 @@ public class AuthenticationCreate
     {
       Request.RequestCreateProfile cp = new Request.RequestCreateProfile(
         email.getText().toString(), password.getText().toString());
-      cp.Post("http://192.168.10.108/request_handler.php");
+      cp.Post("http://192.168.10.108/RequestHandler.php");
       Answer.AnswerCreateProfile answer =
         (Answer.AnswerCreateProfile)cp.GetAnswerFromPost();
       result = answer.isCreated;

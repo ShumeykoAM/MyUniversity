@@ -8,7 +8,7 @@
   include 'Common.php';
   include 'Handlers.php';
 
-  class request_handler
+  class RequestHandler
   {
     public function handling()
     {
@@ -46,7 +46,7 @@
 
   }
 
-  $handler = new request_handler();
+  $handler = new RequestHandler();
   $handler->handling();
 
 ?>
