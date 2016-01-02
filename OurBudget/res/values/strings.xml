@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">OurBudget</string>
+    <string name="app_name">Наш бюджет</string>
     <string name="authentication_create_email_help">Укажите адрес своей электронной почты</string>
     <string name="authentication_create_password_help">Укажите пароль</string>
     <string name="authentication_create_password_help2">Подтвердите пароль</string>
@@ -12,4 +12,10 @@
     <string name="authentication_err_test_server_connect">Нет соединения с сервером, проверьте соединение с интернетом.</string>
     <string name="authentication_err_test_server_email">Данный email уже занят, введите другой email или авторизируйтесь.</string>
     <string name="authentication_create_profile_success">Профиль успешно создан</string>
+    <string name="Win_accounts">Счета</string>
+    <string name="accounts_m_authentication">Учетные записи</string>
+    <string name="accounts_m_new_account">Новый счет</string>
+    <string name="accounts_m_become_co_owner">Стать совладельцем</string>
+
+
 </resources>

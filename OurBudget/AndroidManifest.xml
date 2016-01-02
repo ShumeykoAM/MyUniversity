@@ -5,10 +5,12 @@
           android:versionName="1.0">
     <uses-sdk android:minSdkVersion="15"/>
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
-    <application android:label="@string/app_name" android:icon="@drawable/ic_launcher">
-        <activity android:theme="@android:style/Theme.Black.NoTitleBar"
-                  android:name="MainActivity"
-                  android:label="@string/app_name">
+    <application android:label="@string/app_name"
+                 android:icon="@drawable/ic_launcher">
+
+        <activity android:name=".Accounts"
+                  android:label="@string/Win_accounts"
+                  android:icon="@drawable/ic_accounts">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -17,9 +19,11 @@
         <activity android:name=".AuthenticationCreate"
                   android:theme="@android:style/Theme.NoTitleBar">
         </activity>
+        <!--
         <service
             android:enabled="true"
-            android:name="com.BloodliviyKot.ServiceAurBudjet.AurBudjetServiceClass" >
+            android:name="com.BloodliviyKot.ServiceOurBudjet.AurBudjetServiceClass" >
         </service>
+        !-->
     </application>
 </manifest>
