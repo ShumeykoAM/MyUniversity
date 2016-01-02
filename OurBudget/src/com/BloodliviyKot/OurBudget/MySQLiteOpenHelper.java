@@ -46,10 +46,15 @@ public class MySQLiteOpenHelper
     //Заполним дистрибутивное содержание списка счетов
     try
     {
+      /*
+      ContentValues values = new ContentValues();
+      values.put("name", "Имя");
+      values.put("balance", "435.76");
+      long _id = db.insert("account", null, values);
+      */
       List<String> queris = sql_reader.getQueris(R.raw.distr_accounts);
       for(String query : queris)
-        db.rawQuery(query, null);
-
+        db.execSQL(query);
     }
     catch(SQLException e)
     {

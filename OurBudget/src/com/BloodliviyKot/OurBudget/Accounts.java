@@ -31,7 +31,8 @@ MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
     //Создаем помощник управления БД
     db = (new MySQLiteOpenHelper(getApplicationContext())).getWritableDatabase();
 
-    Cursor c = db.rawQuery("SELECT account.name, account.balance FROM account;", null);
+    //Cursor обязательно должен содержать _id иначе SimpleCursorAdapter не заработает
+    Cursor c = db.rawQuery("SELECT account._id, account.name, account.balance FROM account;", null);
     ListAdapter list_adapter = new SimpleCursorAdapter(this, R.layout.accounts_item, c,
       new String[]{"name", "balance"},
       new int[]{R.id.accounts_item_name, R.id.accounts_item_balance});
