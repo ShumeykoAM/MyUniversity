@@ -1,17 +1,21 @@
 package com.BloodliviyKot.OurBudget;
 
 import android.app.Activity;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import com.BloodliviyKot.tools.SQLReader;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 
 
 public class Accounts
   extends Activity
 {
   private SQLiteDatabase db;
+  private ListView list_accounts;
 
   //Создание активности
   @Override
@@ -20,15 +24,18 @@ public class Accounts
     super.onCreate(savedInstanceState);
     setContentView(R.layout.accounts);
 
+    list_accounts = (ListView)findViewById(R.id.accounts_list_accounts);
 
 //Для отладки удалим базу
 MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
     //Создаем помощник управления БД
-    db = (new MySQLiteOpenHelper(getApplicationContext(),
-          new SQLReader(getResources()))).getWritableDatabase();
-    if(db != null)
-    {
-    }
+    db = (new MySQLiteOpenHelper(getApplicationContext())).getWritableDatabase();
+
+    Cursor c = db.rawQuery("SELECT account.name, account.balance FROM account;", null);
+    ListAdapter list_adapter = new SimpleCursorAdapter(this, R.layout.accounts_item, c,
+      new String[]{"name", "balance"},
+      new int[]{R.id.accounts_item_name, R.id.accounts_item_balance});
+    list_accounts.setAdapter(list_adapter);
 
   }
 

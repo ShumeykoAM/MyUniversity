@@ -17,11 +17,11 @@ public class MySQLiteOpenHelper
   public static final String DBName = "OurBudget.db";
   private SQLReader sql_reader;
 
-  public MySQLiteOpenHelper(Context context, SQLReader _sql_reader)
+  public MySQLiteOpenHelper(Context context)
   {
     //Здесь создается или открывается БД
     super(context, DBName, null, VersionDB);
-    sql_reader = _sql_reader;
+    sql_reader = new SQLReader(context.getResources());
   }
   //Создаем таблицы базы
   @Override
@@ -38,6 +38,23 @@ public class MySQLiteOpenHelper
       {
         String err = e.getMessage();
       }
+    fillDistr(db);
+  }
+  //Дистрибутивное наполнение таблиц базы
+  private void fillDistr(SQLiteDatabase db)
+  {
+    //Заполним дистрибутивное содержание списка счетов
+    try
+    {
+      List<String> queris = sql_reader.getQueris(R.raw.distr_accounts);
+      for(String query : queris)
+        db.rawQuery(query, null);
+
+    }
+    catch(SQLException e)
+    {
+      String err = e.getMessage();
+    }
   }
 
   //Обновляем таблицы базы
@@ -45,7 +62,9 @@ public class MySQLiteOpenHelper
   public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
   {
     //Здесь модифицируются таблицы базы
+
   }
+
 
   //Исключительно для отладки
   public static void debugDeleteDB(Context context)
