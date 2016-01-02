@@ -15,40 +15,4 @@
           android:icon="@drawable/ic_co_owner"
           android:title="@string/accounts_m_become_co_owner">
     </item>
-
-    <item android:id="@+id/m_account_item4"
-          android:showAsAction="never"
-          android:title="Просто для примера">
-          <menu>
-            <group
-                android:checkableBehavior="single">
-                <item
-                        android:id="@+id/m_account_item4_s1"
-                        android:orderInCategory="100"
-                        android:showAsAction="never"
-                        android:title="c1"/>
-
-                <item
-                        android:id="@+id/m_account_item4_s2"
-                        android:orderInCategory="200"
-                        android:showAsAction="never"
-                        android:title="c2"/>
-
-                <item
-                        android:id="@+id/m_account_item4_s3"
-                        android:orderInCategory="300"
-                        android:showAsAction="never"
-                        android:title="c3"/>
-            </group>
-            <group
-                        android:checkableBehavior="all">
-                <item
-                        android:id="@+id/m_account_item4_h1"
-                        android:orderInCategory="400"
-                        android:showAsAction="never"
-                        android:title="c1"/>
-            </group>
-        </menu>
-
-    </item>
 </menu>

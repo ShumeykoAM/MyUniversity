@@ -27,15 +27,6 @@ public class Accounts
   {
     //Создаем меню из ресурса
     getMenuInflater().inflate(R.menu.m_accounts, menu);
-
-    //Найдем элемент меню
-    MenuItem share_menu_item_s2 = menu.findItem(R.id.m_account_item4_s2);
-    MenuItem share_menu_item_s3 = menu.findItem(R.id.m_account_item4_s3);
-    //Сделаем его активным (этот пункт входит в группу радиобуттон)
-    share_menu_item_s2.setChecked(true);
-    //Скроем пункт меню
-    share_menu_item_s3.setVisible(!fl_hide);
-
     return true;
   }
   //Обрабатываем выбор пункта меню
@@ -45,18 +36,6 @@ public class Accounts
     switch(item.getItemId())
     {
       case R.id.m_account_item1:
-        return true;
-
-      //Для примера
-      case R.id.m_account_item4_s1:
-        fl_hide = true;
-        invalidateOptionsMenu(); //Заставим переинициализироваться меню
-      case R.id.m_account_item4_s2:
-      case R.id.m_account_item4_s3:
-        item.setChecked(true);
-        return true;
-      case R.id.m_account_item4_h1:
-        item.setChecked(!item.isChecked());
         return true;
     }
     return super.onOptionsItemSelected(item);
