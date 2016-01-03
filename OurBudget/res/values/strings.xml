@@ -12,10 +12,16 @@
     <string name="authentication_err_test_server_connect">Нет соединения с сервером, проверьте соединение с интернетом.</string>
     <string name="authentication_err_test_server_email">Данный email уже занят, введите другой email или авторизируйтесь.</string>
     <string name="authentication_create_profile_success">Профиль успешно создан</string>
-    <string name="Win_accounts">Счета</string>
+    <string name="accounts_caption">Счета</string>
     <string name="accounts_m_authentication">Учетные записи</string>
     <string name="accounts_m_new_account">Новый счет</string>
     <string name="accounts_m_become_co_owner">Стать совладельцем</string>
+    <string name="accounts_m_context_list_acc_attach_to_authentication">Привязать счет к учетной записи</string>
+    <string name="accounts_m_context_list_acc_invite_owner_to_account">Пригласить совладельца для счета</string>
+    <string name="accounts_m_context_list_acc_co_owners">Совладельцы счета</string>
+    <string name="accounts_m_context_list_acc_alienation_account">Отчуждение счета</string>
+    <string name="accounts_m_context_list_acc_del_co_ovner">Удалить совладельца счета</string>
+    <string name="accounts_m_context_list_acc_del_account">Удалить счет</string>
     <string name="common_currency">р.</string>
     <string name="common_currency_small">к.</string>
 

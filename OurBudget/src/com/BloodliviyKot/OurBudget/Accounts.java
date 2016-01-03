@@ -5,9 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
@@ -29,43 +27,64 @@ public class Accounts
 
     list_accounts = (ListView)findViewById(R.id.accounts_list_accounts);
 
-//Для отладки удалим базу
-MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
+    //Для отладки удалим базу
+    MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
     //Создаем помощник управления БД
     db = (new MySQLiteOpenHelper(getApplicationContext())).getWritableDatabase();
 
     //Cursor обязательно должен содержать _id иначе SimpleCursorAdapter не заработает
     Cursor c = db.rawQuery("SELECT account._id, account.name, account.balance FROM account;", null);
-    ListAdapter list_adapter = new account_SimpleCursorAdapter(this, R.layout.accounts_item, c,
-      new String[]{"name", "balance"},
-      new int[]{R.id.accounts_item_name, R.id.accounts_item_balance});
+    ListAdapter list_adapter = new account_SimpleCursorAdapter(this, R.layout.accounts_item, c, new String[]{"name", "balance"}, new int[]{R.id.accounts_item_name, R.id.accounts_item_balance});
     list_accounts.setAdapter(list_adapter);
 
+    registerForContextMenu(list_accounts);
   }
 
-
-  private boolean fl_hide = false; //Для примера сокрытия ПМ
   //Создаем меню
   @Override
   public boolean onCreateOptionsMenu(Menu menu)
   {
     //Создаем меню из ресурса
-    getMenuInflater().inflate(R.menu.m_accounts, menu);
+    getMenuInflater().inflate(R.menu.accounts_menu, menu);
     return true;
   }
+
   //Обрабатываем выбор пункта меню
   @Override
   public boolean onOptionsItemSelected(MenuItem item)
   {
     switch(item.getItemId())
     {
-      case R.id.m_account_item1:
+      case R.id.m_account_new_account:
         return true;
     }
     return super.onOptionsItemSelected(item);
   }
 
+  //Контекстное меню для элемента списка счетов
+  @Override
+  public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
+  {
+    super.onCreateContextMenu(menu, v, menuInfo);
+    MenuInflater inflater = getMenuInflater();
+    inflater.inflate(R.menu.accounts_context_list_accounts, menu);
 
+    //Скроем не нужные на данный момент пункты меню
+    MenuItem shareMenuItem = menu.findItem(R.id.m_account_context_list_acc_co_owners);
+    shareMenuItem.setVisible(false);
+  }
+  //Обрабатываем нажатие выбор пункта контекстного меню
+  @Override
+  public boolean onContextItemSelected(MenuItem item)
+  {
+    switch(item.getItemId())
+    {
+      case R.id.m_account_context_list_acc_attach_to_authentication:
+        return true;
+
+    }
+    return super.onContextItemSelected(item);
+  }
 }
 
 //Переопределим SimpleCursorAdapter что бы форматировать данные из базы нужным образом
@@ -87,8 +106,11 @@ class account_SimpleCursorAdapter
     TextView nameTV = (TextView)_view.findViewById(R.id.accounts_item_name);
     TextView balanceTV = (TextView)_view.findViewById(R.id.accounts_item_balance);
     nameTV.setText(name);
-    balanceTV.setText(balance_currency.toString() + _context.getString(R.string.common_currency) +
-      balance_currency_small.toString() + _context.getString(R.string.common_currency_small));
+    String s_balance = balance_currency.toString() + _context.getString(R.string.common_currency);
+    if(balance_currency_small != 0)
+      s_balance += balance_currency_small.toString() + _context.getString(R.string.common_currency_small);
+    //На экран выведется отформатированный текст с балансом
+    balanceTV.setText(s_balance);
   }
 }
 

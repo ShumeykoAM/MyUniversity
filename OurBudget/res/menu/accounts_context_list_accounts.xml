@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/m_account_context_list_acc_attach_to_authentication"
+          android:title="@string/accounts_m_context_list_acc_attach_to_authentication">
+    </item>
+    <item android:id="@+id/m_account_context_list_acc_invite_owner_to_account"
+          android:title="@string/accounts_m_context_list_acc_invite_owner_to_account">
+    </item>
+    <item android:id="@+id/m_account_context_list_acc_co_owners"
+          android:title="@string/accounts_m_context_list_acc_co_owners">
+    </item>
+    <item android:id="@+id/m_account_context_list_acc_alienation_account"
+          android:title="@string/accounts_m_context_list_acc_alienation_account">
+    </item>
+    <item android:id="@+id/m_account_context_list_acc_del_co_ovner"
+          android:title="@string/accounts_m_context_list_acc_del_co_ovner">
+    </item>
+    <item android:id="@+id/m_account_context_list_acc_del_account"
+          android:title="@string/accounts_m_context_list_acc_del_account">
+    </item>
+</menu>

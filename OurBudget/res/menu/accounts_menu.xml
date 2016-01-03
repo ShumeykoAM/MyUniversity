@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/m_account_item1"
+    <item android:id="@+id/m_account_authentication"
           android:icon="@drawable/ic_authentication"
           android:showAsAction="ifRoom"
           android:title="@string/accounts_m_authentication">
     </item>
-    <item android:id="@+id/m_account_item2"
+    <item android:id="@+id/m_account_new_account"
           android:showAsAction="ifRoom"
           android:icon="@drawable/ic_add"
           android:title="@string/accounts_m_new_account">
     </item>
-    <item android:id="@+id/m_account_item3"
+    <item android:id="@+id/m_account_become_co_owner"
           android:showAsAction="ifRoom"
           android:icon="@drawable/ic_co_owner"
           android:title="@string/accounts_m_become_co_owner">

@@ -9,7 +9,7 @@
                  android:icon="@drawable/ic_launcher">
 
         <activity android:name=".Accounts"
-                  android:label="@string/Win_accounts"
+                  android:label="@string/accounts_caption"
                   android:icon="@drawable/ic_accounts">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
