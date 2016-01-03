@@ -16,6 +16,7 @@
     <string name="accounts_m_authentication">Учетные записи</string>
     <string name="accounts_m_new_account">Новый счет</string>
     <string name="accounts_m_become_co_owner">Стать совладельцем</string>
-
+    <string name="common_currency">р.</string>
+    <string name="common_currency_small">к.</string>
 
 </resources>
