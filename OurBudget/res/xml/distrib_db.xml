@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<distrib title1="Здесь будем хранить дистрибутивное наполнение файлов БД"
+         title2="Если нужно использовать _id родителя для вложенного елемента"
+         title3="  то вместо значения поля пишем ИД_родителя">
+    <account name="Семейный" balance="0"></account>
+    <account name="Личный" balance="0"></account>
+
+    <type_movement name="Расходы" trend="0" _id_account="1">
+        <type_movement name="Продукты" trend="0" _id_account="1" _paren_type_movement="ИД_родителя"></type_movement>
+    </type_movement>
+    <type_movement name="Получка" trend="1" _id_account="1"></type_movement>
+</distrib>
