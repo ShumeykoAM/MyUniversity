@@ -27,15 +27,18 @@ public class Accounts
 
     list_accounts = (ListView)findViewById(R.id.accounts_list_accounts);
 
-    //Для отладки удалим базу
-    MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
+//Для отладки удалим базу
+MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
     //Создаем помощник управления БД
     db = (new MySQLiteOpenHelper(getApplicationContext())).getWritableDatabase();
-
     //Cursor обязательно должен содержать _id иначе SimpleCursorAdapter не заработает
     Cursor c = db.rawQuery("SELECT account._id, account.name, account.balance FROM account;", null);
-    ListAdapter list_adapter = new account_SimpleCursorAdapter(this, R.layout.accounts_item, c, new String[]{"name", "balance"}, new int[]{R.id.accounts_item_name, R.id.accounts_item_balance});
+    ListAdapter list_adapter = new account_SimpleCursorAdapter(this, R.layout.accounts_item, c,
+      new String[]{"name", "balance"}, new int[]{R.id.accounts_item_name, R.id.accounts_item_balance});
     list_accounts.setAdapter(list_adapter);
+    //c.requery(); //Обновляет Cursor делая повторный запрос. Устарела, но для наших целей подойдет
+    //  актуально если в БД изменились данные. Нужно переходить на LoaderManager CursorLoader
+    //  позволяющие работать асинхронно.
 
     registerForContextMenu(list_accounts);
   }
@@ -66,12 +69,15 @@ public class Accounts
   public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
   {
     super.onCreateContextMenu(menu, v, menuInfo);
-    MenuInflater inflater = getMenuInflater();
-    inflater.inflate(R.menu.accounts_context_list_accounts, menu);
+    if(v == list_accounts)
+    {
+      MenuInflater inflater = getMenuInflater();
+      inflater.inflate(R.menu.accounts_context_list_accounts, menu);
 
-    //Скроем не нужные на данный момент пункты меню
-    MenuItem shareMenuItem = menu.findItem(R.id.m_account_context_list_acc_co_owners);
-    shareMenuItem.setVisible(false);
+      //Скроем не нужные на данный момент пункты меню
+      MenuItem shareMenuItem = menu.findItem(R.id.m_account_context_list_acc_co_owners);
+      shareMenuItem.setVisible(false);
+    }
   }
   //Обрабатываем нажатие выбор пункта контекстного меню
   @Override
