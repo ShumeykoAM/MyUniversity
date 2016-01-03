@@ -22,6 +22,7 @@
     <string name="accounts_m_context_list_acc_alienation_account">Отчуждение счета</string>
     <string name="accounts_m_context_list_acc_del_co_ovner">Удалить совладельца счета</string>
     <string name="accounts_m_context_list_acc_del_account">Удалить счет</string>
+    <string name="movements_caption">Движения по счету</string>
     <string name="common_currency">р.</string>
     <string name="common_currency_small">к.</string>
 
