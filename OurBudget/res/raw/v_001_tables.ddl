@@ -20,7 +20,6 @@ CREATE TABLE type_movement
 CREATE TABLE movement
 (
   _id                  INTEGER PRIMARY KEY,
-  _id_account          INTEGER NOT NULL,
   _id_type_movement    INTEGER NOT NULL,
   id_union             INTEGER NOT NULL,
   FOREIGN KEY (_id_type_movement) REFERENCES type_movement (_id) ON DELETE RESTRICT ON UPDATE RESTRICT

@@ -9,4 +9,7 @@
         <type_movement name="Продукты" trend="0" _id_account="1" _paren_type_movement="ИД_родителя"></type_movement>
     </type_movement>
     <type_movement name="Получка" trend="1" _id_account="1"></type_movement>
+
+    <movement _id_type_movement="1" id_union="1"></movement>
+    <movement _id_type_movement="2" id_union="1"></movement>
 </distrib>

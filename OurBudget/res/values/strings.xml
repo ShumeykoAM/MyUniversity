@@ -26,4 +26,6 @@
     <string name="common_currency">р.</string>
     <string name="common_currency_small">к.</string>
 
+    <string name="intent_account_id">intent_account_id</string>
+
 </resources>
