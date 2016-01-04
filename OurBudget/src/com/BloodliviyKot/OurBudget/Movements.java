@@ -6,7 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.view.View;
+import android.view.*;
 import android.widget.*;
 
 public class Movements
@@ -45,6 +45,53 @@ public class Movements
       from, to);
     list_movements.setAdapter(list_adapter);
 
+    registerForContextMenu(list_movements);
+  }
+
+  //Создаем меню
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu)
+  {
+    //Создаем меню из ресурса
+    getMenuInflater().inflate(R.menu.movements_menu, menu);
+    return true;
+  }
+
+  //Обрабатываем выбор пункта меню
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item)
+  {
+    switch(item.getItemId())
+    {
+      case R.id.m_account_new_account:
+        return true;
+    }
+    return super.onOptionsItemSelected(item);
+  }
+
+  //Контекстное меню для элемента списка счетов
+  @Override
+  public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
+  {
+    super.onCreateContextMenu(menu, v, menuInfo);
+    if(v == list_movements)
+    {
+      MenuInflater inflater = getMenuInflater();
+      inflater.inflate(R.menu.movements_context_list_movements, menu);
+
+    }
+  }
+  //Обрабатываем нажатие выбор пункта контекстного меню
+  @Override
+  public boolean onContextItemSelected(MenuItem item)
+  {
+    switch(item.getItemId())
+    {
+      case R.id.m_account_context_list_acc_attach_to_authentication:
+        return true;
+
+    }
+    return super.onContextItemSelected(item);
   }
 
 
