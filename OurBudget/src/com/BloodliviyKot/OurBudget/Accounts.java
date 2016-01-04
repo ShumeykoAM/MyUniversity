@@ -33,7 +33,7 @@ MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
     db = (new MySQLiteOpenHelper(getApplicationContext())).getWritableDatabase();
     //Cursor обязательно должен содержать _id иначе SimpleCursorAdapter не заработает
     Cursor cursor = db.rawQuery("SELECT account._id, account.name, account.balance FROM account;", null);
-    ListAdapter list_adapter = new account_SimpleCursorAdapter(this, R.layout.accounts_item, cursor,
+    ListAdapter list_adapter = new Account_SimpleCursorAdapter(this, R.layout.accounts_item, cursor,
       new String[]{"name", "balance"}, new int[]{R.id.accounts_item_name, R.id.accounts_item_balance});
     list_accounts.setAdapter(list_adapter);
     //cursor.requery(); //Обновляет Cursor делая повторный запрос. Устарела, но для наших целей подойдет
@@ -102,11 +102,10 @@ MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
 
 
   //Переопределим SimpleCursorAdapter что бы форматировать данные из базы нужным образом
-  private static class account_SimpleCursorAdapter
+  private static class Account_SimpleCursorAdapter
     extends SimpleCursorAdapter
   {
-    public account_SimpleCursorAdapter(Context _context, int _layout, Cursor _c,
-                                       String[] _from, int[] _to)
+    public Account_SimpleCursorAdapter(Context _context, int _layout, Cursor _c, String[] _from, int[] _to)
     {
       super(_context, _layout, _c, _from, _to);
     }
@@ -114,7 +113,7 @@ MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
     public void bindView(View _view, Context _context, Cursor _cursor)
     {
       String name = _cursor.getString(_cursor.getColumnIndex("name"));
-      double balance = Double.parseDouble(_cursor.getString(_cursor.getColumnIndex("balance")));
+      double balance = _cursor.getDouble(_cursor.getColumnIndex("balance"));
       Integer balance_currency = (int)balance;
       Integer balance_currency_small = (int)((balance - balance_currency) * 100);
       TextView nameTV = (TextView)_view.findViewById(R.id.accounts_item_name);
