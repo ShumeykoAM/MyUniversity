@@ -6,11 +6,11 @@
     <item android:id="@+id/m_account_context_list_acc_invite_owner_to_account"
           android:title="@string/accounts_m_context_list_acc_invite_owner_to_account">
     </item>
+    <item android:id="@+id/m_account_context_list_acc_type_detail"
+          android:title="@string/accounts_m_context_list_acc_type_datail">
+    </item>
     <item android:id="@+id/m_account_context_list_acc_co_owners"
           android:title="@string/accounts_m_context_list_acc_co_owners">
-    </item>
-    <item android:id="@+id/m_account_context_list_acc_alienation_account"
-          android:title="@string/accounts_m_context_list_acc_alienation_account">
     </item>
     <item android:id="@+id/m_account_context_list_acc_del_co_ovner"
           android:title="@string/accounts_m_context_list_acc_del_co_ovner">

@@ -6,21 +6,30 @@ CREATE TABLE account
   balance              DECIMAL NOT NULL
 );
 
-CREATE TABLE type_movement
+CREATE TABLE type_detail
 (
   _id                  INTEGER PRIMARY KEY,
-  _paren_type_movement INTEGER,
+  _paren_type_detail   INTEGER,
   name                 TEXT NOT NULL,
   trend                INTEGER NOT NULL,
   _id_account          INTEGER NOT NULL,
-  FOREIGN KEY (_paren_type_movement) REFERENCES type_movement (_id),
-  FOREIGN KEY (_id_account) REFERENCES account (_id) ON DELETE RESTRICT ON UPDATE RESTRICT
+  FOREIGN KEY (_paren_type_detail) REFERENCES type_detail (_id) ON DELETE RESTRICT ON UPDATE CASCADE,
+  FOREIGN KEY (_id_account) REFERENCES account (_id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 CREATE TABLE movement
 (
   _id                  INTEGER PRIMARY KEY,
-  _id_type_movement    INTEGER NOT NULL,
-  id_union             INTEGER NOT NULL,
-  FOREIGN KEY (_id_type_movement) REFERENCES type_movement (_id) ON DELETE RESTRICT ON UPDATE RESTRICT
+  _id_account          INTEGER NOT NULL,
+  trend                INTEGER NOT NULL,
+  FOREIGN KEY (_id_account) REFERENCES account (_id) ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+CREATE TABLE detail
+(
+  _id                  INTEGER PRIMARY KEY,
+  _id_type_detail      INTEGER NOT NULL,
+  _id_movement         INTEGER NOT NULL,
+  FOREIGN KEY (_id_type_detail) REFERENCES type_detail (_id) ON DELETE RESTRICT ON UPDATE CASCADE,
+  FOREIGN KEY (_id_movement) REFERENCES movement (_id) ON DELETE RESTRICT ON UPDATE CASCADE
 );

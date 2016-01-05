@@ -83,8 +83,8 @@ MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
       inflater.inflate(R.menu.accounts_context_list_accounts, menu);
 
       //Скроем не нужные на данный момент пункты меню
-      MenuItem shareMenuItem = menu.findItem(R.id.m_account_context_list_acc_co_owners);
-      shareMenuItem.setVisible(false);
+      //MenuItem shareMenuItem = menu.findItem(R.id.m_account_context_list_acc_co_owners);
+      //shareMenuItem.setVisible(false);
     }
   }
   //Обрабатываем нажатие выбор пункта контекстного меню

@@ -32,6 +32,8 @@ public class Movements
     //Создаем помощник управления БД
     db = (new MySQLiteOpenHelper(getApplicationContext())).getWritableDatabase();
     //Cursor обязательно должен содержать _id иначе SimpleCursorAdapter не заработает
+
+//!!! Вот тут переделать запрос
     String query =
     "SELECT movement._id, type_movement.name, type_movement.trend FROM movement, type_movement " +
     "WHERE movement._id_type_movement=type_movement._id " +
@@ -106,6 +108,7 @@ public class Movements
     @Override
     public void bindView(View _view, Context _context, Cursor _cursor)
     {
+//!!! Вот тут переделать запрос
       int trend = _cursor.getInt(_cursor.getColumnIndex("trend"));
       String name = _cursor.getString(_cursor.getColumnIndex("name"));
 

@@ -15,4 +15,9 @@
           android:icon="@drawable/ic_co_owner"
           android:title="@string/accounts_m_become_co_owner">
     </item>
+    <item android:id="@+id/m_account_about"
+          android:showAsAction="ifRoom"
+          android:icon="@drawable/ic_about"
+          android:title="@string/accounts_m_about">
+    </item>
 </menu>

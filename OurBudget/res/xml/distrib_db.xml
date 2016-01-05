@@ -5,37 +5,35 @@
     <account name="Семейный" balance="0"></account>
     <account name="Личный" balance="0"></account>
 
-    <type_movement name="Расходы" trend="0" _id_account="1">
-        <type_movement name="Продукты" trend="0" _id_account="1" _paren_type_movement="ИД_родителя"></type_movement>
-    </type_movement>
-    <type_movement name="Получка" trend="1" _id_account="1"></type_movement>
+    <type_detail name="Расходы" trend="0" _id_account="1">
+        <type_detail _paren_type_detail="ИД_родителя" name="Продукты" trend="0" _id_account="1"></type_detail>
+    </type_detail>
+    <type_detail name="Получка" trend="1" _id_account="1"></type_detail>
 
-    <movement _id_type_movement="1" id_union="1"></movement>
-    <movement _id_type_movement="2" id_union="1"></movement>
-    <movement _id_type_movement="1" id_union="1"></movement>
-    <movement _id_type_movement="2" id_union="1"></movement>
-    <movement _id_type_movement="1" id_union="1"></movement>
-    <movement _id_type_movement="2" id_union="1"></movement>
-    <movement _id_type_movement="1" id_union="1"></movement>
-    <movement _id_type_movement="2" id_union="1"></movement>
-    <movement _id_type_movement="1" id_union="1"></movement>
-    <movement _id_type_movement="2" id_union="1"></movement>
-    <movement _id_type_movement="1" id_union="1"></movement>
-    <movement _id_type_movement="2" id_union="1"></movement>
-
-
-    <movement _id_type_movement="3" id_union="2"></movement>
-    <movement _id_type_movement="3" id_union="3"></movement>
-    <movement _id_type_movement="3" id_union="2"></movement>
-    <movement _id_type_movement="3" id_union="3"></movement>
-    <movement _id_type_movement="3" id_union="2"></movement>
-    <movement _id_type_movement="3" id_union="3"></movement>
-    <movement _id_type_movement="3" id_union="2"></movement>
-    <movement _id_type_movement="3" id_union="3"></movement>
-    <movement _id_type_movement="3" id_union="2"></movement>
-    <movement _id_type_movement="3" id_union="3"></movement>
-    <movement _id_type_movement="3" id_union="2"></movement>
-    <movement _id_type_movement="3" id_union="3"></movement>
-    <movement _id_type_movement="3" id_union="2"></movement>
-    <movement _id_type_movement="3" id_union="3"></movement>
+    <movement _id_account="1" trend="1"></movement>
+    <movement _id_account="2" trend="0"></movement>
+    <movement _id_account="1" trend="1"></movement>
+    <movement _id_account="2" trend="0"></movement>
+    <movement _id_account="1" trend="1"></movement>
+    <movement _id_account="2" trend="1"></movement>
+    <movement _id_account="1" trend="1"></movement>
+    <movement _id_account="2" trend="0"></movement>
+    <movement _id_account="1" trend="1"></movement>
+    <movement _id_account="2" trend="0"></movement>
+    <movement _id_account="1" trend="0"></movement>
+    <movement _id_account="2" trend="1"></movement>
+    <movement _id_account="1" trend="0"></movement>
+    <movement _id_account="1" trend="0"></movement>
+    <movement _id_account="1" trend="0"></movement>
+    <movement _id_account="1" trend="0"></movement>
+    <movement _id_account="2" trend="0"></movement>
+    <movement _id_account="2" trend="0"></movement>
+    <movement _id_account="1" trend="0"></movement>
+    <movement _id_account="1" trend="1"></movement>
+    <movement _id_account="2" trend="0"></movement>
+    <movement _id_account="1" trend="0"></movement>
+    <movement _id_account="2" trend="0"></movement>
+    <movement _id_account="1" trend="0"></movement>
+    <movement _id_account="2" trend="1"></movement>
+    <movement _id_account="2" trend="1"></movement>
 </distrib>
