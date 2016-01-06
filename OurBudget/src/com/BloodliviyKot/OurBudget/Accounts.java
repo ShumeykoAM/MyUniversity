@@ -30,7 +30,9 @@ public class Accounts
 //Для отладки удалим базу
 MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
     //Создаем помощник управления БД
+
     db = (new MySQLiteOpenHelper(getApplicationContext())).getWritableDatabase();
+    /*
     //Cursor обязательно должен содержать _id иначе SimpleCursorAdapter не заработает
     Cursor cursor = db.rawQuery("SELECT account._id, account.name, account.balance FROM account;", null);
     ListAdapter list_adapter = new Account_SimpleCursorAdapter(this, R.layout.accounts_item, cursor,
@@ -39,7 +41,7 @@ MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
     //cursor.requery(); //Обновляет Cursor делая повторный запрос. Устарела, но для наших целей подойдет
     //  актуально если в БД изменились данные. Нужно переходить на LoaderManager CursorLoader
     //  позволяющие работать асинхронно.
-
+    */
     registerForContextMenu(list_accounts);
   }
 

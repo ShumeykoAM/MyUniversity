@@ -1,35 +1,28 @@
-CREATE TABLE account
+CREATE TABLE type
 (
   _id                  INTEGER PRIMARY KEY,
-  id_account_on_server INTEGER,
   name                 TEXT NOT NULL,
-  balance              DECIMAL NOT NULL
+  id_unit              INTEGER NOT NULL
 );
 
-CREATE TABLE type_detail
+CREATE TABLE purchase
 (
   _id                  INTEGER PRIMARY KEY,
-  _paren_type_detail   INTEGER,
-  name                 TEXT NOT NULL,
-  trend                INTEGER NOT NULL,
-  _id_account          INTEGER NOT NULL,
-  FOREIGN KEY (_paren_type_detail) REFERENCES type_detail (_id) ON DELETE RESTRICT ON UPDATE CASCADE,
-  FOREIGN KEY (_id_account) REFERENCES account (_id) ON DELETE RESTRICT ON UPDATE CASCADE
-);
-
-CREATE TABLE movement
-(
-  _id                  INTEGER PRIMARY KEY,
-  _id_account          INTEGER NOT NULL,
-  trend                INTEGER NOT NULL,
-  FOREIGN KEY (_id_account) REFERENCES account (_id) ON DELETE RESTRICT ON UPDATE CASCADE
+  date_time            INTEGER NOT NULL, -- as Unix Time the number of seconds since 1970-01-01 00:00:00 UTC.
+  state                INTEGER NOT NULL
 );
 
 CREATE TABLE detail
 (
   _id                  INTEGER PRIMARY KEY,
-  _id_type_detail      INTEGER NOT NULL,
-  _id_movement         INTEGER NOT NULL,
-  FOREIGN KEY (_id_type_detail) REFERENCES type_detail (_id) ON DELETE RESTRICT ON UPDATE CASCADE,
-  FOREIGN KEY (_id_movement) REFERENCES movement (_id) ON DELETE RESTRICT ON UPDATE CASCADE
+  _id_type             INTEGER NOT NULL,
+  _id_purchase         INTEGER NOT NULL,
+  price                REAL,
+  for_amount_unit      REAL NOT NULL,
+  for_id_unit          INTEGER NOT NULL,
+  amount               REAL,
+  id_unit              INTEGER NOT NULL,
+  cost                 REAL,
+  FOREIGN KEY (_id_type)     REFERENCES type     (_id) ON DELETE RESTRICT ON UPDATE CASCADE,
+  FOREIGN KEY (_id_purchase) REFERENCES purchase (_id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
