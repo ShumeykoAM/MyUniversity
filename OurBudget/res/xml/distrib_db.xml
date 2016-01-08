@@ -13,13 +13,312 @@
     <purchase date_time="1451964327972" state="1"></purchase>-->
 
     <type name="Хлеб" id_unit="1"></type>
-    <type name="р. пикша" id_unit="2"></type>
+    <type name="р. пикша большая очень пикша" id_unit="2"></type>
     <type name="молоко" id_unit="3"></type>
 
     <!--
     <detail _id_type="0" _id_purchase="3" price="18.5" for_amount_unit="1" for_id_unit="0"
             amount="2" id_unit="0" cost="37"></detail>
     -->
+    <detail _id_type="1"
+            _id_purchase="1"
+            price="18.5"
+            for_amount_unit="1"
+            for_id_unit="1"
+            amount="2"
+            id_unit="1">
+    </detail>
+    <detail _id_type="2"
+            _id_purchase="1"
+            price="128543"
+            for_amount_unit="1"
+            for_id_unit="2"
+            amount="143.234"
+            id_unit="2">
+    </detail>
+    <detail _id_type="3"
+            _id_purchase="1"
+            for_amount_unit="1"
+            for_id_unit="3"
+            id_unit="3"
+            cost="110">
+    </detail>
+    <detail _id_type="1"
+            _id_purchase="1"
+            price="18.5"
+            for_amount_unit="1"
+            for_id_unit="1"
+            amount="2"
+            id_unit="1">
+    </detail>
+    <detail _id_type="2"
+            _id_purchase="1"
+            price="128"
+            for_amount_unit="1"
+            for_id_unit="2"
+            amount="1.237"
+            id_unit="2">
+    </detail>
+    <detail _id_type="3"
+            _id_purchase="1"
+            for_amount_unit="1"
+            for_id_unit="3"
+            id_unit="3"
+            cost="235110.34">
+    </detail>
+    <detail _id_type="1"
+            _id_purchase="1"
+            price="18.5"
+            for_amount_unit="1"
+            for_id_unit="1"
+            amount="2"
+            id_unit="1">
+    </detail>
+    <detail _id_type="2"
+            _id_purchase="1"
+            price="128"
+            for_amount_unit="1"
+            for_id_unit="2"
+            amount="1.23"
+            id_unit="2">
+    </detail>
+    <detail _id_type="3"
+            _id_purchase="1"
+            for_amount_unit="1"
+            for_id_unit="3"
+            id_unit="3"
+            cost="110">
+    </detail>
+    <detail _id_type="1"
+            _id_purchase="1"
+            price="18.5"
+            for_amount_unit="1"
+            for_id_unit="1"
+            amount="2"
+            id_unit="1">
+    </detail>
+    <detail _id_type="2"
+            _id_purchase="1"
+            price="128"
+            for_amount_unit="1"
+            for_id_unit="2"
+            amount="1.23"
+            id_unit="2">
+    </detail>
+    <detail _id_type="3"
+            _id_purchase="1"
+            for_amount_unit="1"
+            for_id_unit="3"
+            id_unit="3"
+            cost="110">
+    </detail>
+    <detail _id_type="1"
+            _id_purchase="1"
+            price="18.5"
+            for_amount_unit="1"
+            for_id_unit="1"
+            amount="2"
+            id_unit="1">
+    </detail>
+    <detail _id_type="2"
+            _id_purchase="1"
+            price="128"
+            for_amount_unit="1"
+            for_id_unit="2"
+            amount="1.23"
+            id_unit="2">
+    </detail>
+    <detail _id_type="3"
+            _id_purchase="1"
+            for_amount_unit="1"
+            for_id_unit="3"
+            id_unit="3"
+            cost="110">
+    </detail>
+    <detail _id_type="1"
+            _id_purchase="1"
+            price="18.5"
+            for_amount_unit="1"
+            for_id_unit="1"
+            amount="2"
+            id_unit="1">
+    </detail>
+    <detail _id_type="2"
+            _id_purchase="1"
+            price="128"
+            for_amount_unit="1"
+            for_id_unit="2"
+            amount="1.23"
+            id_unit="2">
+    </detail>
+    <detail _id_type="3"
+            _id_purchase="1"
+            for_amount_unit="1"
+            for_id_unit="3"
+            id_unit="3"
+            cost="110">
+    </detail>
+    <detail _id_type="1"
+            _id_purchase="1"
+            price="18.5"
+            for_amount_unit="1"
+            for_id_unit="1"
+            amount="2"
+            id_unit="1">
+    </detail>
+    <detail _id_type="2"
+            _id_purchase="1"
+            price="128"
+            for_amount_unit="1"
+            for_id_unit="2"
+            amount="1.23"
+            id_unit="2">
+    </detail>
+    <detail _id_type="3"
+            _id_purchase="1"
+            for_amount_unit="1"
+            for_id_unit="3"
+            id_unit="3"
+            cost="110">
+    </detail>
+    <detail _id_type="1"
+            _id_purchase="1"
+            price="18.5"
+            for_amount_unit="1"
+            for_id_unit="1"
+            amount="2"
+            id_unit="1">
+    </detail>
+    <detail _id_type="2"
+            _id_purchase="1"
+            price="128"
+            for_amount_unit="1"
+            for_id_unit="2"
+            amount="1.23"
+            id_unit="2">
+    </detail>
+    <detail _id_type="3"
+            _id_purchase="1"
+            for_amount_unit="1"
+            for_id_unit="3"
+            id_unit="3"
+            cost="110">
+    </detail>
+    <detail _id_type="1"
+            _id_purchase="1"
+            price="18.5"
+            for_amount_unit="1"
+            for_id_unit="1"
+            amount="2"
+            id_unit="1">
+    </detail>
+    <detail _id_type="2"
+            _id_purchase="1"
+            price="128"
+            for_amount_unit="1"
+            for_id_unit="2"
+            amount="1.23"
+            id_unit="2">
+    </detail>
+    <detail _id_type="3"
+            _id_purchase="1"
+            for_amount_unit="1"
+            for_id_unit="3"
+            id_unit="3"
+            cost="110">
+    </detail>
+    <detail _id_type="1"
+            _id_purchase="1"
+            price="18.5"
+            for_amount_unit="1"
+            for_id_unit="1"
+            amount="2"
+            id_unit="1">
+    </detail>
+    <detail _id_type="2"
+            _id_purchase="1"
+            price="128"
+            for_amount_unit="1"
+            for_id_unit="2"
+            amount="1.23"
+            id_unit="2">
+    </detail>
+    <detail _id_type="3"
+            _id_purchase="1"
+            for_amount_unit="1"
+            for_id_unit="3"
+            id_unit="3"
+            cost="110">
+    </detail>
+    <detail _id_type="1"
+            _id_purchase="1"
+            price="18.5"
+            for_amount_unit="1"
+            for_id_unit="1"
+            amount="2"
+            id_unit="1">
+    </detail>
+    <detail _id_type="2"
+            _id_purchase="1"
+            price="128"
+            for_amount_unit="1"
+            for_id_unit="2"
+            amount="1.23"
+            id_unit="2">
+    </detail>
+    <detail _id_type="3"
+            _id_purchase="1"
+            for_amount_unit="1"
+            for_id_unit="3"
+            id_unit="3"
+            cost="110">
+    </detail>
+    <detail _id_type="1"
+            _id_purchase="1"
+            price="18.5"
+            for_amount_unit="1"
+            for_id_unit="1"
+            amount="2"
+            id_unit="1">
+    </detail>
+    <detail _id_type="2"
+            _id_purchase="1"
+            price="128"
+            for_amount_unit="1"
+            for_id_unit="2"
+            amount="1.23"
+            id_unit="2">
+    </detail>
+    <detail _id_type="3"
+            _id_purchase="1"
+            for_amount_unit="1"
+            for_id_unit="3"
+            id_unit="3"
+            cost="110">
+    </detail>
+    <detail _id_type="1"
+            _id_purchase="1"
+            price="18.5"
+            for_amount_unit="1"
+            for_id_unit="1"
+            amount="2"
+            id_unit="1">
+    </detail>
+    <detail _id_type="2"
+            _id_purchase="1"
+            price="128"
+            for_amount_unit="1"
+            for_id_unit="2"
+            amount="1.23"
+            id_unit="2">
+    </detail>
+    <detail _id_type="3"
+            _id_purchase="1"
+            for_amount_unit="1"
+            for_id_unit="3"
+            id_unit="3"
+            cost="110">
+    </detail>
     <detail _id_type="1"
             _id_purchase="1"
             price="18.5"

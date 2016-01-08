@@ -25,7 +25,7 @@ public class Unit
   public static Unit units[];
   static
   {
-    final int COUNT_UNITS = 1 + 10;
+    final int COUNT_UNITS = 1 + 11;
     int id = 1/*0 не используем*/, g_id;
     g_id = id;
     units = new Unit[COUNT_UNITS];
@@ -39,6 +39,9 @@ public class Unit
     g_id = id;
     units[id] = new Unit(id, "л", 1, 0); id++;
     units[id] = new Unit(id, "мл", 1000, g_id); id++;
+    //десяток
+    g_id = id;
+    units[id] = new Unit(id, "дес.", 1, 0); id++;
     //метры
     g_id = id;
     units[id] = new Unit(id, "м", 1, 0); id++;

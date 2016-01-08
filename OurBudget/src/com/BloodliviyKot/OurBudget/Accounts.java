@@ -22,9 +22,9 @@ public class Accounts
   public void onCreate(Bundle savedInstanceState)
   {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.accounts);
+    setContentView(R.layout.purchases);
 
-    list_accounts = (ListView)findViewById(R.id.accounts_list_accounts);
+    list_accounts = (ListView)findViewById(R.id.purchases_list_list_purchases);
     list_accounts.setOnItemClickListener(this);
 
 //Для отладки удалим базу
@@ -48,9 +48,9 @@ MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
   @Override //Нажали редактировать клиента
   public void onItemClick(AdapterView<?> parent, View view, int position, long id)
   {
-    Intent intent = new Intent(this, Movements.class);
-    intent.putExtra(getString(R.string.intent_account_id), id);
-    startActivityForResult(intent, R.layout.movements); //Запуск активности с onActivityResult
+    Intent intent = new Intent(this, Details.class);
+    intent.putExtra(getString(R.string.intent_purchases_id), id);
+    startActivityForResult(intent, R.layout.details); //Запуск активности с onActivityResult
   }
 
   //Создаем меню

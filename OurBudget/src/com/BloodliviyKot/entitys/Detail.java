@@ -56,15 +56,15 @@ public class Detail
       success = true;
     return success;
   }
-  public double calcPrice()
+  public boolean calcPrice()
   {
-
-    return 0;
+    //стоимость = (цена/за_кол_единиц) * кол_единиц * (множитель_единиц/за_множитель_единиц);
+    return price != null;
   }
-  public double calcAmount()
+  public boolean calcAmount()
   {
-
-    return 0;
+    //стоимость = (цена/за_кол_единиц) * кол_единиц * (множитель_единиц/за_множитель_единиц);
+    return amount != null;
   }
   static public String formatmoney(double money)
   {

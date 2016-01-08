@@ -15,8 +15,8 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".Movements"
-                  android:label="@string/movements_caption"
+        <activity android:name=".Details"
+                  android:label="@string/detaile_caption"
                   android:icon="@drawable/ic_movement">
         </activity>
 

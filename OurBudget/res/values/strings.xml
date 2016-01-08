@@ -24,12 +24,12 @@
     <string name="accounts_m_context_list_acc_co_owners">Совладельцы счета</string>
     <string name="accounts_m_context_list_acc_del_co_ovner">Удалить совладельца</string>
     <string name="accounts_m_context_list_acc_del_account">Удалить счет</string>
-    <string name="movements_caption">Движения по счету</string>
+    <string name="detaile_caption">Подробности</string>
     <string name="movement_m_new_movement">Добавить движение</string>
     <string name="movement_m_context_list_mov_delete">Удалить движение</string>
     <string name="common_currency">р.</string>
     <string name="common_currency_small">к.</string>
 
-    <string name="intent_account_id">intent_account_id</string>
+    <string name="intent_purchases_id">intent_purchases_id</string>
 
 </resources>

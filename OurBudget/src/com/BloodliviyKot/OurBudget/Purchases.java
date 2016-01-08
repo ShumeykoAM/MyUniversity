@@ -52,12 +52,12 @@ MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
       "WHERE (purchase.date_time > ? AND purchase.date_time < ? AND " +
       "  purchase.state = ?) OR purchase.state = ? " +
       "ORDER BY purchase.state, purchase.date_time DESC;";
-    String q_parms[] ={ Long.toString(s_date), Long.toString(e_date),
+    String q_params[] ={ Long.toString(s_date), Long.toString(e_date),
       Integer.toString(STATE_EXECUTE), Integer.toString(state) };
-    Cursor cursor = db.rawQuery(query, q_parms);
+    Cursor cursor = db.rawQuery(query, q_params);
     ListAdapter list_adapter = new PurchasesAdapter(this, R.layout.purchases_item, cursor,
       new String[]{},
-      new int[]{R.id.purchases_item_contein, R.id.purchases_item_info, R.id.purchases_item_state},
+      new int[]{R.id.purchases_item_contnt, R.id.purchases_item_info, R.id.purchases_item_state},
       db);
     list_purchases.setAdapter(list_adapter);
 
@@ -68,12 +68,12 @@ MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
     registerForContextMenu(list_purchases);
   }
 
-  @Override //Нажали редактировать клиента
+  @Override //Выбрали покупку, перейдем в ее детали
   public void onItemClick(AdapterView<?> parent, View view, int position, long id)
   {
-    Intent intent = new Intent(this, Movements.class);
-    intent.putExtra(getString(R.string.intent_account_id), id);
-    startActivityForResult(intent, R.layout.movements); //Запуск активности с onActivityResult
+    Intent intent = new Intent(this, Details.class);
+    intent.putExtra(getString(R.string.intent_purchases_id), id);
+    startActivityForResult(intent, R.layout.details); //Запуск активности с onActivityResult
   }
 
   //Создаем меню
@@ -146,7 +146,7 @@ MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
       int state = _cursor.getInt(_cursor.getColumnIndex("state"));
       Long date_time = _cursor.getLong(_cursor.getColumnIndex("date_time"));
       //Подготовим отображаемые данные
-      String s_contein_info[] = get_contein_and_info(id, state, date_time);
+      String s_content_info[] = get_contein_and_info(id, state, date_time);
       int id_state_icon;
       //ИД Иконки состояния
       switch(state)
@@ -161,12 +161,12 @@ MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
           id_state_icon = R.drawable.ic_launcher;
       }
       //Сопоставляем
-      TextView tv_contein = (TextView)_view.findViewById(R.id.purchases_item_contein);
+      TextView tv_content = (TextView)_view.findViewById(R.id.purchases_item_contnt);
       TextView tv_info    = (TextView)_view.findViewById(R.id.purchases_item_info);
       ImageView iv_state = (ImageView)_view.findViewById(R.id.purchases_item_state);
 
-      tv_contein.setText(s_contein_info[0]);
-      tv_info.setText(s_contein_info[1]);
+      tv_content.setText(s_content_info[0]);
+      tv_info.setText(s_content_info[1]);
       iv_state.setImageResource(id_state_icon);
     }
     private String[] get_contein_and_info(long _id_purchase, int _state, Long _date_time)
@@ -176,10 +176,10 @@ MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
         "SELECT detail._id, detail.price, detail.for_amount_unit, detail.for_id_unit, " +
         "detail.amount, detail.id_unit, detail.cost, type.name FROM detail, type " +
         "WHERE detail._id_purchase = ? AND type._id=detail._id_type;";
-      String q_parms[] ={ Long.toString(_id_purchase)};
-      Cursor cursor = db.rawQuery(query, q_parms);
-      double summa = 0;
-      String s_contein = "";
+      String q_params[] ={ Long.toString(_id_purchase)};
+      Cursor cursor = db.rawQuery(query, q_params);
+      double sum = 0;
+      String s_content = "";
       for(boolean stat=cursor.moveToFirst(), flag=false, fl_len=true;
           stat; flag=stat=cursor.moveToNext())
       {
@@ -188,12 +188,12 @@ MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
         double cost = 0;
         if(detail.calcCost(false)) //Если стоимость возможно вычислить то прибавим ее й общей сумме
           cost = detail.cost;
-        summa += cost;
+        sum += cost;
         if(flag && fl_len)
-          s_contein += ", ";
+          s_content += ", ";
         if(fl_len) //Не будем делать краткий список сильно длинным
-          s_contein += cursor.getString(cursor.getColumnIndex("name"));
-        if(fl_len && s_contein.length() >= MAX_LENGTH_CONTEIN)
+          s_content += cursor.getString(cursor.getColumnIndex("name"));
+        if(fl_len && s_content.length() >= MAX_LENGTH_CONTEIN)
           fl_len = false;
       }
       //Получим описание времени коджа была сделана или на когда запланирована покупка
@@ -215,7 +215,7 @@ MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
         s_date = "завтра в " + y_t_t_format.format(purchase_date_time);
       else
         s_date = date_format.format(purchase_date_time);
-      return new String[]{s_contein, s_date + " на сумму " + Detail.formatmoney(summa)};
+      return new String[]{s_content, s_date + " на сумму " + Detail.formatmoney(sum)};
     }
   }
 }
