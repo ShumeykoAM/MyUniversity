@@ -6,7 +6,7 @@
     <ListView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/accounts_list_accounts"
+            android:id="@+id/purchases_list_list_purchases"
             android:layout_alignWithParentIfMissing="false"
             android:layout_alignParentLeft="true"
             android:headerDividersEnabled="false"/>

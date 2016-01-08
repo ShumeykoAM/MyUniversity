@@ -2,38 +2,48 @@
 <distrib title1="Здесь будем хранить дистрибутивное наполнение файлов БД"
          title2="Если нужно использовать _id родителя для вложенного елемента"
          title3="  то вместо значения поля пишем ИД_родителя">
-    <account name="Семейный" balance="0"></account>
-    <account name="Личный" balance="0"></account>
-
+    <!-- пример древовидной иерархии
     <type_detail name="Расходы" trend="0" _id_account="1">
         <type_detail _paren_type_detail="ИД_родителя" name="Продукты" trend="0" _id_account="1"></type_detail>
     </type_detail>
-    <type_detail name="Получка" trend="1" _id_account="1"></type_detail>
+    -->
 
-    <movement _id_account="1" trend="1"></movement>
-    <movement _id_account="2" trend="0"></movement>
-    <movement _id_account="1" trend="1"></movement>
-    <movement _id_account="2" trend="0"></movement>
-    <movement _id_account="1" trend="1"></movement>
-    <movement _id_account="2" trend="1"></movement>
-    <movement _id_account="1" trend="1"></movement>
-    <movement _id_account="2" trend="0"></movement>
-    <movement _id_account="1" trend="1"></movement>
-    <movement _id_account="2" trend="0"></movement>
-    <movement _id_account="1" trend="0"></movement>
-    <movement _id_account="2" trend="1"></movement>
-    <movement _id_account="1" trend="0"></movement>
-    <movement _id_account="1" trend="0"></movement>
-    <movement _id_account="1" trend="0"></movement>
-    <movement _id_account="1" trend="0"></movement>
-    <movement _id_account="2" trend="0"></movement>
-    <movement _id_account="2" trend="0"></movement>
-    <movement _id_account="1" trend="0"></movement>
-    <movement _id_account="1" trend="1"></movement>
-    <movement _id_account="2" trend="0"></movement>
-    <movement _id_account="1" trend="0"></movement>
-    <movement _id_account="2" trend="0"></movement>
-    <movement _id_account="1" trend="0"></movement>
-    <movement _id_account="2" trend="1"></movement>
-    <movement _id_account="2" trend="1"></movement>
+    <purchase date_time="1451963327972" state="1"></purchase>
+    <!--<purchase date_time="1451963927972" state="0"></purchase>
+    <purchase date_time="1451964327972" state="1"></purchase>-->
+
+    <type name="Хлеб" id_unit="1"></type>
+    <type name="р. пикша" id_unit="2"></type>
+    <type name="молоко" id_unit="3"></type>
+
+    <!--
+    <detail _id_type="0" _id_purchase="3" price="18.5" for_amount_unit="1" for_id_unit="0"
+            amount="2" id_unit="0" cost="37"></detail>
+    -->
+    <detail _id_type="1"
+            _id_purchase="1"
+            price="18.5"
+            for_amount_unit="1"
+            for_id_unit="1"
+            amount="2"
+            id_unit="1">
+    </detail>
+    <detail _id_type="2"
+            _id_purchase="1"
+            price="128"
+            for_amount_unit="1"
+            for_id_unit="2"
+            amount="1.23"
+            id_unit="2">
+    </detail>
+    <detail _id_type="3"
+            _id_purchase="1"
+            for_amount_unit="1"
+            for_id_unit="3"
+            id_unit="3"
+            cost="110">
+    </detail>
+
+
+
 </distrib>

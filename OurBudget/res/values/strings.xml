@@ -12,6 +12,7 @@
     <string name="authentication_err_test_server_connect">Нет соединения с сервером, проверьте соединение с интернетом.</string>
     <string name="authentication_err_test_server_email">Данный email уже занят, введите другой email или авторизируйтесь.</string>
     <string name="authentication_create_profile_success">Профиль успешно создан</string>
+    <string name="purchases_caption">Покупки</string>
     <string name="accounts_caption">Счета</string>
     <string name="accounts_m_authentication">Учетные записи</string>
     <string name="accounts_m_new_account">Новый счет</string>

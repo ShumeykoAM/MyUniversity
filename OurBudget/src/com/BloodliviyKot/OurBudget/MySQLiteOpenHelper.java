@@ -44,7 +44,7 @@ public class MySQLiteOpenHelper
       {
         String err = e.getMessage();
       }
-    //fillDistr(db);
+    fillDistr(db);
   }
   //Дистрибутивное наполнение таблиц базы
   private static final String SKIP_TAG = "distrib";
