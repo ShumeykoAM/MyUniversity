@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.*;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
@@ -16,10 +17,13 @@ import com.BloodliviyKot.entitys.Unit;
 
 public class Details
   extends Activity
+  implements AdapterView.OnItemClickListener, DetailDialog.I_DetailDialogResult
 {
   private SQLiteDatabase db;
   private long account_id;
   private ListView list_details;
+  private Cursor cursor;
+  private DetailDialog detailDialog;
 
   //Создание активности
   @Override
@@ -29,6 +33,7 @@ public class Details
     setContentView(R.layout.details);
 
     list_details = (ListView)findViewById(R.id.details_list_details);
+    list_details.setOnItemClickListener(this);
 
     //Читаем параметры переданные из родительской активности
     Bundle extras = getIntent().getExtras();
@@ -38,12 +43,11 @@ public class Details
     db = (new MySQLiteOpenHelper(getApplicationContext())).getWritableDatabase();
     //Cursor обязательно должен содержать _id иначе SimpleCursorAdapter не заработает
 
-//!!! Вот тут переделать запрос
     String query =
       "SELECT detail._id, detail.price, detail.for_amount_unit, detail.for_id_unit, " +
       "detail.amount, detail.id_unit, detail.cost, type.name FROM detail, type " +
       "WHERE detail._id_purchase = ? AND type._id=detail._id_type;";
-    Cursor cursor = db.rawQuery(query, new String[]{Long.toString(account_id)});
+    cursor = db.rawQuery(query, new String[]{Long.toString(account_id)});
     int to[] = {R.id.details_item_type, R.id.details_item_price,
                 R.id.details_item_amount, R.id.details_item_cost};
     DetailsAdapter list_adapter = new DetailsAdapter(this, R.layout.details_item, cursor,
@@ -51,6 +55,29 @@ public class Details
     list_details.setAdapter(list_adapter);
 
     registerForContextMenu(list_details);
+    detailDialog = new DetailDialog(this);
+  }
+
+  @Override //Выбрали деталь, просмотрим ее характеристики
+  public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+  {
+    cursor.requery();
+    Detail detail = new Detail(cursor);
+
+
+    detailDialog.use(getFragmentManager(), "d1", detail);
+
+    int fdfdf=0;
+    fdfdf++;
+    //Intent intent = new Intent(this, Details.class);
+    //intent.putExtra(getString(R.string.intent_purchases_id), id);
+    //startActivityForResult(intent, R.layout.details); //Запуск активности с onActivityResult
+  }
+  @Override
+  public void onResult(DetailDialog.RESULT code)
+  {
+    int fdfd=0;
+    fdfd++;
   }
 
   //Создаем меню
@@ -98,7 +125,6 @@ public class Details
     }
     return super.onContextItemSelected(item);
   }
-
 
   //Переопределим SimpleCursorAdapter что бы форматировать данные из базы нужным образом
   private static class DetailsAdapter
