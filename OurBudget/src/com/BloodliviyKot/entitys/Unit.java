@@ -27,10 +27,11 @@ public class Unit
   {
     final int COUNT_UNITS = 1 + 11;
     int id = 1/*0 не используем*/, g_id;
-    g_id = id;
     units = new Unit[COUNT_UNITS];
     //штуки
+    g_id = id;
     units[id] = new Unit(id, "шт", 1, 0); id++;
+    units[id] = new Unit(id, "дес.", 1, 0); id++; //десяток
     //граммы
     g_id = id;
     units[id] = new Unit(id, "г", 1, 0); id++;
@@ -39,19 +40,16 @@ public class Unit
     g_id = id;
     units[id] = new Unit(id, "л", 1, 0); id++;
     units[id] = new Unit(id, "мл", 1000, g_id); id++;
-    //десяток
-    g_id = id;
-    units[id] = new Unit(id, "дес.", 1, 0); id++;
     //метры
     g_id = id;
     units[id] = new Unit(id, "м", 1, 0); id++;
     units[id] = new Unit(id, "см", 0.1, g_id); id++;
-    //кубометры
-    g_id = id;
-    units[id] = new Unit(id, "куб.м", 1, 0); id++;
     //Киловаты в час
     g_id = id;
     units[id] = new Unit(id, "КВт.ч", 1, 0); id++;
+    //кубометры
+    g_id = id;
+    units[id] = new Unit(id, "куб.м", 1, 0); id++;
     //тонны
     g_id = id;
     units[id] = new Unit(id, "т", 1, 0); id++;
