@@ -52,7 +52,7 @@ public abstract class Request
     return true;
   }
   //+//Получить ответ от асинхронного запроса
-  public final Answer GetAnswerFromPost() throws E_MESSID.MExeption
+  protected Answer GetAnswerFromPost() throws E_MESSID.MExeption
   {
     if(answer == null && post_thread == null)
       throw new E_MESSID.MExeption(E_MESSID.MExeption.ERR.PROBLEM_WITH_NET);
@@ -70,7 +70,7 @@ public abstract class Request
     return answer;
   }
   //+//Отправляем синхронный запрос на сервак и получаем ответ (только не в главном потоке)
-  public final Answer Send(String Url) throws E_MESSID.MExeption
+  protected Answer Send(String Url) throws E_MESSID.MExeption
   {
     Answer answer = null;
     List<NameValuePair> POST_Parm = new ArrayList<NameValuePair>(2);
@@ -132,6 +132,16 @@ public abstract class Request
         throw new E_MESSID.MExeption(E_MESSID.MExeption.ERR.UNKNOWN);
       }
     }
+    @Override
+    public Answer.AnswerTestConnectServer GetAnswerFromPost() throws E_MESSID.MExeption
+    {
+      return (Answer.AnswerTestConnectServer)super.GetAnswerFromPost();
+    }
+    @Override
+    public Answer.AnswerTestConnectServer Send(String Url) throws E_MESSID.MExeption
+    {
+      return (Answer.AnswerTestConnectServer)super.Send(Url);
+    }
   }
   public static class RequestCreateProfile
     extends Request
@@ -156,6 +166,16 @@ public abstract class Request
         e.printStackTrace();
         throw new E_MESSID.MExeption(E_MESSID.MExeption.ERR.UNKNOWN);
       }
+    }
+    @Override
+    public Answer.AnswerCreateProfile GetAnswerFromPost() throws E_MESSID.MExeption
+    {
+      return (Answer.AnswerCreateProfile)super.GetAnswerFromPost();
+    }
+    @Override
+    public Answer.AnswerCreateProfile Send(String Url) throws E_MESSID.MExeption
+    {
+      return (Answer.AnswerCreateProfile)super.Send(Url);
     }
   }
 
