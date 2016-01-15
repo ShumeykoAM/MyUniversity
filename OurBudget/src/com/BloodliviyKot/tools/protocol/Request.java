@@ -10,16 +10,20 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**Класс для создания запросов на сервер
  * Нужно реализовать метод ConstructRequest добавляющий данные в JObj
- *   и вызвать метод Post затем GetAnswerFromPost или Send, который вернет ответ
+ *   и вызвать метод post затем getAnswerFromPost или send, который вернет ответ
  */
 public abstract class Request
 {
+  public final int ID;
+  //Для пользователя класса не интересно
+  private Thread post_thread;
+  private Answer answer;
+  protected JSONObject JObj = new JSONObject();
   //+//Отправляем асинхронный запрос на сервак и получаем ответ
-  public final boolean Post(final String Url) throws E_MESSID.MExeption
+  public final boolean post(final String Url) throws E_MESSID.MExeption
   {
     if(post_thread != null)
       return false;
@@ -33,6 +37,7 @@ public abstract class Request
         try
         {
           answer = Answer.AnswerFromString( PP.Post(Url, POST_Parm) );
+          postAnswerHandler(answer);
         }
         catch(IOException e)
         {
@@ -51,8 +56,10 @@ public abstract class Request
     post_thread.start();
     return true;
   }
+  //В наследнике нужно реализовать обработчик ответа от post запроса
+  protected abstract void postAnswerHandler(Answer answer);
   //+//Получить ответ от асинхронного запроса
-  protected Answer GetAnswerFromPost() throws E_MESSID.MExeption
+  protected Answer getAnswerFromPost() throws E_MESSID.MExeption
   {
     if(answer == null && post_thread == null)
       throw new E_MESSID.MExeption(E_MESSID.MExeption.ERR.PROBLEM_WITH_NET);
@@ -70,7 +77,7 @@ public abstract class Request
     return answer;
   }
   //+//Отправляем синхронный запрос на сервак и получаем ответ (только не в главном потоке)
-  protected Answer Send(String Url) throws E_MESSID.MExeption
+  protected Answer send(final String Url) throws E_MESSID.MExeption
   {
     Answer answer = null;
     List<NameValuePair> POST_Parm = new ArrayList<NameValuePair>(2);
@@ -89,7 +96,6 @@ public abstract class Request
   }
   //В своей реализации метода ConstructRequest заполняем данными JObj
   protected abstract void ConstructRequest() throws E_MESSID.MExeption;
-  protected JSONObject JObj = new JSONObject();
   protected Request(int _ID) throws E_MESSID.MExeption
   {
     ID = _ID;
@@ -103,82 +109,6 @@ public abstract class Request
       throw new E_MESSID.MExeption(E_MESSID.MExeption.ERR.UNKNOWN);
     }
   }
-  //Для пользователя класса не интересно
-  private final int ID;
-  private Thread post_thread;
-  private Answer answer;
-
-
-  //Классы запросов ----------------------------------------------------------------
-  public static class RequestTestConnectServer
-    extends Request
-  {
-    public int TestValue;
-    public RequestTestConnectServer() throws E_MESSID.MExeption
-    {
-      super(E_MESSID.TEST_CONNECT_SERVER);
-      ConstructRequest();
-    }
-    @Override
-    protected void ConstructRequest() throws E_MESSID.MExeption
-    {
-      final Random random = new Random();
-      try
-      {
-        JObj.put( "TEST_VALUE", (TestValue = random.nextInt()) );
-      } catch(JSONException e)
-      {
-        e.printStackTrace();
-        throw new E_MESSID.MExeption(E_MESSID.MExeption.ERR.UNKNOWN);
-      }
-    }
-    @Override
-    public Answer.AnswerTestConnectServer GetAnswerFromPost() throws E_MESSID.MExeption
-    {
-      return (Answer.AnswerTestConnectServer)super.GetAnswerFromPost();
-    }
-    @Override
-    public Answer.AnswerTestConnectServer Send(String Url) throws E_MESSID.MExeption
-    {
-      return (Answer.AnswerTestConnectServer)super.Send(Url);
-    }
-  }
-  public static class RequestCreateProfile
-    extends Request
-  {
-    String login, password;
-    public RequestCreateProfile(String _login, String _password) throws E_MESSID.MExeption
-    {
-      super(E_MESSID.CREATE_NEW_PROFILE);
-      login    = _login;
-      password = _password;
-      ConstructRequest();
-    }
-    @Override
-    protected void ConstructRequest() throws E_MESSID.MExeption
-    {
-      try
-      {
-        JObj.put( "LOGIN", login);
-        JObj.put( "PASSWORD", password );
-      } catch(JSONException e)
-      {
-        e.printStackTrace();
-        throw new E_MESSID.MExeption(E_MESSID.MExeption.ERR.UNKNOWN);
-      }
-    }
-    @Override
-    public Answer.AnswerCreateProfile GetAnswerFromPost() throws E_MESSID.MExeption
-    {
-      return (Answer.AnswerCreateProfile)super.GetAnswerFromPost();
-    }
-    @Override
-    public Answer.AnswerCreateProfile Send(String Url) throws E_MESSID.MExeption
-    {
-      return (Answer.AnswerCreateProfile)super.Send(Url);
-    }
-  }
-
 }
 
 

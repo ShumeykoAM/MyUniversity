@@ -8,9 +8,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
-import com.BloodliviyKot.tools.protocol.Answer;
-import com.BloodliviyKot.tools.protocol.E_MESSID;
-import com.BloodliviyKot.tools.protocol.Request;
+import com.BloodliviyKot.tools.protocol.*;
 
 public class AuthenticationCreate
   extends Activity
@@ -71,10 +69,10 @@ public class AuthenticationCreate
     boolean result = false;
     try
     {
-      Request.RequestTestConnectServer request = new Request.RequestTestConnectServer();
-      request.Post("http://192.168.10.108/RequestHandler.php");
+      RequestTestConnectServer request = new RequestTestConnectServer();
+      request.post("http://192.168.10.108/RequestHandler.php");
       Answer.AnswerTestConnectServer answer =
-        (Answer.AnswerTestConnectServer)request.GetAnswerFromPost();
+        (Answer.AnswerTestConnectServer)request.getAnswerFromPost();
       result = request.TestValue == answer.TestValue;
     } catch(E_MESSID.MExeption me)
     {
@@ -87,11 +85,11 @@ public class AuthenticationCreate
     boolean result = false;
     try
     {
-      Request.RequestCreateProfile cp = new Request.RequestCreateProfile(
+      RequestCreateProfile cp = new RequestCreateProfile(
         email.getText().toString(), password.getText().toString());
-      cp.Post("http://192.168.10.108/RequestHandler.php");
+      cp.post("http://192.168.10.108/RequestHandler.php");
       Answer.AnswerCreateProfile answer =
-        (Answer.AnswerCreateProfile)cp.GetAnswerFromPost();
+        (Answer.AnswerCreateProfile)cp.getAnswerFromPost();
       result = answer.isCreated;
     } catch(E_MESSID.MExeption mExeption)
     {

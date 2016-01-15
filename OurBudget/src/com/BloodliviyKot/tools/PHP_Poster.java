@@ -37,7 +37,7 @@ public class PHP_Poster
     POST_Parm.add(new BasicNameValuePair("Логин", "  Спросили логин"));
     String Url = "http://192.168.10.108";
     PHP_Poster PP = new PHP_Poster();
-    String response = PP.Post(Url, POST_Parm);
+    String response = PP.post(Url, POST_Parm);
   */
   {
     //Настраиваем параметры HTTP протокола
