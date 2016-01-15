@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/m_purchases_add"
+          android:showAsAction="always"
+          android:icon="@drawable/ic_add"
+          android:title="@string/purchases_m_add">
+    </item>
+    <item android:id="@+id/m_purchases_user_account"
+          android:icon="@drawable/ic_authentication"
+          android:showAsAction="ifRoom"
+          android:title="@string/purchases_m_user_account">
+    </item>
+    <item android:id="@+id/m_grouping"
+          android:showAsAction="never"
+          android:title="@string/purchases_m_grouping">
+    </item>
+    <item android:id="@+id/m_filter"
+          android:showAsAction="never"
+          android:title="@string/purchases_m_filter">
+    </item>
+    <item android:id="@+id/m_purchases_about"
+          android:showAsAction="never"
+          android:icon="@drawable/ic_about"
+          android:title="@string/purchases_m_about">
+    </item>
+    <item android:id="@+id/m_donate"
+          android:showAsAction="never"
+          android:title="@string/purchases_m_donate">
+    </item>
+
+</menu>

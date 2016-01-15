@@ -1,7 +1,6 @@
 package com.BloodliviyKot.tools.protocol;
 
 
-import com.BloodliviyKot.tools.PHP_Poster;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
@@ -36,8 +35,10 @@ public abstract class Request
         PHP_Poster PP = new PHP_Poster();
         try
         {
-          answer = Answer.AnswerFromString( PP.Post(Url, POST_Parm) );
-          postAnswerHandler(answer);
+          if(ID != E_MESSID.TEST_GOOGLE)
+            answer = Answer.AnswerFromString( PP.Post(Url, POST_Parm) );
+          else
+            answer = Answer.AnswerFromID(E_MESSID.TEST_GOOGLE, PP.Post(Url, POST_Parm));
         }
         catch(IOException e)
         {
@@ -49,6 +50,7 @@ public abstract class Request
           mExeption.printStackTrace();
           answer = null;
         }
+        postAnswerHandler(answer);
         post_thread = null;
       }
     });

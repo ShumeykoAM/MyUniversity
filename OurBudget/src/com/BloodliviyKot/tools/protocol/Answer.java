@@ -32,6 +32,18 @@ public abstract class Answer
     }
     return answer;
   }
+  //Генерируем ответ на основе ID
+  public static Answer AnswerFromID(int ID, String http_answer) throws E_MESSID.MExeption
+  {
+    Answer answer = null;
+    switch(ID)
+    {
+      case E_MESSID.TEST_GOOGLE:
+        answer = new AnswerTestGoogle(ID);
+        break;
+    }
+    return answer;
+  }
 
   protected Answer(int _ID)
   {
@@ -72,6 +84,16 @@ public abstract class Answer
         e.printStackTrace();
         throw new E_MESSID.MExeption(E_MESSID.MExeption.ERR.UNKNOWN);
       }
+    }
+  }
+  //Подклассы ответов -----------------------------------------
+  public static class AnswerTestGoogle
+    extends Answer
+  {
+    public boolean google_access = true;
+    AnswerTestGoogle(int _ID) throws E_MESSID.MExeption
+    {
+      super(_ID);
     }
   }
 

@@ -95,7 +95,7 @@ public class Details
   {
     switch(item.getItemId())
     {
-      case R.id.m_account_new_account:
+      case R.id.m_purchases_add:
         return true;
     }
     return super.onOptionsItemSelected(item);

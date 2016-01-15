@@ -10,12 +10,17 @@ import android.view.*;
 import android.widget.*;
 import com.BloodliviyKot.entitys.Detail;
 import com.BloodliviyKot.entitys.Unit;
+import com.BloodliviyKot.tools.protocol.Answer;
+import com.BloodliviyKot.tools.protocol.E_MESSID;
+import com.BloodliviyKot.tools.protocol.RequestTestConnectServer;
+import com.BloodliviyKot.tools.protocol.RequestTestGoogle;
 
 import java.text.SimpleDateFormat;
 
 public class Purchases
   extends Activity
-  implements AdapterView.OnItemClickListener
+  implements AdapterView.OnItemClickListener, RequestTestConnectServer.I_HandlerTestConnectServer,
+  RequestTestGoogle.I_HandlerTestGoogle
 {
   //Перечислим состояния покупок константами
   public static final int STATE_NONE = -1;   //Такого состояния не существует (не может быть в базе)
@@ -81,20 +86,62 @@ MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
   public boolean onCreateOptionsMenu(Menu menu)
   {
     //Создаем меню из ресурса
-    getMenuInflater().inflate(R.menu.accounts_menu, menu);
+    getMenuInflater().inflate(R.menu.purchases_menu, menu);
     return true;
   }
 
+  RequestTestConnectServer tc;
+  RequestTestGoogle tg;
   //Обрабатываем выбор пункта меню
   @Override
   public boolean onOptionsItemSelected(MenuItem item)
   {
     switch(item.getItemId())
     {
-      case R.id.m_account_new_account:
+      case R.id.m_purchases_add:
+        try
+        {
+          tc = new RequestTestConnectServer();
+          boolean res = tc.postHandler("http://192.168.10.101/RequestHandler.php",this);
+          res = false;
+        } catch(E_MESSID.MExeption mExeption)
+        {
+          mExeption.printStackTrace();
+        }
         return true;
+      case R.id.m_purchases_user_account:
+        try
+        {
+          tg = new RequestTestGoogle();
+          tg.postHandler(E_MESSID.URL_GOOGLE, this);
+        } catch(E_MESSID.MExeption mExeption)
+        {
+          mExeption.printStackTrace();
+        }
+        return true;
+
     }
     return super.onOptionsItemSelected(item);
+  }
+  @Override
+  public void handlerAnswer(Answer.AnswerTestConnectServer answer)
+  {
+    if(answer != null)
+    {
+      boolean result = tc.TestValue == answer.TestValue;
+      int dsd = 9;
+      dsd++;
+    }
+  }
+  @Override
+  public void handlerAnswer(Answer.AnswerTestGoogle answer)
+  {
+    if(answer != null)
+    {
+      boolean result = answer.google_access;
+      int dsd = 9;
+      dsd++;
+    }
   }
 
   //Контекстное меню для элемента списка счетов

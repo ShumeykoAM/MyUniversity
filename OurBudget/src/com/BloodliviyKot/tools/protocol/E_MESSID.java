@@ -4,10 +4,13 @@ package com.BloodliviyKot.tools.protocol;
 public interface E_MESSID
 {
   //0 - не используем ни когда
-  public static final int TEST_CONNECT_SERVER = 1; //Протестировать доступность сервера
-  public static final int CREATE_NEW_PROFILE = 2;  //Создать новый профиль пользователя
+  public static final int TEST_CONNECT_SERVER     = 1; //Протестировать доступность сервера
+  public static final int CREATE_NEW_PROFILE      = 2; //Создать новый профиль пользователя
+  public static final int TEST_GOOGLE             = 3; //Создать новый профиль пользователя
 
 
+  //Адреса
+  public static final String URL_GOOGLE = "https://www.google.ru";
 
   //Исключения ---------------------------------------------------------------------
   public static class MExeption

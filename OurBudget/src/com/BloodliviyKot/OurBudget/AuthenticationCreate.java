@@ -71,8 +71,7 @@ public class AuthenticationCreate
     {
       RequestTestConnectServer request = new RequestTestConnectServer();
       request.post("http://192.168.10.108/RequestHandler.php");
-      Answer.AnswerTestConnectServer answer =
-        (Answer.AnswerTestConnectServer)request.getAnswerFromPost();
+      Answer.AnswerTestConnectServer answer = request.getAnswerFromPost();
       result = request.TestValue == answer.TestValue;
     } catch(E_MESSID.MExeption me)
     {
@@ -88,8 +87,7 @@ public class AuthenticationCreate
       RequestCreateProfile cp = new RequestCreateProfile(
         email.getText().toString(), password.getText().toString());
       cp.post("http://192.168.10.108/RequestHandler.php");
-      Answer.AnswerCreateProfile answer =
-        (Answer.AnswerCreateProfile)cp.getAnswerFromPost();
+      Answer.AnswerCreateProfile answer = cp.getAnswerFromPost();
       result = answer.isCreated;
     } catch(E_MESSID.MExeption mExeption)
     {

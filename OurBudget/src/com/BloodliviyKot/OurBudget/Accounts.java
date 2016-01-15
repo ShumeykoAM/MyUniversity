@@ -58,7 +58,7 @@ MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
   public boolean onCreateOptionsMenu(Menu menu)
   {
     //Создаем меню из ресурса
-    getMenuInflater().inflate(R.menu.accounts_menu, menu);
+    getMenuInflater().inflate(R.menu.purchases_menu, menu);
     return true;
   }
 
@@ -68,7 +68,7 @@ MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
   {
     switch(item.getItemId())
     {
-      case R.id.m_account_new_account:
+      case R.id.m_purchases_add:
         return true;
     }
     return super.onOptionsItemSelected(item);

@@ -16,7 +16,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Details"
-                  android:label="@string/detaile_caption"
+                  android:label="@string/detail_caption"
                   android:icon="@drawable/ic_movement">
         </activity>
 
