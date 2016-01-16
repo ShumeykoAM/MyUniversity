@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+                android:layout_height="match_parent" android:gravity="center_vertical|center"
+              android:orientation="vertical" tools:context=".WRegistration">
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:layout_below="@+id/registration_label_login"
+            android:layout_centerHorizontal="true" android:id="@+id/registration_login_linearLayout2"
+            android:gravity="center_vertical" android:layout_gravity="center_horizontal">
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/user_account_login"
+            android:id="@+id/registration_label_login" android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" android:layout_weight="1"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/user_account_password"
+            android:id="@+id/registration_label_password" android:layout_below="@+id/registration_login_linearLayout"
+            android:layout_centerHorizontal="true" android:layout_weight="1"/>
+    </LinearLayout>
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:layout_below="@+id/registration_label_login"
+            android:layout_centerHorizontal="true" android:id="@+id/registration_login_linearLayout3"
+            android:gravity="center_vertical">
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:layout_below="@+id/registration_label_login"
+            android:layout_centerHorizontal="true" android:id="@+id/registration_login_linearLayout"
+            android:gravity="center_vertical" android:layout_weight="1">
+        <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/registration_edit_login"/>
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_illegal"
+                android:id="@+id/registration_login_pic"/>
+    </LinearLayout>
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:layout_below="@+id/registration_label_password"
+            android:layout_centerHorizontal="true" android:gravity="center_vertical"
+            android:id="@+id/registration_password_linearLayout" android:layout_weight="1">
+        <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:id="@+id/registration_edit_password" android:layout_weight="1"
+                android:inputType="textVisiblePassword"/>
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_illegal"
+                android:id="@+id/registration_password_pic"/>
+    </LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/registration_registration"
+            android:id="@+id/registration_button_registration" android:layout_below="@+id/registration_password_linearLayout"
+            android:layout_centerHorizontal="true"/>
+</LinearLayout>
