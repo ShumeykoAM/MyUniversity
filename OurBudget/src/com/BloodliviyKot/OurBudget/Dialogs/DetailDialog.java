@@ -1,4 +1,4 @@
-package com.BloodliviyKot.OurBudget;
+package com.BloodliviyKot.OurBudget.Dialogs;
 
 import android.app.DialogFragment;
 import android.app.FragmentManager;
@@ -8,7 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import com.BloodliviyKot.entitys.Detail;
+import com.BloodliviyKot.OurBudget.R;
+import com.BloodliviyKot.tools.DataBase.entitys.Detail;
 
 
 public class DetailDialog

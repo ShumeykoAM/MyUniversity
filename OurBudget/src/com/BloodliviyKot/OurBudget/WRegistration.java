@@ -8,6 +8,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
 
 public class WRegistration
   extends Activity

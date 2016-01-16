@@ -8,8 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.*;
-import com.BloodliviyKot.entitys.Detail;
-import com.BloodliviyKot.entitys.Unit;
+import com.BloodliviyKot.tools.DataBase.entitys.Detail;
+import com.BloodliviyKot.tools.DataBase.entitys.Unit;
+import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
 
 import java.text.SimpleDateFormat;
 
@@ -110,7 +111,7 @@ MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
     if(v == list_purchases)
     {
       MenuInflater inflater = getMenuInflater();
-      inflater.inflate(R.menu.accounts_context_list_accounts, menu);
+      inflater.inflate(R.menu.purchases_context_list_purchases, menu);
 
       //Скроем не нужные на данный момент пункты меню
       //MenuItem shareMenuItem = menu.findItem(R.id.m_account_context_list_acc_co_owners);

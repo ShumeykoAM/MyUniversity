@@ -1,4 +1,4 @@
-package com.BloodliviyKot.tools;
+package com.BloodliviyKot.tools.DataBase;
 
 import android.content.res.Resources;
 

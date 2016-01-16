@@ -1,25 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Наш бюджет</string>
-    <string name="authentication_create_email_help">Укажите адрес своей электронной почты</string>
-    <string name="authentication_create_password_help">Укажите пароль</string>
-    <string name="authentication_create_password_help2">Подтвердите пароль</string>
-    <string name="authentication_create_remember_password_help">Запомнить пароль</string>
-    <string name="authentication_create_text_button_create">Создать учетную запись</string>
-    <string name="authentication_err_mail">Введите существующий @ адрес, он нужен для восстановления пароля.</string>
-    <string name="authentication_err_pass_diff">Пароли не совпадают</string>
-    <string name="authentication_err_pass_L6">Пароль должен состоять минимум из шести символов.</string>
-    <string name="authentication_err_test_server_connect">Нет соединения с сервером, проверьте соединение с интернетом.</string>
-    <string name="authentication_err_test_server_email">Данный email уже занят, введите другой email или авторизируйтесь.</string>
-    <string name="authentication_create_profile_success">Профиль успешно создан</string>
 
     <string name="purchases_caption">Покупки</string>
     <string name="purchases_m_add">Добавить</string>
     <string name="purchases_m_user_account">Учетная запись</string>
     <string name="purchases_m_grouping">Группировка</string>
     <string name="purchases_m_filter">Фильтр</string>
+    <string name="purchases_m_type">Типы</string>
     <string name="purchases_m_about">О программе</string>
     <string name="purchases_m_donate">Пожертвовать</string>
+
+    <string name="purchases_mc_execute">Исполнить</string>
+    <string name="purchases_mc_plan">Планирование</string>
+    <string name="purchases_mc_duplicate">Дублировать</string>
+    <string name="purchases_mc_delete">Удалить</string>
 
     <string name="user_account_caption">Учетная запись</string>
     <string name="user_account_login">Логин</string>
@@ -31,14 +26,6 @@
 
     <string name="registration_caption">Регистрация</string>
     <string name="registration_registration">Зарегистрировать</string>
-
-    <string name="accounts_caption">Счета</string>
-    <string name="accounts_m_context_list_acc_attach_to_authentication">Задать учетную запись</string>
-    <string name="accounts_m_context_list_acc_invite_owner_to_account">Пригласить совладельца</string>
-    <string name="accounts_m_context_list_acc_type_datail">Типы деталей</string>
-    <string name="accounts_m_context_list_acc_co_owners">Совладельцы счета</string>
-    <string name="accounts_m_context_list_acc_del_co_ovner">Удалить совладельца</string>
-    <string name="accounts_m_context_list_acc_del_account">Удалить счет</string>
 
     <string name="detail_caption">Подробности</string>
     <string name="movement_m_new_movement">Добавить движение</string>

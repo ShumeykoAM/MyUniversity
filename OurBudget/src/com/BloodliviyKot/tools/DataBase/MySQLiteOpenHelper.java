@@ -1,4 +1,4 @@
-package com.BloodliviyKot.OurBudget;
+package com.BloodliviyKot.tools.DataBase;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,7 +6,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
-import com.BloodliviyKot.tools.SQLReader;
+import com.BloodliviyKot.OurBudget.R;
+import com.BloodliviyKot.tools.DataBase.SQLReader;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 

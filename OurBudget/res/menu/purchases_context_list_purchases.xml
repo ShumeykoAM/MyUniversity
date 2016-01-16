@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/m_purchases_c_execute"
+          android:title="@string/purchases_mc_execute">
+    </item>
+    <item android:id="@+id/m_purchases_c_plan"
+          android:title="@string/purchases_mc_plan">
+    </item>
+    <item android:id="@+id/m_purchases_c_duplicate"
+          android:title="@string/purchases_mc_duplicate">
+    </item>
+    <item android:id="@+id/m_purchases_c_delete"
+          android:title="@string/purchases_mc_delete">
+    </item>
+</menu>

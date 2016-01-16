@@ -12,8 +12,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
-import com.BloodliviyKot.entitys.Detail;
-import com.BloodliviyKot.entitys.Unit;
+import com.BloodliviyKot.OurBudget.Dialogs.DetailDialog;
+import com.BloodliviyKot.tools.DataBase.entitys.Detail;
+import com.BloodliviyKot.tools.DataBase.entitys.Unit;
+import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
 
 public class WDetails
   extends Activity
@@ -85,7 +87,7 @@ public class WDetails
   public boolean onCreateOptionsMenu(Menu menu)
   {
     //Создаем меню из ресурса
-    getMenuInflater().inflate(R.menu.movements_menu, menu);
+    getMenuInflater().inflate(R.menu.details_menu, menu);
     return true;
   }
 
@@ -109,7 +111,7 @@ public class WDetails
     if(v == list_details)
     {
       MenuInflater inflater = getMenuInflater();
-      inflater.inflate(R.menu.movements_context_list_movements, menu);
+      inflater.inflate(R.menu.details_context_list_details, menu);
 
     }
   }
