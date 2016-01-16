@@ -33,6 +33,9 @@ public class WRegistration
     et_password.addTextChangedListener(new TextChangeHandler(et_password));
     b_registration.setOnClickListener(this);
 
+    //b_registration.setClickable(false);
+    //b_registration.setVisibility(View.INVISIBLE);
+
     //Читаем параметры переданные из родительской активности
     Bundle extras = getIntent().getExtras();
     et_login.setText(extras.getString(getString(R.string.intent_login)));
@@ -71,6 +74,9 @@ public class WRegistration
       {
         //Проверяем допустимость логина
 
+        //b_registration.setClickable(false);
+        //b_registration.setVisibility(View.VISIBLE);
+        //Либо асерт кидать о недопустимости
       }
       else if(view == et_password)
       {
