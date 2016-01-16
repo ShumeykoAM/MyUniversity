@@ -17,7 +17,7 @@
         </activity>
         <activity android:name=".WDetails"
                   android:label="@string/detail_caption"
-                  android:icon="@drawable/ic_movement">
+                  android:icon="@drawable/ic_pencil">
         </activity>
         <activity android:name=".WUserAccount"
                   android:label="@string/user_account_caption"
@@ -29,9 +29,6 @@
         </activity>
 
 
-        <activity android:name=".AuthenticationCreate"
-                  android:theme="@android:style/Theme.NoTitleBar">
-        </activity>
         <!--
         <service
             android:enabled="true"

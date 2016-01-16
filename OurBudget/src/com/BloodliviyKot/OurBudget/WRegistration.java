@@ -38,8 +38,8 @@ public class WRegistration
 
     //Читаем параметры переданные из родительской активности
     Bundle extras = getIntent().getExtras();
-    et_login.setText(extras.getString(getString(R.string.intent_login)));
-    et_password.setText(extras.getString(getString(R.string.intent_password)));
+    et_login.setText(extras.getCharSequence(getString(R.string.intent_login)));
+    et_password.setText(extras.getCharSequence(getString(R.string.intent_password)));
 
     //Создаем помощник управления БД
     db = (new MySQLiteOpenHelper(getApplicationContext())).getWritableDatabase();
