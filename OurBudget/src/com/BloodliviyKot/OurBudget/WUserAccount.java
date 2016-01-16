@@ -2,6 +2,7 @@ package com.BloodliviyKot.OurBudget;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -10,15 +11,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.EditText;
 
 public class WUserAccount
   extends Activity
   implements View.OnClickListener
 {
   private SQLiteDatabase db;
-  private TextView tv_user_login;
-  private TextView tv_user_password;
+  private EditText et_user_login;
+  private EditText et_user_password;
   private Button b_user_enter;
 
   //Создание активности
@@ -28,9 +29,9 @@ public class WUserAccount
     super.onCreate(savedInstanceState);
     setContentView(R.layout.user_account);
 
-    tv_user_login    = (TextView)findViewById(R.id.user_account_login);
-    tv_user_password = (TextView)findViewById(R.id.user_account_password);
-    b_user_enter     = (Button)  findViewById(R.id.user_account_enter);
+    et_user_login = (EditText)findViewById(R.id.user_account_login);
+    et_user_password = (EditText)findViewById(R.id.user_account_password);
+    b_user_enter     = (Button)  findViewById(R.id.user_account_button_enter);
 
     b_user_enter.setOnClickListener(this);
 
@@ -76,7 +77,10 @@ public class WUserAccount
     switch(item.getItemId())
     {
       case R.id.m_user_account_registration:
-
+        Intent intent = new Intent(this, WRegistration.class);
+        intent.putExtra(getString(R.string.intent_login   ), et_user_login.getText());
+        intent.putExtra(getString(R.string.intent_password), et_user_password.getText());
+        startActivityForResult(intent, R.layout.registration); //Запуск активности с onActivityResult
         return true;
       case R.id.m_user_invite_member:
 
@@ -87,6 +91,14 @@ public class WUserAccount
     }
     return super.onOptionsItemSelected(item);
   }
-
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data)
+  {
+    if(requestCode == R.layout.registration)
+    {
+      int fdfdfd = 4;
+      fdfdfd++;
+    }
+  }
 
 }

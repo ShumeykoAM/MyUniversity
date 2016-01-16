@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.BloodliviyKot.entitys.Detail;
 import com.BloodliviyKot.entitys.Unit;
 
-public class Details
+public class WDetails
   extends Activity
   implements AdapterView.OnItemClickListener, DetailDialog.I_DetailDialogResult
 {

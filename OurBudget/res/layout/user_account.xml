@@ -1,30 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent" android:gravity="center_vertical|center"
               android:orientation="vertical">
-
-    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-              android:text="@string/user_account_login" android:id="@+id/textView"
-            />
+    <TextView
+            android:id="@+id/user_account_label_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/user_account_login"
+            android:layout_centerHorizontal="true"/>
     <EditText
+            android:id="@+id/user_account_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:ems="10"
-            android:id="@+id/user_account_login"/>
-    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-              android:text="@string/user_account_password" android:id="@+id/textView2"
-              android:layout_gravity="center_horizontal"/>
+            android:layout_below="@+id/user_account_label_login"
+            android:layout_alignParentLeft="true"/>
+    <TextView
+            android:id="@+id/user_account_label_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/user_account_password"
+            android:layout_gravity="center_horizontal"
+            android:layout_below="@+id/user_account_login"
+            android:layout_centerHorizontal="true"/>
     <EditText
+            android:id="@+id/user_account_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textVisiblePassword"
             android:ems="10"
-            android:id="@+id/user_account_password" android:layout_gravity="center_horizontal"/>
+            android:layout_below="@+id/user_account_label_password"
+            android:layout_gravity="center_horizontal"/>
     <Button
+            android:id="@+id/user_account_button_enter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/user_account_enter"
-            android:id="@+id/user_account_enter" android:layout_gravity="center_horizontal"/>
-</LinearLayout>
+            android:layout_below="@+id/user_account_password"
+            android:layout_gravity="center_horizontal"/>
+</RelativeLayout>

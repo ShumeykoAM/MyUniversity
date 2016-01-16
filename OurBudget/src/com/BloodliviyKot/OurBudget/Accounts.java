@@ -48,7 +48,7 @@ MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
   @Override //Нажали редактировать клиента
   public void onItemClick(AdapterView<?> parent, View view, int position, long id)
   {
-    Intent intent = new Intent(this, Details.class);
+    Intent intent = new Intent(this, WDetails.class);
     intent.putExtra(getString(R.string.intent_purchases_id), id);
     startActivityForResult(intent, R.layout.details); //Запуск активности с onActivityResult
   }

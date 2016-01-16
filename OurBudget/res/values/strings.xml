@@ -23,12 +23,14 @@
 
     <string name="user_account_caption">Учетная запись</string>
     <string name="user_account_login">Логин</string>
-    <string name="user_account_password">пароль</string>
+    <string name="user_account_password">Пароль</string>
     <string name="user_account_enter">Войти</string>
     <string name="user_account_m_registration">Регистрация</string>
     <string name="user_account_m_invite_member">Пригласить пользователя</string>
     <string name="user_account_m_become_member">Присоединиться</string>
 
+    <string name="registration_caption">Регистрация</string>
+    <string name="registration_registration">Зарегистрировать</string>
 
     <string name="accounts_caption">Счета</string>
     <string name="accounts_m_context_list_acc_attach_to_authentication">Задать учетную запись</string>
@@ -45,6 +47,8 @@
     <string name="common_currency_small">к.</string>
 
     <string name="intent_purchases_id">intent_purchases_id</string>
+    <string name="intent_login">intent_login</string>
+    <string name="intent_password">intent_password</string>
 
 
 </resources>

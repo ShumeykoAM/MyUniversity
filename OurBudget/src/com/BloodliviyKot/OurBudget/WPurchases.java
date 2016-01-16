@@ -13,7 +13,7 @@ import com.BloodliviyKot.entitys.Unit;
 
 import java.text.SimpleDateFormat;
 
-public class Purchases
+public class WPurchases
   extends Activity
   implements AdapterView.OnItemClickListener
 {
@@ -71,7 +71,7 @@ MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
   @Override //Выбрали покупку, перейдем в ее детали
   public void onItemClick(AdapterView<?> parent, View view, int position, long id)
   {
-    Intent intent = new Intent(this, Details.class);
+    Intent intent = new Intent(this, WDetails.class);
     intent.putExtra(getString(R.string.intent_purchases_id), id);
     startActivityForResult(intent, R.layout.details); //Запуск активности с onActivityResult
   }
@@ -156,10 +156,10 @@ MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
       //ИД Иконки состояния
       switch(state)
       {
-        case Purchases.STATE_PLAN:
+        case WPurchases.STATE_PLAN:
           id_state_icon = R.drawable.ic_exclamation;
           break;
-        case Purchases.STATE_EXECUTE:
+        case WPurchases.STATE_EXECUTE:
           id_state_icon = R.drawable.ic_tick;
           break;
         default:

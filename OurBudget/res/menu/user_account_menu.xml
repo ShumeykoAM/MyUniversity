@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/m_user_account_registration"
           android:showAsAction="ifRoom"
-          android:icon="@drawable/ic_add"
+          android:icon="@drawable/ic_add_authentication"
           android:title="@string/user_account_m_registration">
     </item>
     <item android:id="@+id/m_user_invite_member"

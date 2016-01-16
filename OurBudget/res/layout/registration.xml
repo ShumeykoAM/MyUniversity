@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" android:gravity="center_vertical|center">
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/user_account_login"
+            android:id="@+id/registration_label_login" android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"/>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:layout_below="@+id/registration_label_login"
+            android:layout_centerHorizontal="true" android:id="@+id/registration_login_linearLayout"
+            android:gravity="center_vertical">
+        <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/registration_edit_login" android:layout_weight="1.00"/>
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_launcher"
+                android:id="@+id/registration_login_pic"/>
+    </LinearLayout>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/user_account_password"
+            android:id="@+id/registration_label_password" android:layout_below="@+id/registration_login_linearLayout"
+            android:layout_centerHorizontal="true"/>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:layout_below="@+id/registration_label_password"
+            android:layout_centerHorizontal="true" android:gravity="center_vertical"
+            android:id="@+id/registration_password_linearLayout">
+        <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:id="@+id/registration_edit_password" android:layout_weight="1"
+                android:inputType="textVisiblePassword"/>
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_launcher"
+                android:id="@+id/registration_password_pic"/>
+    </LinearLayout>
+    <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/registration_registration"
+            android:id="@+id/registration_button_registration" android:layout_below="@+id/registration_password_linearLayout"
+            android:layout_centerHorizontal="true"/>
+</RelativeLayout>
