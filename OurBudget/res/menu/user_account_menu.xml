@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/m_user_account_registration"
+          android:showAsAction="ifRoom"
+          android:icon="@drawable/ic_add"
+          android:title="@string/user_account_m_registration">
+    </item>
+    <item android:id="@+id/m_user_invite_member"
+          android:showAsAction="ifRoom"
+          android:title="@string/user_account_m_invite_member">
+    </item>
+    <item android:id="@+id/m_user_become_member"
+          android:showAsAction="ifRoom"
+          android:title="@string/user_account_m_become_member">
+    </item>
+</menu>

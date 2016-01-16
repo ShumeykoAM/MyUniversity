@@ -19,6 +19,11 @@
                   android:label="@string/detail_caption"
                   android:icon="@drawable/ic_movement">
         </activity>
+        <activity android:name=".WUserAccount"
+                  android:label="@string/user_account_caption"
+                  android:icon="@drawable/ic_authentication">
+        </activity>
+
 
         <activity android:name=".AuthenticationCreate"
                   android:theme="@android:style/Theme.NoTitleBar">

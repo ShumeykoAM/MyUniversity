@@ -12,6 +12,7 @@
     <string name="authentication_err_test_server_connect">Нет соединения с сервером, проверьте соединение с интернетом.</string>
     <string name="authentication_err_test_server_email">Данный email уже занят, введите другой email или авторизируйтесь.</string>
     <string name="authentication_create_profile_success">Профиль успешно создан</string>
+
     <string name="purchases_caption">Покупки</string>
     <string name="purchases_m_add">Добавить</string>
     <string name="purchases_m_user_account">Учетная запись</string>
@@ -19,6 +20,14 @@
     <string name="purchases_m_filter">Фильтр</string>
     <string name="purchases_m_about">О программе</string>
     <string name="purchases_m_donate">Пожертвовать</string>
+
+    <string name="user_account_caption">Учетная запись</string>
+    <string name="user_account_login">Логин</string>
+    <string name="user_account_password">пароль</string>
+    <string name="user_account_enter">Войти</string>
+    <string name="user_account_m_registration">Регистрация</string>
+    <string name="user_account_m_invite_member">Пригласить пользователя</string>
+    <string name="user_account_m_become_member">Присоединиться</string>
 
 
     <string name="accounts_caption">Счета</string>
@@ -36,5 +45,6 @@
     <string name="common_currency_small">к.</string>
 
     <string name="intent_purchases_id">intent_purchases_id</string>
+
 
 </resources>
