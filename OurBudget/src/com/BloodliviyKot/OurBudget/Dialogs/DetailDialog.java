@@ -37,7 +37,7 @@ public class DetailDialog
     //getDialog().setTitle("Title!");
     getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
     View v = inflater.inflate(R.layout.detail_dialog, null);
-    v.findViewById(R.id.btnYes).setOnClickListener(this);
+    //v.findViewById(R.id.btnYes).setOnClickListener(this);
     return v;
   }
 
