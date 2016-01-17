@@ -27,6 +27,10 @@
                   android:label="@string/registration_caption"
                   android:icon="@drawable/ic_add_authentication">
         </activity>
+        <activity android:name=".WMarkDetails"
+                  android:label="@string/mark_details_caption"
+                  android:icon="@drawable/ic_g_tick">
+        </activity>
 
 
         <!--

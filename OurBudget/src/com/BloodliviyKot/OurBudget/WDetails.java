@@ -3,6 +3,7 @@ package com.BloodliviyKot.OurBudget;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ public class WDetails
   private SQLiteDatabase db;
   private long account_id;
   private ListView list_details;
+  private TextView status;
   private Cursor cursor;
   private DetailDialog detailDialog;
 
@@ -35,6 +37,7 @@ public class WDetails
     setContentView(R.layout.details);
 
     list_details = (ListView)findViewById(R.id.details_list_details);
+    status = (TextView)findViewById(R.id.details_status);
     list_details.setOnItemClickListener(this);
 
     //Читаем параметры переданные из родительской активности
@@ -97,7 +100,10 @@ public class WDetails
   {
     switch(item.getItemId())
     {
-      case R.id.m_purchases_add:
+      case R.id.m_details_add:
+        Intent intent = new Intent(this, WMarkDetails.class);
+        //intent.putExtra(getString(R.string.intent_purchases_id), id);
+        startActivityForResult(intent, R.layout.mark_details); //Запуск активности с onActivityResult
         return true;
     }
     return super.onOptionsItemSelected(item);

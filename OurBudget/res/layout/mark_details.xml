@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools" android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent" tools:context=".WMarkDetails">
+
+    <SearchView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/mark_details_search"
+            android:layout_gravity="center_horizontal"/>
+    <ListView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/mark_details_list_types"
+            android:layout_below="@+id/mark_details_search"
+            />
+</RelativeLayout>

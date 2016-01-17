@@ -26,7 +26,11 @@
     <string name="registration_caption">Регистрация</string>
     <string name="registration_registration">Зарегистрировать</string>
 
+    <string name="mark_details_caption">Выбрать детали</string>
+    <string name="mark_details_m_add_type">Добавить тип</string>
+
     <string name="details_caption">Подробности</string>
+    <string name="details_status">Итого</string>
     <string name="details_m_add">Добавить</string>
     <string name="details_m_plan">Планирование</string>
     <string name="details_m_execute">Исполнить</string>
