@@ -16,7 +16,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".WDetails"
-                  android:label="@string/detail_caption"
+                  android:label="@string/details_caption"
                   android:icon="@drawable/ic_pencil">
         </activity>
         <activity android:name=".WUserAccount"

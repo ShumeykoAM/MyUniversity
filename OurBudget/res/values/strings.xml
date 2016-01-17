@@ -10,7 +10,6 @@
     <string name="purchases_m_type">Типы</string>
     <string name="purchases_m_about">О программе</string>
     <string name="purchases_m_donate">Пожертвовать</string>
-
     <string name="purchases_mc_execute">Исполнить</string>
     <string name="purchases_mc_plan">Планирование</string>
     <string name="purchases_mc_duplicate">Дублировать</string>
@@ -27,8 +26,12 @@
     <string name="registration_caption">Регистрация</string>
     <string name="registration_registration">Зарегистрировать</string>
 
-    <string name="detail_caption">Подробности</string>
-    <string name="movement_m_new_movement">Добавить движение</string>
+    <string name="details_caption">Подробности</string>
+    <string name="details_m_add">Добавить</string>
+    <string name="details_m_plan">Планирование</string>
+    <string name="details_m_execute">Исполнить</string>
+    <string name="details_mс_delete">Удалить</string>
+
     <string name="movement_m_context_list_mov_delete">Удалить движение</string>
     <string name="common_currency">р.</string>
     <string name="common_currency_small">к.</string>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/m_movement_context_list_mov_delete"
-          android:title="@string/movement_m_context_list_mov_delete">
+    <item android:id="@+id/m_details_c_delete"
+          android:title="@string/details_mс_delete">
     </item>
 
 </menu>

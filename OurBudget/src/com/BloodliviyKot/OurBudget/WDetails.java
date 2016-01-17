@@ -121,7 +121,7 @@ public class WDetails
   {
     switch(item.getItemId())
     {
-      case R.id.m_account_context_list_acc_attach_to_authentication:
+      case R.id.m_details_c_delete:
         return true;
 
     }
