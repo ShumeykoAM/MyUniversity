@@ -5,11 +5,11 @@
           android:icon="@drawable/ic_add_authentication"
           android:title="@string/user_account_m_registration">
     </item>
-    <item android:id="@+id/m_user_invite_member"
+    <item android:id="@+id/m_user_account_invite_co_user"
           android:showAsAction="ifRoom"
           android:title="@string/user_account_m_invite_member">
     </item>
-    <item android:id="@+id/m_user_become_member"
+    <item android:id="@+id/m_user_account_become_co_user"
           android:showAsAction="ifRoom"
           android:title="@string/user_account_m_become_member">
     </item>

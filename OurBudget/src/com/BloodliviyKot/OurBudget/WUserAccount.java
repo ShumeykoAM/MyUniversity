@@ -83,10 +83,10 @@ public class WUserAccount
         intent.putExtra(getString(R.string.intent_password), et_user_password.getText());
         startActivityForResult(intent, R.layout.registration); //Запуск активности с onActivityResult
         return true;
-      case R.id.m_user_invite_member:
+      case R.id.m_user_account_invite_co_user:
 
         return true;
-      case R.id.m_user_become_member:
+      case R.id.m_user_account_become_co_user:
 
         return true;
     }

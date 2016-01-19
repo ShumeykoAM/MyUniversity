@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
 import com.BloodliviyKot.OurBudget.R;
-import com.BloodliviyKot.tools.DataBase.SQLReader;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -44,6 +43,7 @@ public class MySQLiteOpenHelper
       catch(SQLException e)
       {
         String err = e.getMessage();
+        err = "";
       }
     fillDistr(db);
   }
