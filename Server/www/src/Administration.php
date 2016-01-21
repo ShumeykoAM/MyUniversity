@@ -1,7 +1,7 @@
 <?php
   //Администрирование БД
 
-  include 'MySQLOpenHelper.php';
+  include 'tools/MySQLOpenHelper.php';
 
   //
   $DB_Helper = new MySQLOpenHelper();

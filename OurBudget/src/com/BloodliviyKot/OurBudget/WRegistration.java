@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
+import com.BloodliviyKot.tools.protocol.E_MESSID;
+import com.BloodliviyKot.tools.protocol.RequestCreateProfile;
 
 public class WRegistration
   extends Activity
@@ -52,7 +54,17 @@ public class WRegistration
   {
     if(v == b_registration)
     {
-
+      try
+      {
+        RequestCreateProfile rcp = new RequestCreateProfile(et_login.getText().toString(),
+                                                            et_password.getText().toString());
+        rcp.post("http://192.168.10.108/RequestHandler.php");
+        rcp.getAnswerFromPost();
+      }
+      catch(E_MESSID.MExeption mExeption)
+      {
+        mExeption.printStackTrace();
+      }
     }
   }
 

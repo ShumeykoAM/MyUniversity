@@ -1,36 +1,8 @@
 <?php
 
-  include 'MySQLOpenHelper.php';
-
-  interface I_Handler
-  {
-    public function Handling($JOBJ);// :String;
-  }
-
-  //Ответ на запрос теста соединения с сервером
-  class HandlerTestConnectServer
-    implements I_Handler
-  {
-    public function Handling($JOBJ)
-    {
-      //Проверим наличие всех параметров
-      $Test_value = $JOBJ->{'TEST_VALUE'};
-      $result = isset($Test_value);
-      if($result)
-      {
-        //Сгенерируем ответ, вернем тестовое значение которое прислал клиент
-        $arr = array( 'MESSAGE' => E_MESSAGEID\TEST_CONNECT_SERVER, 'TEST_VALUE' => $Test_value );
-        $enc = json_encode($arr);
-        return $enc;
-      }
-      else
-        return "";
-    }
-  }
-
   //Ответ на запрос регистрации нового профиля
   class HandlerCreateNewProfile
-    implements I_Handler
+    implements I_Handler, I_Transaction
   {
     private $link;
 
@@ -40,26 +12,26 @@
       $DB = new MySQLOpenHelper();
       $link = $DB->getLink();
     }
-
+    //Реализуем обработку запроса
     public function Handling($JOBJ)
     {
       //Проверим наличие всех параметров
       $login    = $JOBJ->{'LOGIN'};
       $password = $JOBJ->{'PASSWORD'};
       $result = isset($login) and isset($password);
-      if($result)
-      {
-        global $link; //Такое извращение нужно что бы видеть глобальные переменные
 
+      global $link; //Такое извращение нужно что бы видеть глобальные переменные
+      if($result and ($link != null))
+      {
         $login = $link->real_escape_string($login);
-        $password = md5($password);
+        $hash_password = md5($password);
 
         //Сгенерируем ответ, проверим свободен ли логин, если да то зарегистрируем пользователя
         $result = ($link != null);
         if($result)
         {
           //Попытаемся найти такой логин
-          $command = "SELECT ID_Profile FROM profile WHERE Profile_Mail='".$login."';";
+          $command = "SELECT user_account._id FROM user_account WHERE user_account.login='".$login."';";
           $q_result = $link->query($command);
           if($q_result)
             $result =  ($q_result->num_rows == 0);
@@ -68,9 +40,9 @@
         }
         if($result) //Не нашли такой логин значит можно создать профиль с таким логином
         {
-          $command = "INSERT INTO profile (Profile_Mail, Profile_HASHPassword) ".
-            "VALUES ('".$login."', '".$password."');";
-          $result = $link->query($command);
+          $params = array( "login" => $login, "hash_password" => $hash_password );
+          $transaction = new SQLTransaction($link, $this);
+          $result = $transaction->runTransaction($params);
         }
         $arr = array( 'MESSAGE' => E_MESSAGEID\CREATE_NEW_PROFILE, 'RESULT' => $result );
         $enc = json_encode($arr);
@@ -79,7 +51,20 @@
       else
         return "";
     }
+    //Реализуем функцию обработки транзакции
+    public function trnFunc($params)
+    {
+      global $link;
+      $command = "INSERT INTO user_group () VALUES ();";
+      $result = $link->query($command);
+      if($result)
+      {
+        //UPDATE user_account SET _id_group=2, _id=17 WHERE _id_group=2 AND _id=23;
+        $command = "INSERT INTO user_account (_id_group, _id, login, hash_password)".
+          "  VALUES (LAST_INSERT_ID(), 1,'".$params["login"]."', '".$params["hash_password"]."');";
+        $result = $link->query($command);
+      }
+      return $result;
+    }
   }
-
-
 ?>

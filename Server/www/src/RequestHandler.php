@@ -6,7 +6,15 @@
   session_start();
 
   include 'Common.php';
-  include 'Handlers.php';
+  include 'handlers/Handlers.php';
+
+  include 'tools/MySQLOpenHelper.php'; //Инклюдим здесь
+  include 'tools/SQLTransaction.php';  //  что бы в файлах приинклюденых ниже не инклюдить каждый раз
+
+  include 'handlers/HandlerTestConnectServer.php';
+  include 'handlers/HandlerCreateNewProfile.php';
+
+
 
   class RequestHandler
   {
