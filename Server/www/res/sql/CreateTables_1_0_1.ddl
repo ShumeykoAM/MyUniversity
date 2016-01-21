@@ -1,60 +1,98 @@
-CREATE TABLE Profile
+CREATE TABLE user_group
 (
-  ID_Profile           INT(8) UNSIGNED AUTO_INCREMENT,
-  Profile_mail         VARCHAR(100) NOT NULL,
-  Profile_HashPassword VARCHAR(40) NOT NULL,
-  PRIMARY KEY (ID_Profile)
+  _id                  INT(8) AUTO_INCREMENT,
+  code_for_co_user     INT(8) NULL,
+  timestamp_code       INT(8) NULL,
+  PRIMARY KEY (_id)
 ) AUTO_INCREMENT = 1;
 
-CREATE UNIQUE INDEX XAK1Mail ON Profile
+CREATE UNIQUE INDEX unique_code ON user_group
 (
-  Profile_mail
+  code_for_co_user
 );
 
-CREATE TABLE Account
+CREATE TABLE user_account
 (
-  ID_Account           INT(8) UNSIGNED AUTO_INCREMENT,
-  Balance              DECIMAL(12,2) NOT NULL,
-  PRIMARY KEY (ID_Account)
-) AUTO_INCREMENT = 1;
-
-CREATE TABLE AccessLevel
-(
-  ID_AccessLevel       INT(8) UNSIGNED AUTO_INCREMENT,
-  PRIMARY KEY (ID_AccessLevel)
-) AUTO_INCREMENT = 1;
-
-CREATE TABLE Link
-(
-  ID_Profile           INT(8) UNSIGNED NOT NULL,
-  ID_Account           INT(8) UNSIGNED NOT NULL,
-  ID_AccessLevel       INT(8) UNSIGNED NOT NULL,
-  PRIMARY KEY (ID_Profile,ID_Account),
-  FOREIGN KEY R_1 (ID_Profile) REFERENCES Profile (ID_Profile),
-  FOREIGN KEY R_3 (ID_Account) REFERENCES Account (ID_Account),
-  FOREIGN KEY R_4 (ID_AccessLevel) REFERENCES AccessLevel (ID_AccessLevel)
+  _id                  INT(8) NOT NULL,
+  login                VARCHAR(40) NOT NULL,
+  hash_password        VARCHAR(40) NOT NULL,
+  _id_group            INT(8) NOT NULL,
+  PRIMARY KEY (_id_group,_id),
+  FOREIGN KEY (_id_group) REFERENCES user_group (_id)
 );
 
-CREATE TABLE Movement
+CREATE UNIQUE INDEX unique_login ON user_account
 (
-  ID_Movement          INT(8) UNSIGNED AUTO_INCREMENT,
-  ID_Account           INT(8) UNSIGNED NOT NULL,
-  ID_Submitter         INT(8) UNSIGNED NOT NULL,
-  ID_Execute           INT(8) UNSIGNED NULL,
-  ID_Plan              INT(8) UNSIGNED NULL,
-  PRIMARY KEY (ID_Movement),
-  FOREIGN KEY R_5 (ID_Account) REFERENCES Account (ID_Account),
-  FOREIGN KEY R_6 (ID_Submitter) REFERENCES Profile (ID_Profile),
-  FOREIGN KEY R_7 (ID_Execute) REFERENCES Profile (ID_Profile),
-  FOREIGN KEY R_8 (ID_Plan) REFERENCES Profile (ID_Profile)
-) AUTO_INCREMENT = 1;
+  login
+);
 
-CREATE TABLE Detail
+CREATE TABLE purchase
 (
-  ID_Detail            INT(8) UNSIGNED AUTO_INCREMENT,
-  ID_SubDetail         INT(8) UNSIGNED NULL,
-  ID_Movement          INT(8) UNSIGNED NOT NULL,
-  PRIMARY KEY (ID_Detail),
-  FOREIGN KEY R_9 (ID_Movement) REFERENCES Movement (ID_Movement),
-  FOREIGN KEY R_10 (ID_SubDetail) REFERENCES Detail (ID_Detail)
-) AUTO_INCREMENT = 1;
+  _id                  INT(8) NOT NULL,
+  date_time            INT(8) NOT NULL,
+  state                INT(8) NOT NULL,
+  _id_group            INT(8) NOT NULL,
+  is_delete            INT(8) NOT NULL,
+  PRIMARY KEY (_id_group,_id),
+  FOREIGN KEY (_id_group) REFERENCES user_group (_id)
+);
+
+CREATE TABLE type
+(
+  _id                  INT(8) NOT NULL,
+  name                 VARCHAR(50) NOT NULL,
+  id_unit              INT(8) NOT NULL,
+  _id_group            INT(8) NOT NULL,
+  is_delete            INT(8) NOT NULL,
+  PRIMARY KEY (_id_group,_id),
+  FOREIGN KEY (_id_group) REFERENCES user_group (_id)
+);
+
+CREATE UNIQUE INDEX unique_type ON type
+(
+  _id_group,
+  name
+);
+
+CREATE TABLE detail
+(
+  _id                  INT(8) NOT NULL,
+  _id_group_           INT(8) NOT NULL,
+  _id_purchase         INT(8) NOT NULL,
+  _id_type             INT(8) NOT NULL,
+  price                DOUBLE NULL,
+  for_amount_unit      DOUBLE NOT NULL,
+  for_id_unit          INT(8) NOT NULL,
+  amount               DOUBLE NULL,
+  id_unit              INT(8) NOT NULL,
+  cost                 DOUBLE NULL,
+  is_delete            INT(8) NOT NULL,
+  PRIMARY KEY (_id_group_,_id),
+  FOREIGN KEY (_id_group_, _id_purchase) REFERENCES purchase (_id_group, _id),
+  FOREIGN KEY (_id_group_, _id_type) REFERENCES type (_id_group, _id),
+  FOREIGN KEY (_id_group_) REFERENCES user_group (_id)
+);
+
+CREATE UNIQUE INDEX unique_detail ON detail
+(
+  _id_group_,
+  _id_purchase,
+  _id_type
+);
+
+CREATE TABLE chronological
+(
+  timestamp            INT(8) NULL,
+  table_db             INT(8) NOT NULL,
+  _id_record           INT(8) NOT NULL,
+  operation            INT(8) NOT NULL,
+  _id_group            INT(8) NOT NULL,
+  PRIMARY KEY (_id_group,table_db,_id_record),
+  FOREIGN KEY (_id_group) REFERENCES user_group (_id)
+);
+
+CREATE INDEX duplicate_chronological ON chronological
+(
+  _id_group,
+  timestamp
+);
