@@ -3,13 +3,9 @@ import com.BloodliviyKot.tools.Protocol.Answers.Answer;
 import com.BloodliviyKot.tools.Protocol.Answers.AnswerTestGoogle;
 import com.BloodliviyKot.tools.Protocol.E_MESSID;
 
-import java.util.Random;
-
 public class RequestTestGoogle
   extends Request
 {
-  private final Random random = new Random();
-  public final int TestValue = random.nextInt();
   private I_HandlerTestGoogle i_handlerTestConnectServer;
   public interface I_HandlerTestGoogle
   {

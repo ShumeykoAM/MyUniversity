@@ -26,6 +26,7 @@ public abstract class Request
   protected JSONObject JObj = new JSONObject();
   private static String uri_s[] = new String[3]; //Список адресов с сервером, основной и запасные
   private static String uri = ""; //Рабочий адрес
+  private E_MESSID.MExeption.ERR error = E_MESSID.MExeption.ERR.OK;
   //+//Отправляем асинхронный запрос на сервак и получаем ответ
   public final boolean post() throws E_MESSID.MExeption
   {
@@ -41,17 +42,17 @@ public abstract class Request
         try
         {
           if(ID == E_MESSID.TEST_GOOGLE)
-            answer = Answer.AnswerFromID(E_MESSID.TEST_GOOGLE, PP.Post(uri, POST_Parm));
+            answer = Answer.AnswerFromID(E_MESSID.TEST_GOOGLE, PP.Post(E_MESSID.URL_GOOGLE, POST_Parm));
           else
             answer = Answer.AnswerFromString(PP.Post(uri, POST_Parm));
         }
         catch(IOException e)
         {
-          e.printStackTrace();
+          error = E_MESSID.MExeption.ERR.PROBLEM_WITH_SERVER;
           answer = null;
-        } catch(E_MESSID.MExeption mExeption)
+        } catch(E_MESSID.MExeption _mExeption)
         {
-          mExeption.printStackTrace();
+          error = _mExeption.getError();
           answer = null;
         }
         postAnswerHandler(answer);
@@ -68,7 +69,7 @@ public abstract class Request
   protected Answer getAnswerFromPost() throws E_MESSID.MExeption
   {
     if(answer == null && post_thread == null)
-      throw new E_MESSID.MExeption(E_MESSID.MExeption.ERR.PROBLEM_WITH_NET);
+      throw new E_MESSID.MExeption(error);
     try
     {
       if(post_thread != null)
@@ -76,10 +77,10 @@ public abstract class Request
     } catch(InterruptedException e)
     {
       e.printStackTrace();
-      throw new E_MESSID.MExeption(E_MESSID.MExeption.ERR.PROBLEM_WITH_NET);
+      throw new E_MESSID.MExeption(E_MESSID.MExeption.ERR.UNKNOWN);
     }
     if(answer == null)
-      throw new E_MESSID.MExeption(E_MESSID.MExeption.ERR.PROBLEM_WITH_NET);
+      throw new E_MESSID.MExeption(error);
     return answer;
   }
   //+//Отправляем синхронный запрос на сервак и получаем ответ (только не в главном потоке)
@@ -97,7 +98,7 @@ public abstract class Request
       } catch(IOException e)
       {
         e.printStackTrace();
-        throw new E_MESSID.MExeption(E_MESSID.MExeption.ERR.PROBLEM_WITH_NET);
+        throw new E_MESSID.MExeption(E_MESSID.MExeption.ERR.PROBLEM_WITH_SERVER);
       }
     }
     return answer;

@@ -18,8 +18,9 @@ public interface E_MESSID
   {
     public enum ERR
     {
-      UNKNOWN,          //Неизвестная ошибка
-      PROBLEM_WITH_NET, //Проблемы с интернетом или сервером
+      OK,                   //Ошибок нет
+      UNKNOWN,              //Неизвестная ошибка
+      PROBLEM_WITH_SERVER   //Проблемы с сервером
 
     }
     private ERR error;
