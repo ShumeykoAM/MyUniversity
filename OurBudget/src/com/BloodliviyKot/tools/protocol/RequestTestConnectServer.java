@@ -11,7 +11,7 @@ public class RequestTestConnectServer
   private I_HandlerTestConnectServer i_handlerTestConnectServer;
   public interface I_HandlerTestConnectServer
   {
-    void handlerAnswer(Answer.AnswerTestConnectServer answer);
+    void handlerAnswer(AnswerTestConnectServer answer);
   }
 
   public RequestTestConnectServer() throws E_MESSID.MExeption
@@ -32,20 +32,20 @@ public class RequestTestConnectServer
     }
   }
   @Override
-  public Answer.AnswerTestConnectServer getAnswerFromPost() throws E_MESSID.MExeption
+  public AnswerTestConnectServer getAnswerFromPost() throws E_MESSID.MExeption
   {
-    return (Answer.AnswerTestConnectServer)super.getAnswerFromPost();
+    return (AnswerTestConnectServer)super.getAnswerFromPost();
   }
   @Override
-  public Answer.AnswerTestConnectServer send() throws E_MESSID.MExeption
+  public AnswerTestConnectServer send() throws E_MESSID.MExeption
   {
-    return (Answer.AnswerTestConnectServer)super.send();
+    return (AnswerTestConnectServer)super.send();
   }
   @Override
   protected void postAnswerHandler(Answer answer)
   {
     if(i_handlerTestConnectServer != null)
-      i_handlerTestConnectServer.handlerAnswer((Answer.AnswerTestConnectServer)answer);
+      i_handlerTestConnectServer.handlerAnswer((AnswerTestConnectServer)answer);
   }
   public boolean postHandler(I_HandlerTestConnectServer i_handler) throws E_MESSID.MExeption
   {

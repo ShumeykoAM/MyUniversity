@@ -9,7 +9,7 @@ public class RequestCreateProfile
   private I_HandlerCreateProfile i_handlerCreateProfile;
   public interface I_HandlerCreateProfile
   {
-    void handlerAnswer(Answer.AnswerCreateProfile answer);
+    void handlerAnswer(AnswerCreateProfile answer);
   }
 
   public RequestCreateProfile(String _login, String _password) throws E_MESSID.MExeption
@@ -33,20 +33,20 @@ public class RequestCreateProfile
     }
   }
   @Override
-  public Answer.AnswerCreateProfile getAnswerFromPost() throws E_MESSID.MExeption
+  public AnswerCreateProfile getAnswerFromPost() throws E_MESSID.MExeption
   {
-    return (Answer.AnswerCreateProfile)super.getAnswerFromPost();
+    return (AnswerCreateProfile)super.getAnswerFromPost();
   }
   @Override
-  public Answer.AnswerCreateProfile send() throws E_MESSID.MExeption
+  public AnswerCreateProfile send() throws E_MESSID.MExeption
   {
-    return (Answer.AnswerCreateProfile)super.send();
+    return (AnswerCreateProfile)super.send();
   }
   @Override
   protected void postAnswerHandler(Answer answer)
   {
     if(i_handlerCreateProfile != null)
-      i_handlerCreateProfile.handlerAnswer((Answer.AnswerCreateProfile)answer);
+      i_handlerCreateProfile.handlerAnswer((AnswerCreateProfile)answer);
   }
   public boolean postHandler(I_HandlerCreateProfile i_handler) throws E_MESSID.MExeption
   {

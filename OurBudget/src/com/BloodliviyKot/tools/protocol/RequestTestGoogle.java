@@ -9,7 +9,7 @@ public class RequestTestGoogle
   private I_HandlerTestGoogle i_handlerTestConnectServer;
   public interface I_HandlerTestGoogle
   {
-    void handlerAnswer(Answer.AnswerTestGoogle answer);
+    void handlerAnswer(AnswerTestGoogle answer);
   }
 
   public RequestTestGoogle() throws E_MESSID.MExeption
@@ -19,20 +19,20 @@ public class RequestTestGoogle
   @Override
   protected void ConstructRequest() throws E_MESSID.MExeption{}
   @Override
-  public Answer.AnswerTestGoogle getAnswerFromPost() throws E_MESSID.MExeption
+  public AnswerTestGoogle getAnswerFromPost() throws E_MESSID.MExeption
   {
-    return (Answer.AnswerTestGoogle)super.getAnswerFromPost();
+    return (AnswerTestGoogle)super.getAnswerFromPost();
   }
   @Override
-  public Answer.AnswerTestGoogle send() throws E_MESSID.MExeption
+  public AnswerTestGoogle send() throws E_MESSID.MExeption
   {
-    return (Answer.AnswerTestGoogle)super.send();
+    return (AnswerTestGoogle)super.send();
   }
   @Override
   protected void postAnswerHandler(Answer answer)
   {
     if(i_handlerTestConnectServer != null)
-      i_handlerTestConnectServer.handlerAnswer((Answer.AnswerTestGoogle)answer);
+      i_handlerTestConnectServer.handlerAnswer((AnswerTestGoogle)answer);
   }
   public boolean postHandler(I_HandlerTestGoogle i_handler) throws E_MESSID.MExeption
   {
