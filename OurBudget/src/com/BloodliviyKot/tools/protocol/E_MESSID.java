@@ -1,4 +1,4 @@
-package com.BloodliviyKot.tools.protocol;
+package com.BloodliviyKot.tools.Protocol;
 
 //Енум не используем что бы точно задавать номера синхронно с php файлами сервера
 public interface E_MESSID
@@ -23,7 +23,7 @@ public interface E_MESSID
 
     }
     private ERR error;
-    MExeption(ERR _error)
+    public MExeption(ERR _error)
     {
       error = _error;
     }

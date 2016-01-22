@@ -1,4 +1,6 @@
-package com.BloodliviyKot.tools.protocol;
+package com.BloodliviyKot.tools.Protocol.Answers;
+
+import com.BloodliviyKot.tools.Protocol.E_MESSID;
 
 public class AnswerTestGoogle
   extends Answer

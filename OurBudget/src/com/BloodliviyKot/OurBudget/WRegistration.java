@@ -10,10 +10,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
-import com.BloodliviyKot.tools.protocol.AnswerTestLogin;
-import com.BloodliviyKot.tools.protocol.E_MESSID;
-import com.BloodliviyKot.tools.protocol.RequestCreateProfile;
-import com.BloodliviyKot.tools.protocol.RequestTestLogin;
+import com.BloodliviyKot.tools.Protocol.Answers.AnswerTestLogin;
+import com.BloodliviyKot.tools.Protocol.E_MESSID;
+import com.BloodliviyKot.tools.Protocol.Requests.RequestCreateProfile;
+import com.BloodliviyKot.tools.Protocol.Requests.RequestTestLogin;
 
 public class WRegistration
   extends Activity

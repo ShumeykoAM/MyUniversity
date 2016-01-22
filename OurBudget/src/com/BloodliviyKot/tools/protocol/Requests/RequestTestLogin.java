@@ -1,6 +1,9 @@
-package com.BloodliviyKot.tools.protocol;
+package com.BloodliviyKot.tools.Protocol.Requests;
 
 
+import com.BloodliviyKot.tools.Protocol.Answers.Answer;
+import com.BloodliviyKot.tools.Protocol.Answers.AnswerTestLogin;
+import com.BloodliviyKot.tools.Protocol.E_MESSID;
 import org.json.JSONException;
 
 public class RequestTestLogin
