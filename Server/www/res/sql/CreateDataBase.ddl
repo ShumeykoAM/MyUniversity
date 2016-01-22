@@ -1,1 +1,1 @@
-CREATE DATABASE OurBudgetDB /*!40100 COLLATE 'utf8mb4_unicode_ci' */;
+CREATE DATABASE OurBudgetDB CHARACTER SET utf8 COLLATE utf8_general_ci;
