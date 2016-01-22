@@ -7,7 +7,7 @@ public interface E_MESSID
   public static final int TEST_CONNECT_SERVER     = 1; //Протестировать доступность сервера
   public static final int CREATE_NEW_PROFILE      = 2; //Создать новый профиль пользователя
   public static final int TEST_GOOGLE             = 3; //Создать новый профиль пользователя
-
+  public static final int TEST_LOGIN              = 4; //Проверить свободен ли логин
 
   //Адреса
   public static final String URL_GOOGLE = "https://www.google.ru";

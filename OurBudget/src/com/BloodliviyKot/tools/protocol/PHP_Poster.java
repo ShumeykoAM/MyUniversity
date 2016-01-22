@@ -1,4 +1,4 @@
-﻿package com.BloodliviyKot.tools.protocol;
+package com.BloodliviyKot.tools.protocol;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;

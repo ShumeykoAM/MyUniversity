@@ -13,6 +13,7 @@
 
   include 'handlers/HandlerTestConnectServer.php';
   include 'handlers/HandlerCreateNewProfile.php';
+  include 'handlers/HandlerTestLogin.php';
 
 
 
@@ -39,7 +40,9 @@
           case E_MESSAGEID\CREATE_NEW_PROFILE:
             $Answer = NEW HandlerCreateNewProfile();
             break;
-
+          case E_MESSAGEID\TEST_LOGIN:
+            $Answer = NEW HandlerTestLogin();
+            break;
         }
         //Если обработчик определен то сгенерируем ответ
         if ($Answer != null)

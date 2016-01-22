@@ -8,9 +8,12 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
+import com.BloodliviyKot.tools.protocol.AnswerTestLogin;
 import com.BloodliviyKot.tools.protocol.E_MESSID;
 import com.BloodliviyKot.tools.protocol.RequestCreateProfile;
+import com.BloodliviyKot.tools.protocol.RequestTestLogin;
 
 public class WRegistration
   extends Activity
@@ -20,6 +23,8 @@ public class WRegistration
   private EditText et_login;
   private EditText et_password;
   private Button b_registration;
+  private ImageView im_login;
+  private ImageView im_password;
 
   //Создание активности
   @Override
@@ -31,6 +36,8 @@ public class WRegistration
     et_login       = (EditText)findViewById(R.id.registration_edit_login);
     et_password    = (EditText)findViewById(R.id.registration_edit_password);
     b_registration = (Button)  findViewById(R.id.registration_button_registration);
+    im_login       = (ImageView)findViewById(R.id.registration_login_pic);
+    im_password    = (ImageView)findViewById(R.id.registration_password_pic);
 
     et_login.addTextChangedListener(new TextChangeHandler(et_login));
     et_password.addTextChangedListener(new TextChangeHandler(et_password));
@@ -85,16 +92,58 @@ public class WRegistration
     {
       if(view == et_login)
       {
-        //Проверяем допустимость логина
-
-        //b_registration.setClickable(false);
-        //b_registration.setVisibility(View.VISIBLE);
-        //Либо асерт кидать о недопустимости
+        if(et_login.getText().toString().length() < 3)
+          im_login.setImageResource(R.drawable.ic_illegal);
+        else
+        {
+          try
+          {
+            RequestTestLogin rtl = new RequestTestLogin(et_login.getText().toString());
+            rtl.postHandler(new RequestTestLogin.I_HandlerTestLogin()
+            {
+              @Override
+              public void handlerAnswer(AnswerTestLogin answer)
+              {
+                if(answer != null)
+                {
+                  if(answer.login_is_free)
+                  {
+                    runOnUiThread(new Runnable()
+                    {
+                      @Override
+                      public void run()
+                      {
+                        im_login.setImageResource(R.drawable.ic_g_tick);
+                      }
+                    });
+                  } else
+                  {
+                    runOnUiThread(new Runnable()
+                    {
+                      @Override
+                      public void run()
+                      {
+                        im_login.setImageResource(R.drawable.ic_illegal);
+                      }
+                    });
+                  }
+                }
+              }
+            });
+          } catch(E_MESSID.MExeption mExeption)
+          {
+            mExeption.printStackTrace();
+          }
+        }
       }
       else if(view == et_password)
       {
-        //Проверяем допустимость логина
-
+        //Проверяем допустимость пароля
+        String password = et_password.getText().toString();
+        if(password.length() >= 4)
+          im_password.setImageResource(R.drawable.ic_g_tick);
+        else
+          im_password.setImageResource(R.drawable.ic_illegal);
       }
     }
   }

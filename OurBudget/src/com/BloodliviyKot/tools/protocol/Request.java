@@ -1,4 +1,4 @@
-﻿package com.BloodliviyKot.tools.protocol;
+package com.BloodliviyKot.tools.protocol;
 
 
 import org.apache.http.NameValuePair;
@@ -104,9 +104,9 @@ public abstract class Request
   static
   {
     uri_s[0] = "http://192.168.10.108/RequestHandler.php";
-    uri_s[1] = "";
+    uri_s[1] = "http://192.168.10.101/RequestHandler.php";
     uri_s[2] = "";
-    uri = uri_s[0];
+    uri = uri_s[1];
   }
   protected Request(int _ID) throws E_MESSID.MExeption
   {

@@ -22,7 +22,8 @@ public abstract class Answer
         case E_MESSID.CREATE_NEW_PROFILE:
           answer = new AnswerCreateProfile(ID, JOBJ);
           break;
-
+        case E_MESSID.TEST_LOGIN:
+          answer = new AnswerTestLogin(ID, JOBJ);
 
       }
     } catch(JSONException e)
