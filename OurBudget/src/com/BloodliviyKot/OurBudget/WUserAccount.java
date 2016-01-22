@@ -75,13 +75,19 @@ public class WUserAccount
   @Override
   public boolean onOptionsItemSelected(MenuItem item)
   {
+
     switch(item.getItemId())
     {
       case R.id.m_user_account_registration:
-        Intent intent = new Intent(this, WRegistration.class);
-        intent.putExtra(getString(R.string.intent_login   ), et_user_login.getText());
-        intent.putExtra(getString(R.string.intent_password), et_user_password.getText());
-        startActivityForResult(intent, R.layout.registration); //Запуск активности с onActivityResult
+        //Проверим доступность сервака потом если что в регистрацию перейдем
+        AlertConnect alert_connect = new AlertConnect(getApplicationContext());
+        if(alert_connect.getServerAccess(true) == AlertConnect.SERVER_ACCES.ACCES)
+        {
+          Intent intent = new Intent(this, WRegistration.class);
+          intent.putExtra(getString(R.string.intent_login), et_user_login.getText());
+          intent.putExtra(getString(R.string.intent_password), et_user_password.getText());
+          startActivityForResult(intent, R.layout.registration); //Запуск активности с onActivityResult
+        }
         return true;
       case R.id.m_user_account_invite_co_user:
 

@@ -128,12 +128,23 @@ public class WRegistration
                     });
                   }
                 }
+                else
+                {
+                  runOnUiThread(new Runnable()
+                  {
+                    @Override
+                    public void run()
+                    {
+                      AlertConnect alert_connect = new AlertConnect(getApplicationContext());
+                      alert_connect.getServerAccess(true);
+                      im_login.setImageResource(R.drawable.ic_illegal);
+                    }
+                  });
+                }
               }
             });
           } catch(E_MESSID.MExeption mExeption)
-          {
-            mExeption.printStackTrace();
-          }
+          {          }
         }
       }
       else if(view == et_password)
