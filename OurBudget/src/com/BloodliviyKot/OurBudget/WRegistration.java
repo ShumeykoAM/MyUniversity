@@ -58,7 +58,7 @@ public class WRegistration
       {
         RequestCreateProfile rcp = new RequestCreateProfile(et_login.getText().toString(),
                                                             et_password.getText().toString());
-        rcp.post("http://192.168.10.108/RequestHandler.php");
+        rcp.post();
         rcp.getAnswerFromPost();
       }
       catch(E_MESSID.MExeption mExeption)

@@ -15,12 +15,12 @@
     //Реализуем обработку запроса
     public function Handling($JOBJ)
     {
+      global $link; //Такое извращение нужно что бы видеть глобальные переменные
       //Проверим наличие всех параметров
       $login    = $JOBJ->{'LOGIN'};
       $password = $JOBJ->{'PASSWORD'};
       $result = isset($login) and isset($password);
-
-      global $link; //Такое извращение нужно что бы видеть глобальные переменные
+      $result = ($login != "" and $password != "");
       if($result and ($link != null))
       {
         $login = $link->real_escape_string($login);

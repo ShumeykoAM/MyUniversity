@@ -1,4 +1,4 @@
-package com.BloodliviyKot.tools.protocol;
+﻿package com.BloodliviyKot.tools.protocol;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -11,6 +11,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
@@ -46,6 +47,8 @@ public class PHP_Poster
     HttpProtocolParams.setContentCharset(httpParams, "UTF-8");
     HttpProtocolParams.setHttpElementCharset(httpParams, "UTF-8");
     httpParams.setBooleanParameter("http.protocol.expect-continue", false);
+    HttpConnectionParams.setSoTimeout(httpParams, TIMEOUT);
+    HttpConnectionParams.setConnectionTimeout(httpParams, TIMEOUT);
 
     //Создаем HTTP клиента
     HttpClient httpClient = new DefaultHttpClient(httpParams);

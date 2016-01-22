@@ -38,9 +38,9 @@ public class RequestCreateProfile
     return (Answer.AnswerCreateProfile)super.getAnswerFromPost();
   }
   @Override
-  public Answer.AnswerCreateProfile send(String Url) throws E_MESSID.MExeption
+  public Answer.AnswerCreateProfile send() throws E_MESSID.MExeption
   {
-    return (Answer.AnswerCreateProfile)super.send(Url);
+    return (Answer.AnswerCreateProfile)super.send();
   }
   @Override
   protected void postAnswerHandler(Answer answer)
@@ -48,9 +48,9 @@ public class RequestCreateProfile
     if(i_handlerCreateProfile != null)
       i_handlerCreateProfile.handlerAnswer((Answer.AnswerCreateProfile)answer);
   }
-  public boolean postHandler(final String Url, I_HandlerCreateProfile i_handler) throws E_MESSID.MExeption
+  public boolean postHandler(I_HandlerCreateProfile i_handler) throws E_MESSID.MExeption
   {
     i_handlerCreateProfile = i_handler;
-    return post(Url);
+    return post();
   }
 }

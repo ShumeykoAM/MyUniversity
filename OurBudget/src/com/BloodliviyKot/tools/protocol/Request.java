@@ -1,4 +1,4 @@
-package com.BloodliviyKot.tools.protocol;
+﻿package com.BloodliviyKot.tools.protocol;
 
 
 import org.apache.http.NameValuePair;
@@ -21,31 +21,32 @@ public abstract class Request
   private Thread post_thread;
   private Answer answer;
   protected JSONObject JObj = new JSONObject();
+  private static String uri_s[] = new String[3]; //Список адресов с сервером, основной и запасные
+  private static String uri = ""; //Рабочий адрес
   //+//Отправляем асинхронный запрос на сервак и получаем ответ
-  public final boolean post(final String Url) throws E_MESSID.MExeption
+  public final boolean post() throws E_MESSID.MExeption
   {
-    if(post_thread != null)
+    if(post_thread != null || uri == "")
       return false;
     post_thread = new Thread(new Runnable(){
       @Override
       public void run()
       {
         List<NameValuePair> POST_Parm = new ArrayList<NameValuePair>(2);
-        POST_Parm.add( new BasicNameValuePair("Request", JObj.toString()) );
+        POST_Parm.add(new BasicNameValuePair("Request", JObj.toString()));
         PHP_Poster PP = new PHP_Poster();
         try
         {
-          if(ID != E_MESSID.TEST_GOOGLE)
-            answer = Answer.AnswerFromString( PP.Post(Url, POST_Parm) );
+          if(ID == E_MESSID.TEST_GOOGLE)
+            answer = Answer.AnswerFromID(E_MESSID.TEST_GOOGLE, PP.Post(uri, POST_Parm));
           else
-            answer = Answer.AnswerFromID(E_MESSID.TEST_GOOGLE, PP.Post(Url, POST_Parm));
+            answer = Answer.AnswerFromString(PP.Post(uri, POST_Parm));
         }
         catch(IOException e)
         {
           e.printStackTrace();
           answer = null;
-        }
-        catch(E_MESSID.MExeption mExeption)
+        } catch(E_MESSID.MExeption mExeption)
         {
           mExeption.printStackTrace();
           answer = null;
@@ -79,25 +80,34 @@ public abstract class Request
     return answer;
   }
   //+//Отправляем синхронный запрос на сервак и получаем ответ (только не в главном потоке)
-  protected Answer send(final String Url) throws E_MESSID.MExeption
+  protected Answer send() throws E_MESSID.MExeption
   {
     Answer answer = null;
-    List<NameValuePair> POST_Parm = new ArrayList<NameValuePair>(2);
-    POST_Parm.add( new BasicNameValuePair("Request", JObj.toString()) );
-    PHP_Poster PP = new PHP_Poster();
-    try
+    if(uri != "")
     {
-      answer = Answer.AnswerFromString( PP.Post(Url, POST_Parm) );
-    }
-    catch(IOException e)
-    {
-      e.printStackTrace();
-      throw new E_MESSID.MExeption(E_MESSID.MExeption.ERR.PROBLEM_WITH_NET);
+      List<NameValuePair> POST_Parm = new ArrayList<NameValuePair>(2);
+      POST_Parm.add(new BasicNameValuePair("Request", JObj.toString()));
+      PHP_Poster PP = new PHP_Poster();
+      try
+      {
+        answer = Answer.AnswerFromString(PP.Post(uri, POST_Parm));
+      } catch(IOException e)
+      {
+        e.printStackTrace();
+        throw new E_MESSID.MExeption(E_MESSID.MExeption.ERR.PROBLEM_WITH_NET);
+      }
     }
     return answer;
   }
   //В своей реализации метода ConstructRequest заполняем данными JObj
   protected abstract void ConstructRequest() throws E_MESSID.MExeption;
+  static
+  {
+    uri_s[0] = "http://192.168.10.108/RequestHandler.php";
+    uri_s[1] = "";
+    uri_s[2] = "";
+    uri = uri_s[0];
+  }
   protected Request(int _ID) throws E_MESSID.MExeption
   {
     ID = _ID;

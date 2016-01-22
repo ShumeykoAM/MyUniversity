@@ -24,9 +24,9 @@ public class RequestTestGoogle
     return (Answer.AnswerTestGoogle)super.getAnswerFromPost();
   }
   @Override
-  public Answer.AnswerTestGoogle send(String Url) throws E_MESSID.MExeption
+  public Answer.AnswerTestGoogle send() throws E_MESSID.MExeption
   {
-    return (Answer.AnswerTestGoogle)super.send(Url);
+    return (Answer.AnswerTestGoogle)super.send();
   }
   @Override
   protected void postAnswerHandler(Answer answer)
@@ -34,9 +34,9 @@ public class RequestTestGoogle
     if(i_handlerTestConnectServer != null)
       i_handlerTestConnectServer.handlerAnswer((Answer.AnswerTestGoogle)answer);
   }
-  public boolean postHandler(final String Url, I_HandlerTestGoogle i_handler) throws E_MESSID.MExeption
+  public boolean postHandler(I_HandlerTestGoogle i_handler) throws E_MESSID.MExeption
   {
     i_handlerTestConnectServer = i_handler;
-    return post(Url);
+    return post();
   }
 }

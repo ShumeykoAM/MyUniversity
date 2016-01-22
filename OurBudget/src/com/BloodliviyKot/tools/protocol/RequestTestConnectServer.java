@@ -37,9 +37,9 @@ public class RequestTestConnectServer
     return (Answer.AnswerTestConnectServer)super.getAnswerFromPost();
   }
   @Override
-  public Answer.AnswerTestConnectServer send(String Url) throws E_MESSID.MExeption
+  public Answer.AnswerTestConnectServer send() throws E_MESSID.MExeption
   {
-    return (Answer.AnswerTestConnectServer)super.send(Url);
+    return (Answer.AnswerTestConnectServer)super.send();
   }
   @Override
   protected void postAnswerHandler(Answer answer)
@@ -47,9 +47,9 @@ public class RequestTestConnectServer
     if(i_handlerTestConnectServer != null)
       i_handlerTestConnectServer.handlerAnswer((Answer.AnswerTestConnectServer)answer);
   }
-  public boolean postHandler(final String Url, I_HandlerTestConnectServer i_handler) throws E_MESSID.MExeption
+  public boolean postHandler(I_HandlerTestConnectServer i_handler) throws E_MESSID.MExeption
   {
     i_handlerTestConnectServer = i_handler;
-    return post(Url);
+    return post();
   }
 }
