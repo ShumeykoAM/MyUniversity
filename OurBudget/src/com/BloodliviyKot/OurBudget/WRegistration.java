@@ -1,6 +1,7 @@
 package com.BloodliviyKot.OurBudget;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Editable;
@@ -9,7 +10,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
+import com.BloodliviyKot.tools.Protocol.Answers.AnswerCreateProfile;
 import com.BloodliviyKot.tools.Protocol.Answers.AnswerTestLogin;
 import com.BloodliviyKot.tools.Protocol.E_MESSID;
 import com.BloodliviyKot.tools.Protocol.Requests.RequestCreateProfile;
@@ -55,7 +58,8 @@ public class WRegistration
     db = (new MySQLiteOpenHelper(getApplicationContext())).getWritableDatabase();
 
   }
-
+  private static final int MIN_LENGHT_PASSWORD = 4;
+  private static final int MIN_LENGHT_LOGIN = 3;
   @Override
   public void onClick(View v)
   {
@@ -63,16 +67,65 @@ public class WRegistration
     {
       try
       {
-        RequestCreateProfile rcp = new RequestCreateProfile(et_login.getText().toString(),
-                                                            et_password.getText().toString());
-        rcp.post();
-        rcp.getAnswerFromPost();
+        String login = et_login.getText().toString();
+        String password = et_password.getText().toString();
+        boolean result = true;
+        if(result && !checkLogin(login))
+        {
+          Toast err_login = Toast.makeText(getApplicationContext(),
+            getString(R.string.user_account_err_another_login), Toast.LENGTH_LONG);
+          err_login.show();
+        }
+        if(result && !checkPassword(password))
+        {
+          result = false;
+          Toast err_password = Toast.makeText(getApplicationContext(),
+            getString(R.string.user_account_err_another_password), Toast.LENGTH_LONG);
+          err_password.show();
+        }
+        if(result)
+        {
+          RequestCreateProfile rcp = new RequestCreateProfile(login, password);
+          if(rcp.post())
+          {
+            AnswerCreateProfile acpf = rcp.getAnswerFromPost();
+            if(acpf.isCreated)
+            {
+              Toast user_ccount_created = Toast.makeText(getApplicationContext(),
+                getString(R.string.user_account_user_account_created), Toast.LENGTH_LONG);
+              user_ccount_created.show();
+              //Выходим из окна регистрации
+              Intent ires = new Intent();      //Можно вернуть
+              ires.putExtra("Результат", true);//  много значений
+              setResult(RESULT_OK, ires);      //Возвращаемый в родительскую активность результат
+              finish();
+            }
+            else
+            {
+              Toast err_login = Toast.makeText(getApplicationContext(),
+                getString(R.string.user_account_err_another_login), Toast.LENGTH_LONG);
+              err_login.show();
+              im_login.setImageResource(R.drawable.ic_illegal);
+            }
+          }
+          else
+            throw new E_MESSID.MExeption(E_MESSID.MExeption.ERR.PROBLEM_WITH_SERVER);
+        }
       }
       catch(E_MESSID.MExeption mExeption)
       {
-        mExeption.printStackTrace();
+        AlertConnect alert_connect = new AlertConnect(getApplicationContext());
+        alert_connect.getServerAccess(true);
       }
     }
+  }
+  private boolean checkLogin(String login)
+  {
+    return login.length() >= MIN_LENGHT_LOGIN;
+  }
+  private boolean checkPassword(String password)
+  {
+    return password.length() >= MIN_LENGHT_PASSWORD;
   }
 
   class TextChangeHandler
@@ -92,13 +145,14 @@ public class WRegistration
     {
       if(view == et_login)
       {
-        if(et_login.getText().toString().length() < 3)
+        String login = et_login.getText().toString();
+        if(!checkLogin(login))
           im_login.setImageResource(R.drawable.ic_illegal);
         else
         {
           try
           {
-            RequestTestLogin rtl = new RequestTestLogin(et_login.getText().toString());
+            RequestTestLogin rtl = new RequestTestLogin(login);
             rtl.postHandler(new RequestTestLogin.I_HandlerTestLogin()
             {
               @Override
@@ -150,8 +204,7 @@ public class WRegistration
       else if(view == et_password)
       {
         //Проверяем допустимость пароля
-        String password = et_password.getText().toString();
-        if(password.length() >= 4)
+        if(checkPassword(et_password.getText().toString()))
           im_password.setImageResource(R.drawable.ic_g_tick);
         else
           im_password.setImageResource(R.drawable.ic_illegal);

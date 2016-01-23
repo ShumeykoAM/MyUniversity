@@ -101,7 +101,7 @@ public class WUserAccount
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data)
   {
-    if(requestCode == R.layout.registration)
+    if(requestCode == R.layout.registration && resultCode == RESULT_OK)
     {
       int fdfdfd = 4;
       fdfdfd++;

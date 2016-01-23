@@ -24,7 +24,9 @@
     <string name="user_account_m_become_member">Присоединиться</string>
     <string name="user_account_err_server_connect">Сервер временно недоступен</string>
     <string name="user_account_err_inet">Отсутствует подключение к интернет</string>
-
+    <string name="user_account_err_another_login">Введите другой логин</string>
+    <string name="user_account_err_another_password">Введите другой пароль</string>
+    <string name="user_account_user_account_created">Учетная запись создана</string>
 
     <string name="registration_caption">Регистрация</string>
     <string name="registration_registration">Зарегистрировать</string>
