@@ -145,6 +145,10 @@ public class MySQLiteOpenHelper
   //Исключительно для отладки -------------------------------------------------------------------------------
   public static void debugDeleteDB(Context context)
   {
+    //Базы лежат тут
+    //  /data/data/com.BloodliviyKot.OurBudget/databases/OurBudget.db
+    //  можно посмотреть через Tools/android/AWD Manager
+
     //Удалим базу для отладки !!!!!!!!!!!!!!!!!!!
     String dbfile_path = Environment.getDataDirectory().toString() +
       File.separator + "data" + File.separator +

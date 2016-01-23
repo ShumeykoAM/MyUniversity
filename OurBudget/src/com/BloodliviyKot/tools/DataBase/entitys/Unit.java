@@ -2,6 +2,7 @@ package com.BloodliviyKot.tools.DataBase.entitys;
 
 
 //Единицы измерения (в нашей программе имеют фиксированный набор, поэтому
+//  не содержатся в БД)
 public class Unit
 {
   public long id;

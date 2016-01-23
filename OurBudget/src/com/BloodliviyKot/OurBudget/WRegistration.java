@@ -1,6 +1,7 @@
 package com.BloodliviyKot.OurBudget;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -11,7 +12,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+import com.BloodliviyKot.tools.DataBase.I_Transaction;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
+import com.BloodliviyKot.tools.DataBase.SQLTransaction;
+import com.BloodliviyKot.tools.DataBase.entitys.*;
 import com.BloodliviyKot.tools.Protocol.Answers.AnswerCreateProfile;
 import com.BloodliviyKot.tools.Protocol.Answers.AnswerTestLogin;
 import com.BloodliviyKot.tools.Protocol.E_MESSID;
@@ -67,8 +71,8 @@ public class WRegistration
     {
       try
       {
-        String login = et_login.getText().toString();
-        String password = et_password.getText().toString();
+        final String login = et_login.getText().toString();
+        final String password = et_password.getText().toString();
         boolean result = true;
         if(result && !checkLogin(login))
         {
@@ -91,14 +95,42 @@ public class WRegistration
             AnswerCreateProfile acpf = rcp.getAnswerFromPost();
             if(acpf.isCreated)
             {
-              Toast user_ccount_created = Toast.makeText(getApplicationContext(),
-                getString(R.string.user_account_user_account_created), Toast.LENGTH_LONG);
-              user_ccount_created.show();
-              //Выходим из окна регистрации
-              Intent ires = new Intent();      //Можно вернуть
-              ires.putExtra("Результат", true);//  много значений
-              setResult(RESULT_OK, ires);      //Возвращаемый в родительскую активность результат
-              finish();
+              final long[] _id = new long[1];
+              SQLTransaction sqlt = new SQLTransaction(db, new I_Transaction(){
+                @Override
+                public boolean trnFunc()
+                {
+                  //Делаем все учетки неактивными
+                  ContentValues values = new ContentValues();
+                  values.put("is_active", "0");
+                  int count = db.update(UserAccount.table_name, values, "is_active=1", null);
+                  //Добавим данную учетку в БД и сделаем ее активной
+                  values.clear();
+                  values.put("login", login);
+                  values.put("password", password);
+                  values.put("is_active", "1");
+                  _id[0] = db.insert(UserAccount.table_name, null, values);
+                  //Все данные которым не назначена учетная запись привязываем к созданной учетной записи
+                  values.clear();
+                  values.put("_id_user_account", _id[0]);
+                  count = db.update(Purchase.table_name, values, "_id_user_account IS NULL", null);
+                  count = db.update(Type.table_name, values, "_id_user_account IS NULL", null);
+                  count = db.update(Detail.table_name, values, "_id_user_account IS NULL", null);
+                  count = db.update(Chronological.table_name, values, "_id_user_account IS NULL", null);
+                  return true;
+                }
+              });
+              if(sqlt.runTransaction())
+              {
+                Toast user_account_created = Toast.makeText(getApplicationContext(),
+                  getString(R.string.user_account_user_account_created), Toast.LENGTH_LONG);
+                user_account_created.show();
+                //Выходим из окна регистрации
+                Intent ires = new Intent();  //Вернем
+                ires.putExtra("_id", _id[0]);   //_id добавленной записи
+                setResult(RESULT_OK, ires);  //Возвращаемый в родительскую активность результат
+                finish();
+              }
             }
             else
             {
@@ -128,7 +160,7 @@ public class WRegistration
     return password.length() >= MIN_LENGHT_PASSWORD;
   }
 
-  class TextChangeHandler
+  private class TextChangeHandler
     implements TextWatcher
   {
     private EditText view;

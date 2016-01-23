@@ -6,6 +6,7 @@ import java.text.NumberFormat;
 
 public class Detail
 {
+  public static final String table_name = "detail";
   public Long _id;
   public Double price;           //Цена
   public double for_amount_unit; //  количество единиц измерения за которое куказана цена
