@@ -50,9 +50,6 @@ public class WRegistration
     et_password.addTextChangedListener(new TextChangeHandler(et_password));
     b_registration.setOnClickListener(this);
 
-    //b_registration.setClickable(false);
-    //b_registration.setVisibility(View.INVISIBLE);
-
     //Читаем параметры переданные из родительской активности
     Bundle extras = getIntent().getExtras();
     et_login.setText(extras.getCharSequence(getString(R.string.intent_login)));
@@ -77,14 +74,14 @@ public class WRegistration
         if(result && !checkLogin(login))
         {
           Toast err_login = Toast.makeText(getApplicationContext(),
-            getString(R.string.user_account_err_another_login), Toast.LENGTH_LONG);
+            getString(R.string.registration_err_another_login), Toast.LENGTH_LONG);
           err_login.show();
         }
         if(result && !checkPassword(password))
         {
           result = false;
           Toast err_password = Toast.makeText(getApplicationContext(),
-            getString(R.string.user_account_err_another_password), Toast.LENGTH_LONG);
+            getString(R.string.registration_err_another_password), Toast.LENGTH_LONG);
           err_password.show();
         }
         if(result)
@@ -123,7 +120,7 @@ public class WRegistration
               if(sqlt.runTransaction())
               {
                 Toast user_account_created = Toast.makeText(getApplicationContext(),
-                  getString(R.string.user_account_user_account_created), Toast.LENGTH_LONG);
+                  getString(R.string.registration_user_account_created), Toast.LENGTH_LONG);
                 user_account_created.show();
                 //Выходим из окна регистрации
                 Intent ires = new Intent();  //Вернем
@@ -135,7 +132,7 @@ public class WRegistration
             else
             {
               Toast err_login = Toast.makeText(getApplicationContext(),
-                getString(R.string.user_account_err_another_login), Toast.LENGTH_LONG);
+                getString(R.string.registration_err_another_login), Toast.LENGTH_LONG);
               err_login.show();
               im_login.setImageResource(R.drawable.ic_illegal);
             }

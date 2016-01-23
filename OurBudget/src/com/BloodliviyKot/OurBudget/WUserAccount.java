@@ -10,18 +10,21 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.*;
+import com.BloodliviyKot.tools.DataBase.EQ;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
 
 public class WUserAccount
   extends Activity
-  implements View.OnClickListener
+  implements View.OnClickListener, AdapterView.OnItemSelectedListener
 {
+  private MySQLiteOpenHelper oh;
   private SQLiteDatabase db;
-  private EditText et_user_login;
+  private Spinner sp_user_login;
   private EditText et_user_password;
   private Button b_user_enter;
+  private EditText et_user_login;
+  private Cursor cursor;
 
   //Создание активности
   @Override
@@ -30,18 +33,34 @@ public class WUserAccount
     super.onCreate(savedInstanceState);
     setContentView(R.layout.user_account);
 
-    et_user_login = (EditText)findViewById(R.id.user_account_login);
+    sp_user_login    = (Spinner) findViewById(R.id.user_account_login_sp);
     et_user_password = (EditText)findViewById(R.id.user_account_password);
     b_user_enter     = (Button)  findViewById(R.id.user_account_button_enter);
+    et_user_login    = (EditText)findViewById(R.id.user_account_login_ed);
 
     b_user_enter.setOnClickListener(this);
 
     //Создаем помощник управления БД
-    db = (new MySQLiteOpenHelper(getApplicationContext())).getWritableDatabase();
-    String query =
-      "SELECT purchase._id, purchase.date_time, purchase.state FROM purchase ";
-    Cursor cursor = db.rawQuery(query, null);
-
+    oh = new MySQLiteOpenHelper(getApplicationContext());
+    db = oh.getReadableDatabase();
+    cursor = db.rawQuery(oh.getQuery(EQ.USER_ACCOUNTS), null);
+    SpinnerAdapter spinner_adapter = new SimpleCursorAdapter(this, R.layout.user_account_item, cursor,
+      new String[]{"login"}, new int[]{R.id.user_account_item_login} );
+    sp_user_login.setAdapter(spinner_adapter);
+    if(cursor.moveToFirst())
+    {
+      do
+      {
+        if(cursor.getInt(cursor.getColumnIndex("is_active")) == 1)
+        {
+          et_user_login.setText(cursor.getString(cursor.getColumnIndex("login")));
+          b_user_enter.setClickable(false);
+          b_user_enter.setText(getString(R.string.user_account_button_entered));
+          break;
+        }
+      }while(cursor.moveToNext());
+    }
+    sp_user_login.setOnItemSelectedListener(this);
   }
   @Override
   public boolean onKeyDown(int keyCode, KeyEvent event)
@@ -103,9 +122,25 @@ public class WUserAccount
   {
     if(requestCode == R.layout.registration && resultCode == RESULT_OK)
     {
+      Bundle extras = data.getExtras();
+      long _id = (Long)extras.get("_id");
+      b_user_enter.setClickable(false);
+      b_user_enter.setText(getString(R.string.user_account_button_entered));
+
       int fdfdfd = 4;
       fdfdfd++;
     }
   }
 
+  @Override
+  public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+  {
+    Cursor cursor = db.rawQuery(oh.getQuery(EQ.USER_ACCOUNT), new String[]{(new Long(id)).toString()} );
+
+  }
+  @Override
+  public void onNothingSelected(AdapterView<?> parent)
+  {
+
+  }
 }

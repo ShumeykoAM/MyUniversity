@@ -1,38 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-              android:layout_height="match_parent" android:gravity="center_vertical|center"
-              android:orientation="vertical" tools:context=".WUserAccount">
+                android:layout_height="match_parent" android:gravity="center_vertical|center"
+                android:orientation="vertical" tools:context=".WUserAccount">
     <TextView
             android:id="@+id/user_account_label_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/user_account_login"
             android:layout_centerHorizontal="true"/>
-    <EditText
-            android:id="@+id/user_account_login"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:ems="10"
-            android:layout_below="@+id/user_account_label_login"
-            android:layout_alignParentLeft="true"/>
     <TextView
             android:id="@+id/user_account_label_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/user_account_password"
             android:layout_gravity="center_horizontal"
-            android:layout_below="@+id/user_account_login"
-            android:layout_centerHorizontal="true"/>
+            android:layout_below="@+id/lin" android:layout_centerHorizontal="true"/>
+    <RelativeLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:layout_below="@+id/user_account_label_login"
+            android:id="@+id/lin" android:weightSum="1">
+        <TextView
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:id="@+id/user_account_aling_r" android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"/>
+        <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/user_account_login_sp"
+                android:layout_weight="0.85" android:layout_alignParentLeft="true"
+                />
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView3" android:layout_alignTop="@+id/user_account_login_sp"
+                android:layout_alignBottom="@+id/user_account_login_sp"
+                android:layout_toLeftOf="@+id/user_account_aling_r" android:layout_alignParentLeft="true"
+                android:background="@android:color/background_dark"/>
+        <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/user_account_login_ed" android:layout_centerVertical="true"
+                android:singleLine="true"
+                android:autoText="false"
+                android:layout_toLeftOf="@+id/user_account_aling_r"/>
+    </RelativeLayout>
     <EditText
             android:id="@+id/user_account_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textVisiblePassword"
             android:ems="10"
-            android:layout_below="@+id/user_account_label_password"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal"
+            android:layout_below="@+id/user_account_label_password" android:singleLine="true"/>
     <Button
             android:id="@+id/user_account_button_enter"
             android:layout_width="match_parent"
