@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.*;
+import com.BloodliviyKot.tools.DataBase.EQ;
 import com.BloodliviyKot.tools.DataBase.entitys.Detail;
 import com.BloodliviyKot.tools.DataBase.entitys.Unit;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
@@ -23,6 +24,7 @@ public class WPurchases
   public static final int STATE_PLAN = 0;    //Запланировано
   public static final int STATE_EXECUTE = 1; //Исполнено
 
+  private MySQLiteOpenHelper oh;
   private SQLiteDatabase db;
   private ListView list_purchases;
 
@@ -39,23 +41,16 @@ public class WPurchases
 //Для отладки удалим базу
 MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
 //Создаем помощник управления БД
-
-    db = (new MySQLiteOpenHelper(getApplicationContext())).getWritableDatabase();
+    oh = new MySQLiteOpenHelper(getApplicationContext());
+    db = oh.getWritableDatabase();
 
     long s_date = 0, e_date = Long.MAX_VALUE;
     int state = STATE_PLAN; //Должно зависеть от фильтра
     //Не группируем, отображаем покупки в хронологическом порядке в диапазоне дат фильтра
     //Cursor обязательно должен содержать _id иначе SimpleCursorAdapter не заработает
-    String query =
-      "SELECT purchase._id, purchase.date_time, purchase.state FROM purchase " +
-      // пример использования псевдонима столбца, что бы имена не повторялись
-      //"SELECT purchase._id, purchase.date_time, purchase.state, detail._id AS id_2 FROM purchase, detail " +
-      "WHERE (purchase.date_time > ? AND purchase.date_time < ? AND " +
-      "  purchase.state = ?) OR purchase.state = ? " +
-      "ORDER BY purchase.state, purchase.date_time DESC;";
     String q_params[] ={ Long.toString(s_date), Long.toString(e_date),
       Integer.toString(STATE_EXECUTE), Integer.toString(state) };
-    Cursor cursor = db.rawQuery(query, q_params);
+    Cursor cursor = db.rawQuery(oh.getQuery(EQ.PURCHASES), q_params);
     ListAdapter list_adapter = new PurchasesAdapter(this, R.layout.purchases_item, cursor,
       new String[]{},
       new int[]{R.id.purchases_item_contnt, R.id.purchases_item_info, R.id.purchases_item_state},

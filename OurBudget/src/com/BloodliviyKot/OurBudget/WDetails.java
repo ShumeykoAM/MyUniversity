@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import com.BloodliviyKot.OurBudget.Dialogs.DetailDialog;
+import com.BloodliviyKot.tools.DataBase.EQ;
 import com.BloodliviyKot.tools.DataBase.entitys.Detail;
 import com.BloodliviyKot.tools.DataBase.entitys.Unit;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
@@ -22,6 +23,7 @@ public class WDetails
   extends Activity
   implements AdapterView.OnItemClickListener, DetailDialog.I_DetailDialogResult
 {
+  private MySQLiteOpenHelper oh;
   private SQLiteDatabase db;
   private long account_id;
   private ListView list_details;
@@ -45,14 +47,10 @@ public class WDetails
     account_id = extras.getLong(getString(R.string.intent_purchases_id));
 
     //Создаем помощник управления БД
-    db = (new MySQLiteOpenHelper(getApplicationContext())).getWritableDatabase();
+    oh = new MySQLiteOpenHelper(getApplicationContext());
+    db = oh.getWritableDatabase();
     //Cursor обязательно должен содержать _id иначе SimpleCursorAdapter не заработает
-
-    String query =
-      "SELECT detail._id, detail.price, detail.for_amount_unit, detail.for_id_unit, " +
-      "detail.amount, detail.id_unit, detail.cost, type.name FROM detail, type " +
-      "WHERE detail._id_purchase = ? AND type._id=detail._id_type;";
-    cursor = db.rawQuery(query, new String[]{Long.toString(account_id)});
+    cursor = db.rawQuery(oh.getQuery(EQ.DETAILS), new String[]{Long.toString(account_id)});
     int to[] = {R.id.details_item_type, R.id.details_item_price,
                 R.id.details_item_amount, R.id.details_item_cost};
     DetailsAdapter list_adapter = new DetailsAdapter(this, R.layout.details_item, cursor,

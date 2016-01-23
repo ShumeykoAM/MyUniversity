@@ -20,8 +20,11 @@ public class MySQLiteOpenHelper
 {
   public static final int VersionDB = 1; //Версия БД
   public static final String DBName = "OurBudget.db";
+
   private SQLReader sql_reader;
   private Context context;
+  private static String requests[] = null;
+
   public MySQLiteOpenHelper(Context _context)
   {
     //Здесь создается или открывается БД
@@ -125,8 +128,21 @@ public class MySQLiteOpenHelper
 
   }
 
+  //Текст запросов из sql_querys.sql-------------------------------------------------------------------------
+  public String getQuery(EQ eq)
+  {
+    if(requests == null)
+    {
+      requests = new String[EQ.EQ_COUNT.value];
+      List<String> queris = sql_reader.getQueris(R.raw.sql_querys);
+      int i = 0;
+      for(String query : queris)
+        requests[i++] = query;
+    }
+    return requests[eq.value];
+  }
 
-  //Исключительно для отладки
+  //Исключительно для отладки -------------------------------------------------------------------------------
   public static void debugDeleteDB(Context context)
   {
     //Удалим базу для отладки !!!!!!!!!!!!!!!!!!!
