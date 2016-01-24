@@ -11,10 +11,12 @@
   namespace E_MESSAGEID
   {
     //0 - не используем ни когда
-    const TEST_CONNECT_SERVER = 1; //Протестировать доступность сервера
-    const CREATE_NEW_PROFILE = 2;  //Создать новый профиль пользователя
+    const TEST_CONNECT_SERVER         = 1; //Протестировать доступность сервера
+    const CREATE_NEW_PROFILE          = 2; //Создать новый профиль пользователя
     //3 - не используем ни когда, она используется клиентами для теста сайта google.com
-    const TEST_LOGIN = 4; //Проверяем не занят ли такой логин
+    const TEST_LOGIN                  = 4; //Проверяем не занят ли такой логин
+    const TEST_PAIR_LOGIN_PASSWORD    = 5; //Проверяем пару логин пароль и если нужно входим, используя переменную $_SESSION
+
 
   }
 

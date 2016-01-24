@@ -107,6 +107,8 @@ public class WRegistration
                   values.put("password", password);
                   values.put("is_active", "1");
                   _id[0] = db.insert(UserAccount.table_name, null, values);
+                  if(_id[0] == -1) //Проверим на всяк случай, хотя такого быть не должно что бы
+                    return false;  //   локально была такая учетка а на серваке ее не было
                   //Все данные которым не назначена учетная запись привязываем к созданной учетной записи
                   values.clear();
                   values.put("_id_user_account", _id[0]);

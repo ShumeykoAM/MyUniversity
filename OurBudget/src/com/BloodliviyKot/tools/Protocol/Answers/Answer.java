@@ -25,6 +25,10 @@ public abstract class Answer
           break;
         case E_MESSID.TEST_LOGIN:
           answer = new AnswerTestLogin(ID, JOBJ);
+          break;
+        case E_MESSID.TEST_PAIR_LOGIN_PASSWORD:
+          answer = new AnswerTestPairLoginPassword(ID, JOBJ);
+          break;
 
       }
     } catch(JSONException e)

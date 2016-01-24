@@ -20,8 +20,11 @@
       $login    = $JOBJ->{'LOGIN'};
       $password = $JOBJ->{'PASSWORD'};
       $result = isset($login) and isset($password);
-      $result = ($login != "" and $password != "");
-      if($result and ($link != null))
+      if($result)
+        $result = ($login != "" and $password != "");
+      if($result)
+        $result = ($link != null);
+      if($result)
       {
         $login = $link->real_escape_string($login);
         $hash_password = md5($password);

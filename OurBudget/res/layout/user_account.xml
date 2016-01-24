@@ -55,7 +55,8 @@
             android:inputType="textVisiblePassword"
             android:ems="10"
             android:layout_gravity="center_horizontal"
-            android:layout_below="@+id/user_account_label_password" android:singleLine="true"/>
+            android:layout_below="@+id/user_account_label_password" android:singleLine="true"
+            android:password="true"/>
     <Button
             android:id="@+id/user_account_button_enter"
             android:layout_width="match_parent"

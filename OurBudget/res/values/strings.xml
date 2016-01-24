@@ -24,7 +24,7 @@
     <string name="user_account_m_become_member">Присоединиться</string>
     <string name="user_account_button_enter">Войти</string>
     <string name="user_account_button_entered">Вход выполнен</string>
-
+    <string name="user_account_err_incorrect_login_password">Неправильная пара логин пароль</string>
 
     <string name="registration_caption">Регистрация</string>
     <string name="registration_registration">Зарегистрировать</string>

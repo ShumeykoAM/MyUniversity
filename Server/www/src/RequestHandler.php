@@ -14,7 +14,7 @@
   include 'handlers/HandlerTestConnectServer.php';
   include 'handlers/HandlerCreateNewProfile.php';
   include 'handlers/HandlerTestLogin.php';
-
+  include 'handlers/HandlerTestPairLoginPassword.php';
 
 
   class RequestHandler
@@ -43,6 +43,10 @@
           case E_MESSAGEID\TEST_LOGIN:
             $Answer = NEW HandlerTestLogin();
             break;
+          case E_MESSAGEID\TEST_PAIR_LOGIN_PASSWORD:
+            $Answer = NEW HandlerTestPairLoginPassword();
+            break;
+
         }
         //Если обработчик определен то сгенерируем ответ
         if ($Answer != null)

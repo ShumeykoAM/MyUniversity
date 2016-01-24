@@ -7,7 +7,8 @@ public enum EQ
 {
   USER_ACCOUNTS,                 //Получить список учетных записей пользователя
   USER_ACCOUNT_ACTIYE,           //Получить активную учетную запись
-  USER_ACCOUNT,                  //Получить активную учетную запись
+  USER_ACCOUNT_ID,               //Получить учетную запись по id
+  USER_ACCOUNT_LOGIN,            //Получить учетную запись по login
   PURCHASES,                     //Покупки
   DETAILS,                       //Детали покупки
 

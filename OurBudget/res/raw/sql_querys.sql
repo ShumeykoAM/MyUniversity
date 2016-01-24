@@ -6,8 +6,11 @@ SELECT user_account._id, user_account.login
 FROM user_account
 WHERE user_account.is_active = ?;
 
--- USER_ACCOUNT
+-- USER_ACCOUNT_ID
 SELECT * FROM user_account WHERE user_account._id = ?;
+
+-- USER_ACCOUNT_LOGIN
+SELECT * FROM user_account WHERE user_account.login = ?;
 
 -- PURCHASES
 SELECT purchase._id, purchase.date_time, purchase.state FROM purchase

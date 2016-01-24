@@ -48,7 +48,7 @@ public abstract class Request
         }
         catch(IOException e)
         {
-          error = E_MESSID.MExeption.ERR.PROBLEM_WITH_SERVER;
+         error = E_MESSID.MExeption.ERR.PROBLEM_WITH_SERVER;
           answer = null;
         } catch(E_MESSID.MExeption _mExeption)
         {

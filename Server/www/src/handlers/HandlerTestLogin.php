@@ -20,8 +20,11 @@
       //Проверим наличие всех параметров
       $login    = $JOBJ->{'LOGIN'};
       $result = isset($login);
-      $result = ($login != "");
-      if($result and ($link != null))
+      if($result)
+        $result = ($login != "");
+      if($result)
+        $result = ($link != null);
+      if($result)
       {
         $login = $link->real_escape_string($login);
         //Сгенерируем ответ, проверим свободен ли логин, если да то вернем true
