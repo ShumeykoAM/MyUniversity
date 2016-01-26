@@ -110,7 +110,7 @@ public abstract class Request
     uri_s[0] = "http://192.168.10.108/RequestHandler.php";
     uri_s[1] = "http://192.168.10.101/RequestHandler.php";
     uri_s[2] = "";
-    uri = uri_s[1];
+    uri = uri_s[0];
   }
   protected Request(int _ID) throws E_MESSID.MExeption
   {

@@ -31,6 +31,10 @@
                   android:label="@string/mark_details_caption"
                   android:icon="@drawable/ic_g_tick">
         </activity>
+        <activity android:name=".WTypes"
+                  android:label="@string/types_caption"
+                  android:icon="@drawable/ic_list_types">
+        </activity>
 
 
         <!--

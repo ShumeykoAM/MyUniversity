@@ -8,18 +8,18 @@
     </type_detail>
     -->
 
-    <!--
+
     <user_account login="log__in1" password="Pass" is_active="0"></user_account>
     <user_account login="log__in2" password="Pass" is_active="1"></user_account>
     <user_account login="log__in3" password="Pass" is_active="0"></user_account>
-    -->
+
 
     <purchase date_time="1451963327972" state="1" is_delete="0"></purchase>
     <!--<purchase date_time="1451963927972" state="0"></purchase>
     <purchase date_time="1451964327972" state="1"></purchase>-->
 
-    <type name="Хлеб" id_unit="1" is_delete="0"></type>
-    <type name="р. пикша большая очень пикша" id_unit="2" is_delete="0"></type>
+    <type name="Хлеб" _id_user_account="2" id_unit="1" is_delete="0"></type>
+    <type name="р. пикша большая очень пикша" _id_user_account="2" id_unit="2" is_delete="0"></type>
     <type name="молоко" id_unit="3" is_delete="0"></type>
 
     <!--

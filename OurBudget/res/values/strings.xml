@@ -36,9 +36,12 @@
     <string name="alert_connect_err_inet">Отсутствует подключение к интернет</string>
 
     <string name="mark_details_caption">Выбрать детали</string>
-    <string name="mark_details_m_add_type">Добавить тип</string>
+    <string name="mark_details_m_add_type">Добавить вид</string>
 
-    <string name="details_caption">Подробности</string>
+    <string name="types_caption">Виды товаров и услуг</string>
+    <string name="types_m_add">Добавить</string>
+
+    <string name="details_caption">Товары и услуги</string>
     <string name="details_status">Итого</string>
     <string name="details_m_add">Добавить</string>
     <string name="details_m_plan">Планирование</string>

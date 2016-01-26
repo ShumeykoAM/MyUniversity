@@ -85,13 +85,22 @@ MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
   @Override
   public boolean onOptionsItemSelected(MenuItem item)
   {
+    Intent intent;
     switch(item.getItemId())
     {
       case R.id.m_purchases_add:
+        //Из за того что на эмульке кнопка вызова меню не отображается
+        intent = new Intent(this, WTypes.class);
+        startActivity(intent); //Запуск активности
+
 
         return true;
       case R.id.m_purchases_user_account:
-        Intent intent = new Intent(this, WUserAccount.class);
+        intent = new Intent(this, WUserAccount.class);
+        startActivity(intent); //Запуск активности
+        return true;
+      case R.id.m_purchases_type:
+        intent = new Intent(this, WUserAccount.class);
         startActivity(intent); //Запуск активности
         return true;
     }
