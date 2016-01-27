@@ -13,6 +13,7 @@ public enum EQ
   PURCHASES,                     //Покупки
   DETAILS,                       //Товары и услуги покупки
   TYPES_USER_ACC,                //Виды товаров и услуг активной учетки
+  TYPES_USER_ACC_LIKE_NAME,      //Виды товаров и услуг активной учетки c фильтром по %имени%
   TYPES_USER_NOT_ACC,            //Виды товаров и услуг без учетки
 
   EQ_COUNT;

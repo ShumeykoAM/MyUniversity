@@ -16,6 +16,7 @@ CREATE TABLE type
   _id                  INTEGER PRIMARY KEY,
   _id_user_account     INTEGER,
   name                 TEXT NOT NULL,
+  name_lower           TEXT NOT NULL, -- для поддержки LIKE здесь будем хранить копию name в нижнем регистре
   id_server            INTEGER,
   id_unit              INTEGER NOT NULL,
   is_delete            INTEGER NOT NULL,

@@ -29,5 +29,10 @@ SELECT detail._id, detail.price, detail.for_amount_unit, detail.for_id_unit,
 SELECT type._id, type.name, type.id_unit FROM type, user_account WHERE
   type._id_user_account = user_account._id AND user_account.is_active = 1;
 
+-- TYPES_USER_ACC_LIKE_NAME
+SELECT type._id, type.name, type.id_unit FROM type, user_account WHERE
+  type._id_user_account = user_account._id AND user_account.is_active = 1
+  AND (name_lower LIKE ?);
+
 -- TYPES_USER_NOT_ACC
-SELECT type._id, type.name, type.id_unit FROM type;
+SELECT type._id, type.name, type.id_unit FROM type WHERE type._id_user_account IS NULL;

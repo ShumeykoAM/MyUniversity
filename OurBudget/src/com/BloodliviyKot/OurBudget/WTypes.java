@@ -7,10 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ListView;
-import android.widget.SearchView;
-import android.widget.SimpleCursorAdapter;
-import android.widget.TextView;
+import android.widget.*;
 import com.BloodliviyKot.tools.DataBase.EQ;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
 import com.BloodliviyKot.tools.DataBase.entitys.Unit;
@@ -45,11 +42,34 @@ public class WTypes
     else
       cursor = db.rawQuery(oh.getQuery(EQ.TYPES_USER_NOT_ACC), null);
 
-    SimpleCursorAdapter list_adapter = new TypesAdapter(getApplicationContext(), R.layout.types_item,
+    final SimpleCursorAdapter list_adapter = new TypesAdapter(getApplicationContext(), R.layout.types_item,
       cursor, new String[]{"name"},
       new int[]{R.id.types_item_name});
     list_types.setAdapter(list_adapter);
 
+    //Фильтруем отображаемый список согласно тексту написанному в строке поиска
+    //Для курсор_адаптера задаем новый Cursur с отфильтрованным набором данных
+    list_adapter.setFilterQueryProvider(new FilterQueryProvider(){
+      @Override
+      public Cursor runQuery(CharSequence constraint) //constraint это newText из onQueryTextChange ниже
+      {
+        return db.rawQuery(oh.getQuery(EQ.TYPES_USER_ACC_LIKE_NAME), new String[]{"%"+constraint+"%"});
+      }
+    });
+    //Обрабатываем изменение текста в строке поиска
+    search.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
+      @Override
+      public boolean onQueryTextSubmit(String query)
+      {
+        return false;
+      }
+      @Override
+      public boolean onQueryTextChange(String newText) //Для адаптера задаем новй фильтр
+      {
+        list_adapter.getFilter().filter(newText);
+        return true;
+      }
+    });
 
   }
   private class TypesAdapter

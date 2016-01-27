@@ -18,9 +18,23 @@
     <!--<purchase date_time="1451963927972" state="0"></purchase>
     <purchase date_time="1451964327972" state="1"></purchase>-->
 
-    <type name="Хлеб" _id_user_account="2" id_unit="1" is_delete="0"></type>
-    <type name="р. пикша большая очень пикша" _id_user_account="2" id_unit="2" is_delete="0"></type>
-    <type name="молоко" id_unit="3" is_delete="0"></type>
+    <type name="батарейки ААА"          name_lower="батарейки aaa"         _id_user_account="2" id_unit="1" is_delete="0"></type>
+    <type name="Батар АА"               name_lower="батар аа"              _id_user_account="2" id_unit="2" is_delete="0"></type>
+    <type name="молоко"                 name_lower="молоко"                _id_user_account="2" id_unit="3" is_delete="0"></type>
+    <type name="Молочный рай"           name_lower="молочный рай"          _id_user_account="2" id_unit="2" is_delete="0"></type>
+    <type name="печенье птичье молоко"  name_lower="печенье птичье молоко" _id_user_account="2" id_unit="2" is_delete="0"></type>
+    <type name="куриная печень"         name_lower="куриная печень"        _id_user_account="2" id_unit="2" is_delete="0"></type>
+    <type name="Вяленая рыба"           name_lower="вяленая рыба"          _id_user_account="2" id_unit="2" is_delete="0"></type>
+    <type name="Рыбацкий набор"         name_lower="рыбацкий набор"        _id_user_account="2" id_unit="2" is_delete="0"></type>
+    <type name="вязальный набор"        name_lower="вязальный набор"       _id_user_account="2" id_unit="2" is_delete="0"></type>
+    <type name="Лемонема"               name_lower="лемонема"              _id_user_account="2" id_unit="2" is_delete="0"></type>
+    <type name="Куриные окорочка"       name_lower="куриные окорочка"      _id_user_account="2" id_unit="2" is_delete="0"></type>
+    <type name="бедро куриное"          name_lower="бедро куриное"         _id_user_account="2" id_unit="2" is_delete="0"></type>
+    <type name="апельсины"              name_lower="апельсины"             _id_user_account="2" id_unit="2" is_delete="0"></type>
+    <type name="бананы"                 name_lower="бананы"                _id_user_account="2" id_unit="2" is_delete="0"></type>
+    <type name="пиво"                   name_lower="пиво"                  _id_user_account="2" id_unit="2" is_delete="0"></type>
+    <type name="жевачка"                name_lower="жевачка"               _id_user_account="2" id_unit="2" is_delete="0"></type>
+
 
     <!--
     <detail _id_type="0" _id_purchase="3" price="18.5" for_amount_unit="1" for_id_unit="0"
