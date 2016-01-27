@@ -6,8 +6,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
+import com.BloodliviyKot.OurBudget.Dialogs.TypeDialog;
 import com.BloodliviyKot.tools.DataBase.EQ;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
 import com.BloodliviyKot.tools.DataBase.entitys.Unit;
@@ -89,6 +92,29 @@ public class WTypes
       //Сопоставляем
       ((TextView)_view.findViewById(R.id.types_item_unit)).setText("     " + Unit.units[id_unit].name);
     }
+  }
+
+  //Создаем меню
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu)
+  {
+    //Создаем меню из ресурса
+    getMenuInflater().inflate(R.menu.types_menu, menu);
+    return true;
+  }
+
+  //Обрабатываем выбор пункта меню
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item)
+  {
+    switch(item.getItemId())
+    {
+      case R.id.m_types_add:
+        TypeDialog type_dialog = new TypeDialog();
+        type_dialog.show(getFragmentManager(), "d2");
+        return true;
+    }
+    return super.onOptionsItemSelected(item);
   }
 
 }
