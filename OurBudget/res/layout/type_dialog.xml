@@ -14,8 +14,8 @@
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Название"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/type_caption"
                 android:id="@+id/type_dialog_text_name"
                 android:layout_above="@+id/linearLayout" android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"/>
@@ -32,7 +32,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Единицы измерения"
+                    android:text="@string/type_text_unit"
                     android:id="@+id/type_dialog_text_unit" android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="10dp" android:layout_toLeftOf="@+id/type_dialog_unit"/>
@@ -52,7 +52,7 @@
         <Button
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="Сохранить"
+                android:text="@string/type_button_save"
                 android:id="@+id/type_dialog_save" android:layout_below="@+id/type_dialog_line1"
                 android:layout_centerHorizontal="true" android:layout_marginTop="12dp"/>
     </LinearLayout>

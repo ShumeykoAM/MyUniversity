@@ -41,6 +41,10 @@
     <string name="types_caption">Виды товаров и услуг</string>
     <string name="types_m_add">Добавить</string>
 
+    <string name="type_caption">Название товара или услуги</string>
+    <string name="type_text_unit">Единицы измерения</string>
+    <string name="type_button_save">Сохранить</string>
+
     <string name="details_caption">Товары и услуги</string>
     <string name="details_status">Итого</string>
     <string name="details_m_add">Добавить</string>

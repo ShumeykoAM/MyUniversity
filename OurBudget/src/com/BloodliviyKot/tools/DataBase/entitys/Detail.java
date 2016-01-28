@@ -47,8 +47,8 @@ public class Detail
     {
       if(price != null && amount != null)
       {
-        Unit o_for_amount_unit = Unit.units[(int)for_amount_unit];
-        Unit o_unit = Unit.units[(int)id_unit];
+        Unit o_for_amount_unit = new Unit(for_id_unit);
+        Unit o_unit = new Unit(id_unit);
         cost = (price/for_amount_unit)*amount*(o_unit.multiplier/o_for_amount_unit.multiplier);
         success = true;
       }

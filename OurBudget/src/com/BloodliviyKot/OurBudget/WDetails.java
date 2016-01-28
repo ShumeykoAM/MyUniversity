@@ -14,6 +14,8 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import com.BloodliviyKot.OurBudget.Dialogs.DetailDialog;
+import com.BloodliviyKot.OurBudget.Dialogs.I_DialogResult;
+import com.BloodliviyKot.OurBudget.Dialogs.RESULT;
 import com.BloodliviyKot.tools.DataBase.EQ;
 import com.BloodliviyKot.tools.DataBase.entitys.Detail;
 import com.BloodliviyKot.tools.DataBase.entitys.Unit;
@@ -21,7 +23,7 @@ import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
 
 public class WDetails
   extends Activity
-  implements AdapterView.OnItemClickListener, DetailDialog.I_DetailDialogResult
+  implements AdapterView.OnItemClickListener, I_DialogResult
 {
   private MySQLiteOpenHelper oh;
   private SQLiteDatabase db;
@@ -77,7 +79,7 @@ public class WDetails
     //startActivityForResult(intent, R.layout.details); //Запуск активности с onActivityResult
   }
   @Override
-  public void onResult(DetailDialog.RESULT code)
+  public void onResult(RESULT code)
   {
     int fdfd=0;
     fdfd++;
@@ -154,9 +156,9 @@ public class WDetails
       if(detail.calcAmount())
       {
         if(detail.amount == (int)(double)detail.amount)
-          amount = Integer.toString((int)(double)detail.amount) + Unit.units[(int)detail.id_unit].name;
+          amount = Integer.toString((int)(double)detail.amount) + new Unit(detail.id_unit).name;
         else
-          amount = detail.amount.toString() + Unit.units[(int)detail.id_unit].name;
+          amount = detail.amount.toString() + new Unit(detail.id_unit).name;
       }
       if(detail.calcCost(false));
         cost = Detail.formatmoney(detail.cost);

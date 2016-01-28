@@ -17,10 +17,10 @@ public class DetailDialog
   implements View.OnClickListener
 {
   final String LOG_TAG = "myLogs";
-  private I_DetailDialogResult result_handler = null;
+  private I_DialogResult result_handler = null;
   private Detail detail;
 
-  public DetailDialog(I_DetailDialogResult _result_handler)
+  public DetailDialog(I_DialogResult _result_handler)
   {
     result_handler = _result_handler;
   }
@@ -48,25 +48,10 @@ public class DetailDialog
     result_handler.onResult(RESULT.CANCEL);
   }
   @Override
-  public void onDismiss(DialogInterface dialog)
-  {
-    super.onDismiss(dialog);
-  }
-  @Override
   public void onCancel(DialogInterface dialog)
   {
     super.onCancel(dialog);
     result_handler.onResult(RESULT.CANCEL);
   }
 
-  public enum RESULT
-  {
-    OK,
-    CANCEL
-  }
-  //Интерфейс для обработчика результата работы диалога
-  public static interface I_DetailDialogResult
-  {
-    void onResult(RESULT code);
-  }
 }

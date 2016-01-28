@@ -9,9 +9,8 @@ import android.os.Bundle;
 import android.view.*;
 import android.widget.*;
 import com.BloodliviyKot.tools.DataBase.EQ;
-import com.BloodliviyKot.tools.DataBase.entitys.Detail;
-import com.BloodliviyKot.tools.DataBase.entitys.Unit;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
+import com.BloodliviyKot.tools.DataBase.entitys.Detail;
 
 import java.text.SimpleDateFormat;
 
@@ -194,7 +193,7 @@ MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
           stat; flag=stat=cursor.moveToNext())
       {
         Detail detail = new Detail(cursor);
-        Unit unit = Unit.units[(int)detail.for_id_unit];
+        //Unit unit = Unit.units[(int)detail.for_id_unit];
         double cost = 0;
         if(detail.calcCost(false)) //Если стоимость возможно вычислить то прибавим ее й общей сумме
           cost = detail.cost;
