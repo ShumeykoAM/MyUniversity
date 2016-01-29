@@ -101,9 +101,9 @@ public class WDetails
     switch(item.getItemId())
     {
       case R.id.m_details_add:
-        Intent intent = new Intent(this, WMarkDetails.class);
+        Intent intent = new Intent(this, WMarkTypes.class);
         //intent.putExtra(getString(R.string.intent_purchases_id), id);
-        startActivityForResult(intent, R.layout.mark_details); //Запуск активности с onActivityResult
+        startActivityForResult(intent, R.layout.mark_types); //Запуск активности с onActivityResult
         return true;
     }
     return super.onOptionsItemSelected(item);

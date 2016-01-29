@@ -45,3 +45,9 @@ SELECT type._id, type._id_user_account, type.name, type.name_lower,
 SELECT type._id, type._id_user_account, type.name, type.name_lower,
   type.id_server, type.id_unit, type.is_delete
   FROM type WHERE type._id_user_account IS NULL;
+
+--TYPES_USER_NOT_ACC_LIKE_NAME
+SELECT type._id, type._id_user_account, type.name, type.name_lower,
+  type.id_server, type.id_unit, type.is_delete
+FROM type, user_account WHERE
+  type._id_user_account IS NULL AND (name_lower LIKE ?);

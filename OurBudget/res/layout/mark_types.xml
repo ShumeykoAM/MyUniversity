@@ -7,12 +7,12 @@
     <SearchView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/mark_details_search"
+            android:id="@+id/mark_types_search"
             android:layout_gravity="center_horizontal"/>
     <ListView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/mark_details_list_types"
-            android:layout_below="@+id/mark_details_search"
+            android:id="@+id/mark_types_list_types"
+            android:layout_below="@+id/mark_types_search"
             />
 </RelativeLayout>

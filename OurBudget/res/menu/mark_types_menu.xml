@@ -3,6 +3,6 @@
     <item android:id="@+id/m_mark_details_add_type"
           android:showAsAction="always"
           android:icon="@drawable/ic_add"
-          android:title="@string/mark_details_m_add_type">
+          android:title="@string/mark_types_m_add_type">
     </item>
 </menu>

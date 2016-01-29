@@ -88,18 +88,21 @@ MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
     switch(item.getItemId())
     {
       case R.id.m_purchases_add:
-        //Из за того что на эмульке кнопка вызова меню не отображается
-        intent = new Intent(this, WTypes.class);
-        startActivity(intent); //Запуск активности
+        //На эмульке меню не робя так что приходится сюда временно тыкать
+        //intent = new Intent(this, WTypes.class);
+        //startActivity(intent); //Запуск активности
+        //return true;
 
 
+        intent = new Intent(this, WMarkTypes.class);
+        startActivityForResult(intent, R.layout.mark_types); //Запуск активности с onActivityResult
         return true;
       case R.id.m_purchases_user_account:
         intent = new Intent(this, WUserAccount.class);
         startActivity(intent); //Запуск активности
         return true;
       case R.id.m_purchases_type:
-        intent = new Intent(this, WUserAccount.class);
+        intent = new Intent(this, WTypes.class);
         startActivity(intent); //Запуск активности
         return true;
     }
@@ -133,7 +136,24 @@ MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
     }
     return super.onContextItemSelected(item);
   }
+  @Override
+  public void onActivityResult(int requestCode, int resultCode, Intent data)
+  {
+    switch(requestCode)
+    {
+      case R.layout.mark_types:
+        if(resultCode == RESULT_OK)
+        {
+          //Выбрали детали, теперь надо запустить окно с деталями
+          int fdfdf = 0;
+          fdfdf++;
+          fdfdf++;
+        }
+        break;
 
+
+    }
+  }
 
   //Переопределим SimpleCursorAdapter что бы форматировать данные из базы нужным образом
   private static class PurchasesAdapter
