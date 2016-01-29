@@ -14,12 +14,13 @@ public class Unit
   public long _id_group; //группа например г-граммы в которую войдут Кг, г
   //public String nameGroup; //Объем, длина, количество, вес и тд.
 
+  private static final String[] columns = new String[] { "_id", "name", "multiplier", "_id_group" };
   private static MatrixCursor cursor;
 
-  public Unit(long _id)
+  public Unit(long __id)
   {
-    //Ну как бы position всегда равно _id-1
-    if(cursor.moveToPosition((int)_id-1))
+    //Ну как бы position всегда равно _id-1 в курсоре cursor
+    if(cursor.moveToPosition((int)__id-1))
     {
       _id        = cursor.getLong  (cursor.getColumnIndex("_id"));
       name       = cursor.getString(cursor.getColumnIndex("name"));
@@ -46,16 +47,29 @@ public class Unit
   }
   public static Cursor getCursor()
   {
-    return cursor;
+    MatrixCursor copy_cursor = new MatrixCursor(columns);
+    for(boolean status=cursor.moveToFirst(); status; status = cursor.moveToNext())
+    {
+      Unit unit = new Unit(cursor.getLong(cursor.getColumnIndex("_id")));
+      copy_cursor.addRow(new Object[]{unit._id, unit.name, unit.multiplier, unit._id_group});
+    }
+    return copy_cursor;
   }
   public static Cursor cursorForGroup(long _id_group)
   {
-    return null;
+    MatrixCursor g_cursor = new MatrixCursor(columns);
+    for(boolean status=cursor.moveToFirst(); status; status = cursor.moveToNext())
+    {
+      Unit unit = new Unit(cursor.getLong(cursor.getColumnIndex("_id")));
+      if(unit._id_group == _id_group)
+        g_cursor.addRow(new Object[]{unit._id, unit.name, unit.multiplier, _id_group});
+    }
+    return g_cursor;
   }
   static
   {
     //Фиксированный набор единиц измерения
-    String[] columns = new String[] { "_id", "name", "multiplier", "_id_group" };
+
     cursor = new MatrixCursor(columns);
 
     long id = 1/*0 не используем*/, g_id;

@@ -20,6 +20,7 @@
 
     <type name="батарейки ААА"          name_lower="батарейки aaa"         _id_user_account="2" id_unit="1" is_delete="0"></type>
     <type name="Батар АА"               name_lower="батар аа"              _id_user_account="2" id_unit="2" is_delete="0"></type>
+    <!--
     <type name="молоко"                 name_lower="молоко"                _id_user_account="2" id_unit="3" is_delete="0"></type>
     <type name="Молочный рай"           name_lower="молочный рай"          _id_user_account="2" id_unit="2" is_delete="0"></type>
     <type name="печенье птичье молоко"  name_lower="печенье птичье молоко" _id_user_account="2" id_unit="2" is_delete="0"></type>
@@ -34,7 +35,7 @@
     <type name="бананы"                 name_lower="бананы"                _id_user_account="2" id_unit="2" is_delete="0"></type>
     <type name="пиво"                   name_lower="пиво"                  _id_user_account="2" id_unit="2" is_delete="0"></type>
     <type name="жевачка"                name_lower="жевачка"               _id_user_account="2" id_unit="2" is_delete="0"></type>
-
+    -->
 
     <!--
     <detail _id_type="0" _id_purchase="3" price="18.5" for_amount_unit="1" for_id_unit="0"

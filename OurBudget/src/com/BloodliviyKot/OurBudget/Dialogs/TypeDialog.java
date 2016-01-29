@@ -2,19 +2,21 @@ package com.BloodliviyKot.OurBudget.Dialogs;
 
 import android.annotation.SuppressLint;
 import android.app.DialogFragment;
+import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.SimpleCursorAdapter;
-import android.widget.Spinner;
+import android.widget.*;
 import com.BloodliviyKot.OurBudget.R;
+import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
 import com.BloodliviyKot.tools.DataBase.entitys.Type;
 import com.BloodliviyKot.tools.DataBase.entitys.Unit;
+import com.BloodliviyKot.tools.DataBase.entitys.UserAccount;
 
 @SuppressLint("ValidFragment")
 public class TypeDialog
@@ -28,6 +30,9 @@ public class TypeDialog
   private I_DialogResult result_handler = null;
   private Type type;
   private REGIME regime;
+  private SimpleCursorAdapter unit_adapter;
+  private MySQLiteOpenHelper oh;
+  private SQLiteDatabase db;
 
   public static enum REGIME
   {
@@ -54,6 +59,9 @@ public class TypeDialog
     sp_unit = (Spinner)v.findViewById(R.id.type_dialog_unit);
     button_save = (Button)v.findViewById(R.id.type_dialog_save);
 
+    oh = new MySQLiteOpenHelper(v.getContext());
+    db = oh.getWritableDatabase();
+
     et_name.setText(type.name);
     button_save.setOnClickListener(this);
     //Список единиц измерения
@@ -65,11 +73,20 @@ public class TypeDialog
     else
     {
       //Сформировать список из ед. измер. входящих в группу которой принадлежит текущая заданная ед. измер.
-      cursor_unit = Unit.cursorForGroup(1);
+      Unit unit = new Unit(type.id_unit);
+      cursor_unit = Unit.cursorForGroup(unit._id_group);
+      button_save.setText(getString(R.string.type_button_save_change));
     }
-    SimpleCursorAdapter unit_adapter = new SimpleCursorAdapter(v.getContext(),
+    unit_adapter = new SimpleCursorAdapter(v.getContext(),
       android.R.layout.simple_list_item_1, cursor_unit, new String[]{"name"}, new int[]{android.R.id.text1});
     sp_unit.setAdapter(unit_adapter);
+    int pos = 0;
+    for(boolean status=cursor_unit.moveToFirst(); status ;status=cursor_unit.moveToNext(), pos++)
+      if(cursor_unit.getLong(cursor_unit.getColumnIndex("_id")) == type.id_unit)
+      {
+        sp_unit.setSelection(pos);
+        break;
+      }
 
     return v;
   }
@@ -78,9 +95,52 @@ public class TypeDialog
   {
     if(v == button_save)
     {
+      RESULT result = RESULT.CANCEL;
       //Сохраним изменённый или новый вид товара или услуги
+      UserAccount active_user_account = UserAccount.getActiveUserAccount(oh, db);
+      Long id_active_user_account = active_user_account != null ? active_user_account._id : null;
+      Type entered_type = new Type(id_active_user_account, et_name.getText().toString(), null,
+        unit_adapter.getItemId(unit_adapter.getCursor().getPosition()), 0);
+      if(entered_type.name.compareTo(new String("")) != 0)
+      {
+        try
+        {
+          if(regime == REGIME.NEW)
+          {
+            if( entered_type.insertDateBase(db) == -1)
+              result = RESULT.ERROR;
+            else
+              result = RESULT.OK;
+          }
+          else if( regime == REGIME.EDIT &&
+                  (type.name.compareTo(entered_type.name) != 0 || type.id_unit != entered_type.id_unit) )
+          {
+            ContentValues values = new ContentValues();
+            values.put("name", entered_type.name);
+            values.put("name_lower", entered_type.name_lower);
+            values.put("id_unit", entered_type.id_unit);
 
-      dismiss();
+              if(db.update(Type.table_name, values, "_id = ?", new String[]{new Long(type._id).toString()}) == 0)
+                result = RESULT.ERROR;
+              else
+                result = RESULT.OK;
+          }
+        }
+        catch(SQLException e)
+        {
+          result = RESULT.ERROR;
+        }
+        if(result == RESULT.ERROR)
+        {
+          Toast err = Toast.makeText(v.getContext(), R.string.type_err_save, Toast.LENGTH_LONG);
+          err.show();
+        }
+        else
+        {
+          dismiss();
+          result_handler.onResult(result);
+        }
+      }
     }
   }
   /*

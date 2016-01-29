@@ -44,6 +44,8 @@
     <string name="type_caption">Название товара или услуги</string>
     <string name="type_text_unit">Единицы измерения</string>
     <string name="type_button_save">Сохранить</string>
+    <string name="type_button_save_change">Сохранить изменения</string>
+    <string name="type_err_save">Такой вид товара или услуги уже существует</string>
 
     <string name="details_caption">Товары и услуги</string>
     <string name="details_status">Итого</string>

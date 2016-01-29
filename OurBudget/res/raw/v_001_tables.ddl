@@ -26,7 +26,7 @@ CREATE TABLE type
 CREATE UNIQUE INDEX unique_type ON type
 (
   _id_user_account,
-  name
+  name_lower
 );
 
 CREATE TABLE purchase

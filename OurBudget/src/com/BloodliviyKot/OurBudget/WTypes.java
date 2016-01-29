@@ -20,7 +20,8 @@ import com.BloodliviyKot.tools.DataBase.entitys.Unit;
 
 public class WTypes
   extends Activity
-  implements I_DialogResult, FilterQueryProvider, SearchView.OnQueryTextListener
+  implements I_DialogResult, FilterQueryProvider, SearchView.OnQueryTextListener,
+  AdapterView.OnItemClickListener
 {
   private SearchView search;
   private ListView list_types;
@@ -54,6 +55,7 @@ public class WTypes
       cursor, new String[]{"name"},
       new int[]{R.id.types_item_name});
     list_types.setAdapter(list_adapter);
+    list_types.setOnItemClickListener(this);
 
     list_adapter.setFilterQueryProvider(this);
     search.setOnQueryTextListener(this);
@@ -94,9 +96,7 @@ public class WTypes
     switch(item.getItemId())
     {
       case R.id.m_types_add:
-        Type type = new Type();
-        type.name = search.getQuery().toString();
-        type.id_unit = 1; //Штуки наверное самое распрастранненная мера
+        Type type = new Type(null, search.getQuery().toString(), null, 1, 0);
         TypeDialog type_dialog = new TypeDialog(this, type, TypeDialog.REGIME.NEW);
         type_dialog.show(getFragmentManager(), null);
         return true;
@@ -111,6 +111,13 @@ public class WTypes
       cursor.requery();
       list_adapter.notifyDataSetChanged();
     }
+  }
+  @Override
+  public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+  {
+    Type type = new Type(list_adapter.getCursor());
+    TypeDialog type_dialog = new TypeDialog(this, type, TypeDialog.REGIME.EDIT);
+    type_dialog.show(getFragmentManager(), null);
   }
 
 

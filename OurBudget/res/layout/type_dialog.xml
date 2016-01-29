@@ -37,7 +37,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="10dp" android:layout_toLeftOf="@+id/type_dialog_unit"/>
             <Spinner
-                    android:layout_width="90dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/type_dialog_unit" android:layout_gravity="center_horizontal"
                     android:layout_centerVertical="true"
