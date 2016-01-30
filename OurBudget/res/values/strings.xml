@@ -35,7 +35,9 @@
     <string name="alert_connect_err_server_connect">Сервер временно недоступен</string>
     <string name="alert_connect_err_inet">Отсутствует подключение к интернет</string>
 
-    <string name="mark_types_caption">Выбрать детали</string>
+    <string name="mark_types_caption">Выбрать товары или услуги</string>
+    <string name="mark_types_button_ok">Готово</string>
+    <string name="mark_types_err">Нужно выбрать хотя бы один вид</string>
     <string name="mark_types_m_add_type">Добавить вид</string>
 
     <string name="types_caption">Виды товаров и услуг</string>

@@ -8,11 +8,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.*;
+import com.BloodliviyKot.OurBudget.Dialogs.DialogParamsSelectedType;
 import com.BloodliviyKot.tools.DataBase.EQ;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
 import com.BloodliviyKot.tools.DataBase.entitys.Detail;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 public class WPurchases
   extends Activity
@@ -145,6 +147,8 @@ MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
         if(resultCode == RESULT_OK)
         {
           //Выбрали детали, теперь надо запустить окно с деталями
+          ArrayList<DialogParamsSelectedType> selected = data.getParcelableArrayListExtra("Selected");
+
           int fdfdf = 0;
           fdfdf++;
           fdfdf++;

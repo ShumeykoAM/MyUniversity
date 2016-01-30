@@ -6,11 +6,12 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.view.*;
-import android.widget.CheckedTextView;
-import android.widget.ListView;
-import android.widget.SearchView;
-import android.widget.SimpleCursorAdapter;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.*;
+import com.BloodliviyKot.OurBudget.Dialogs.DialogParamsSelectedType;
 import com.BloodliviyKot.OurBudget.Dialogs.I_DialogResult;
 import com.BloodliviyKot.OurBudget.Dialogs.RESULT;
 import com.BloodliviyKot.OurBudget.Dialogs.TypeDialog;
@@ -18,14 +19,16 @@ import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
 import com.BloodliviyKot.tools.DataBase.entitys.Type;
 import com.BloodliviyKot.tools.DataBase.entitys.UserAccount;
 
+import java.util.ArrayList;
 import java.util.TreeSet;
 
 public class WMarkTypes
   extends Activity
-  implements I_DialogResult, View.OnClickListener
+  implements I_DialogResult, View.OnClickListener, AdapterView.OnLongClickListener
 {
   private SearchView search;
   private ListView list_types;
+  private Button button_ok;
 
   private MySQLiteOpenHelper oh;
   private SQLiteDatabase db;
@@ -34,7 +37,7 @@ public class WMarkTypes
   private SimpleCursorAdapter list_adapter;
   private TypesCursorTuning types_cursor_tuning;
 
-  private TreeSet<Long> checked_ids; //ИДшники отмеченных видов товаров и услуг
+  private TreeSet<DialogParamsSelectedType> selected_ids; //ИДшники отмеченных видов товаров и услуг
 
   //Создание активности
   @Override
@@ -44,10 +47,11 @@ public class WMarkTypes
     setContentView(R.layout.mark_types);
     search = (SearchView)findViewById(R.id.mark_types_search);
     list_types = (ListView)findViewById(R.id.mark_types_list_types);
+    button_ok = (Button)findViewById(R.id.mark_types_button_ok);
     //Читаем параметры переданные из родительской активности
     Bundle extras = getIntent().getExtras();
     //account_id = extras.getLong(getString(R.string.intent_purchases_id));
-    checked_ids = new TreeSet<Long>();
+    selected_ids = new TreeSet<DialogParamsSelectedType>(DialogParamsSelectedType.comparator);
     //Создаем помощник управления БД
     oh = new MySQLiteOpenHelper(getApplicationContext());
     db = oh.getWritableDatabase();
@@ -61,7 +65,7 @@ public class WMarkTypes
     types_cursor_tuning = new TypesCursorTuning(oh, db, cursor, list_adapter);
     list_adapter.setFilterQueryProvider(types_cursor_tuning);
     search.setOnQueryTextListener(types_cursor_tuning);
-    registerForContextMenu(list_types);
+    button_ok.setOnClickListener(this);
   }
 
   //Создаем меню
@@ -89,19 +93,6 @@ public class WMarkTypes
     return super.onOptionsItemSelected(item);
   }
 
-  //Контекстное меню для элемента списка типов
-  @Override
-  public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
-  {
-    super.onCreateContextMenu(menu, v, menuInfo);
-    if(v == list_types)
-    {
-      //Не будем выдввать контекстное меню а сразу перейдем к параметрам детали
-      // onItemLongClick вот чем можно что бы не городить контекстное меню
-
-    }
-  }
-
   @Override
   public void onResult(RESULT code, Intent data)
   {
@@ -109,7 +100,7 @@ public class WMarkTypes
     {
       Bundle extras = data.getExtras();
       long _id = extras.getLong("_id");
-      checked_ids.add(new Long(_id));
+      selected_ids.add(new DialogParamsSelectedType(_id, false));
       cursor[0].requery();
       list_adapter.notifyDataSetChanged();
       int position, count;
@@ -127,21 +118,51 @@ public class WMarkTypes
     }
   }
 
+  private long getIdCheckedTextView(CheckedTextView checked_text_view)
+  {
+    int pos = list_types.getPositionForView(checked_text_view);
+    return list_types.getItemIdAtPosition(pos);
+  }
   @Override
   public void onClick(View v)
   {
-    CheckedTextView checked_text_view = (CheckedTextView)v;
-    boolean new_state = !checked_text_view.isChecked();
-    checked_text_view.setChecked(new_state);
-    int pos = list_types.getPositionForView(v);
-    long id = list_types.getItemIdAtPosition(pos);
-    if(new_state)
-      checked_ids.add(id);
-    else
-      checked_ids.remove(id);
-    //list_types.getCheckedItemIds();
+    if(v == button_ok)
+    {
+      if(selected_ids.size() == 0)
+        Toast.makeText(v.getContext(), R.string.mark_types_err, Toast.LENGTH_LONG).show();
+      else
+      {
+        Intent ires = new Intent();  //Вернем
+        ArrayList<DialogParamsSelectedType> selected = new ArrayList<DialogParamsSelectedType>(selected_ids);
+        ires.putParcelableArrayListExtra("Selected", selected);
+        setResult(RESULT_OK, ires);  //Возвращаемый в родительскую активность результат
+        finish();
+      }
+    }
+    else //Один из видов товаров и услуг
+    {
+      boolean new_state = !((CheckedTextView)v).isChecked();
+      ((CheckedTextView)v).setChecked(new_state);
+      long id = getIdCheckedTextView((CheckedTextView)v);
+      if(new_state)
+        selected_ids.add(new DialogParamsSelectedType(id, false));
+      else
+        selected_ids.remove(new DialogParamsSelectedType(id, true));
+    }
   }
 
+  @Override
+  public boolean onLongClick(View v)
+  {
+    if(!((CheckedTextView)v).isChecked())
+      onClick(v);
+    long id = getIdCheckedTextView((CheckedTextView)v);
+    DialogParamsSelectedType selected = selected_ids.floor(new DialogParamsSelectedType(id, true));
+    //Зададим параметры
+
+
+    return true;
+  }
 
   //Адаптер для списка
   private class TypesAdapter
@@ -163,8 +184,9 @@ public class WMarkTypes
       View view = super.getView(position, convertView, parent);
       CheckedTextView checked_text_view = (CheckedTextView)view.findViewById(android.R.id.text1);
       checked_text_view.setOnClickListener(WMarkTypes.this); //передаем ссылку на Outer класс
+      checked_text_view.setOnLongClickListener(WMarkTypes.this);
       long id = list_types.getItemIdAtPosition(position);
-      list_types.setItemChecked(position, checked_ids.contains(id));
+      list_types.setItemChecked(position, selected_ids.contains(new DialogParamsSelectedType(id, true)));
       return view;
     }
   }

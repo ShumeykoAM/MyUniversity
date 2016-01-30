@@ -64,14 +64,10 @@ public class AlertConnect
       switch(server_access)
       {
         case SERVER_PROBLEM:
-          Toast err_server = Toast.makeText(context,
-            context.getString(R.string.alert_connect_err_server_connect), Toast.LENGTH_LONG);
-          err_server.show();
+          Toast.makeText(context, R.string.alert_connect_err_server_connect, Toast.LENGTH_LONG).show();
           break;
         case GOOGLE_PROBLEM:
-          Toast err_inet = Toast.makeText(context,
-            context.getString(R.string.alert_connect_err_inet), Toast.LENGTH_LONG);
-          err_inet.show();
+          Toast.makeText(context, R.string.alert_connect_err_inet, Toast.LENGTH_LONG).show();
           break;
       }
     }
