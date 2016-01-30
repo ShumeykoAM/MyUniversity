@@ -112,10 +112,10 @@ public class WRegistration
                   //Все данные которым не назначена учетная запись привязываем к созданной учетной записи
                   values.clear();
                   values.put("_id_user_account", _id[0]);
-                  count = db.update(Purchase.table_name, values, "_id_user_account IS NULL", null);
-                  count = db.update(Type.table_name, values, "_id_user_account IS NULL", null);
-                  count = db.update(Detail.table_name, values, "_id_user_account IS NULL", null);
-                  count = db.update(Chronological.table_name, values, "_id_user_account IS NULL", null);
+                  count = db.update(Purchase.table_name, values, "_id_user_account = 0", null);
+                  count = db.update(Type.table_name, values, "_id_user_account = 0", null);
+                  count = db.update(Detail.table_name, values, "_id_user_account = 0", null);
+                  count = db.update(Chronological.table_name, values, "_id_user_account = 0", null);
                   return true;
                 }
               });

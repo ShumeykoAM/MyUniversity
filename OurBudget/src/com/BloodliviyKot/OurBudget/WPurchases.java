@@ -38,7 +38,7 @@ public class WPurchases
     list_purchases.setOnItemClickListener(this);
 
 //Для отладки удалим базу
-//MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
+MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
 //Создаем помощник управления БД
     oh = new MySQLiteOpenHelper(getApplicationContext());
     db = oh.getWritableDatabase();

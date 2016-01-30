@@ -7,6 +7,7 @@ import android.widget.SearchView;
 import android.widget.SimpleCursorAdapter;
 import com.BloodliviyKot.tools.DataBase.EQ;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
+import com.BloodliviyKot.tools.DataBase.entitys.UserAccount;
 
 public class TypesCursorTuning
   implements FilterQueryProvider, SearchView.OnQueryTextListener
@@ -27,14 +28,8 @@ public class TypesCursorTuning
 
   public static Cursor getFullCursor(MySQLiteOpenHelper _oh, SQLiteDatabase _db)
   {
-    Cursor result = _db.rawQuery(_oh.getQuery(EQ.USER_ACCOUNT_COUNT), null);
-    int count = result.getCount();
-    result.close();
-    if(count > 0)
-      result = _db.rawQuery(_oh.getQuery(EQ.TYPES_USER_ACC), null);
-    else
-      result = _db.rawQuery(_oh.getQuery(EQ.TYPES_USER_NOT_ACC), null);
-    return result;
+    Long _id_user_account = UserAccount.getIDActiveUserAccount(_oh, _db);
+    return _db.rawQuery(_oh.getQuery(EQ.TYPES_USER_ACC), new String[]{_id_user_account.toString()});
   }
 
   //Фильтруем отображаемый список согласно тексту написанному в строке поиска
@@ -46,14 +41,9 @@ public class TypesCursorTuning
       cursor[0] = getFullCursor(oh, db);
     else
     {
-      Cursor c = db.rawQuery(oh.getQuery(EQ.USER_ACCOUNT_COUNT), null);
-      int count = c.getCount();
-      if(count > 0)
-        cursor[0] = db.rawQuery(oh.getQuery(EQ.TYPES_USER_ACC_LIKE_NAME),
-          new String[]{"%" + constraint + "%"});
-      else
-        cursor[0] = db.rawQuery(oh.getQuery(EQ.TYPES_USER_NOT_ACC_LIKE_NAME),
-          new String[]{"%" + constraint + "%"});
+      Long _id_user_account = UserAccount.getIDActiveUserAccount(oh, db);
+      cursor[0] = db.rawQuery(oh.getQuery(EQ.TYPES_USER_ACC_LIKE_NAME),
+          new String[]{_id_user_account.toString(), "%" + constraint + "%"});
     }
     return cursor[0];
   }

@@ -112,7 +112,7 @@ public class TypeDialog
       RESULT result = RESULT.CANCEL;
       //Сохраним изменённый или новый вид товара или услуги
       UserAccount active_user_account = UserAccount.getActiveUserAccount(oh, db);
-      Long id_active_user_account = active_user_account != null ? active_user_account._id : null;
+      Long id_active_user_account = active_user_account != null ? active_user_account._id : UserAccount.NON;
       Type entered_type = new Type(id_active_user_account, et_name.getText().toString(), null,
         unit_adapter.getItemId(unit_adapter.getCursor().getPosition()), 0);
       if(entered_type.name.compareTo(new String("")) != 0)

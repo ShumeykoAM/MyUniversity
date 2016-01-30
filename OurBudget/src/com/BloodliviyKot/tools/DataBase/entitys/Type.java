@@ -10,7 +10,7 @@ public class Type
   public static final String table_name = "type";
 
   public long _id;
-  public Long _id_user_account;
+  public long _id_user_account; //Если 0 то нету учетной записи
   public String name;
   public String name_lower;
   public Long id_server;
@@ -20,8 +20,7 @@ public class Type
   public Type(Cursor cursor)
   {
     _id              = cursor.getLong  (cursor.getColumnIndex("_id"));
-    if(!cursor.isNull(cursor.getColumnIndex("_id_user_account")))
-      _id_user_account = cursor.getLong  (cursor.getColumnIndex("_id_user_account"));
+    _id_user_account = cursor.getLong  (cursor.getColumnIndex("_id_user_account"));
     name             = cursor.getString(cursor.getColumnIndex("name"));
     name_lower       = cursor.getString(cursor.getColumnIndex("name_lower"));
     if(!cursor.isNull(cursor.getColumnIndex("id_server")))
@@ -29,7 +28,7 @@ public class Type
     id_unit          = cursor.getLong  (cursor.getColumnIndex("id_unit"));
     is_delete = cursor.getInt(cursor.getColumnIndex("is_delete"));
   }
-  public Type(Long __id_user_account, String _name, Long _id_server, long _id_unit, int _is_delete)
+  public Type(long __id_user_account, String _name, Long _id_server, long _id_unit, int _is_delete)
   {
     _id_user_account = __id_user_account;
     name             = _name;
@@ -43,8 +42,7 @@ public class Type
   {
     ContentValues values = new ContentValues();
     //values.put("_id", _id);
-    if(_id_user_account != null)
-      values.put("_id_user_account", _id_user_account);
+    values.put("_id_user_account"  , _id_user_account);
     values.put("name"              , name );
     values.put("name_lower"        , name_lower);
     if(id_server != null)

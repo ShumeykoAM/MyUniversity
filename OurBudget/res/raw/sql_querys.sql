@@ -2,9 +2,6 @@
 SELECT user_account._id, user_account.login, user_account.password, user_account.is_active
   FROM user_account;
 
---USER_ACCOUNT_COUNT
-SELECT COUNT(_id) FROM user_account;
-
 -- USER_ACCOUNT_ACTIYE
 SELECT user_account._id, user_account.login, user_account.password, user_account.is_active
   FROM user_account
@@ -31,23 +28,9 @@ SELECT detail._id, detail.price, detail.for_amount_unit, detail.for_id_unit,
 -- TYPES_USER_ACC
 SELECT type._id, type._id_user_account, type.name, type.name_lower,
   type.id_server, type.id_unit, type.is_delete
-  FROM type, user_account WHERE
-  type._id_user_account = user_account._id AND user_account.is_active = 1;
+  FROM type WHERE type._id_user_account = ?;
 
 -- TYPES_USER_ACC_LIKE_NAME
 SELECT type._id, type._id_user_account, type.name, type.name_lower,
   type.id_server, type.id_unit, type.is_delete
-  FROM type, user_account WHERE
-  type._id_user_account = user_account._id AND user_account.is_active = 1
-  AND (name_lower LIKE ?);
-
--- TYPES_USER_NOT_ACC
-SELECT type._id, type._id_user_account, type.name, type.name_lower,
-  type.id_server, type.id_unit, type.is_delete
-  FROM type WHERE type._id_user_account IS NULL;
-
---TYPES_USER_NOT_ACC_LIKE_NAME
-SELECT type._id, type._id_user_account, type.name, type.name_lower,
-  type.id_server, type.id_unit, type.is_delete
-FROM type, user_account WHERE
-  type._id_user_account IS NULL AND (name_lower LIKE ?);
+  FROM type WHERE type._id_user_account = ? AND (type.name_lower LIKE ?);

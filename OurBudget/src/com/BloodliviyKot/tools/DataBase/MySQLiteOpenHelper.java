@@ -147,7 +147,7 @@ public class MySQLiteOpenHelper
   {
     //Базы лежат тут
     //  /data/data/com.BloodliviyKot.OurBudget/databases/OurBudget.db
-    //  можно посмотреть через Tools/android/AWD Manager
+    //  можно посмотреть через Tools/android/ADM
 
     //Удалим базу для отладки !!!!!!!!!!!!!!!!!!!
     String dbfile_path = Environment.getDataDirectory().toString() +

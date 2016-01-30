@@ -17,6 +17,7 @@ import com.BloodliviyKot.OurBudget.Dialogs.TypeDialog;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
 import com.BloodliviyKot.tools.DataBase.entitys.Type;
 import com.BloodliviyKot.tools.DataBase.entitys.Unit;
+import com.BloodliviyKot.tools.DataBase.entitys.UserAccount;
 
 public class WTypes
   extends Activity
@@ -70,7 +71,8 @@ public class WTypes
     switch(item.getItemId())
     {
       case R.id.m_types_add:
-        Type type = new Type(null, search.getQuery().toString(), null, 1, 0);
+        Type type = new Type(UserAccount.getIDActiveUserAccount(oh, db),
+          search.getQuery().toString(), null, 1, 0);
         TypeDialog type_dialog = new TypeDialog(this, type, TypeDialog.REGIME.NEW);
         type_dialog.show(getFragmentManager(), null);
         return true;

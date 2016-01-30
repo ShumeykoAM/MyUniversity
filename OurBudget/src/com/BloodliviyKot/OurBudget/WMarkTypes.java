@@ -16,6 +16,7 @@ import com.BloodliviyKot.OurBudget.Dialogs.RESULT;
 import com.BloodliviyKot.OurBudget.Dialogs.TypeDialog;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
 import com.BloodliviyKot.tools.DataBase.entitys.Type;
+import com.BloodliviyKot.tools.DataBase.entitys.UserAccount;
 
 import java.util.TreeSet;
 
@@ -79,7 +80,8 @@ public class WMarkTypes
     switch(item.getItemId())
     {
       case R.id.m_mark_details_add_type:
-        Type type = new Type(null, search.getQuery().toString(), null, 1, 0);
+        Type type = new Type(UserAccount.getIDActiveUserAccount(oh, db),
+          search.getQuery().toString(), null, 1, 0);
         TypeDialog type_dialog = new TypeDialog(this, type, TypeDialog.REGIME.NEW);
         type_dialog.show(getFragmentManager(), null);
         return true;

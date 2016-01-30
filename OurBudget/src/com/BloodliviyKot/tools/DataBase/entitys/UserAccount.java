@@ -7,6 +7,7 @@ import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
 
 public class UserAccount
 {
+  public static final long NON = 0; //Нет учетной записи, использовать вместо NULL
   public static final String table_name = "user_account";
 
   public long _id;
@@ -30,4 +31,11 @@ public class UserAccount
       return new UserAccount(cursor);
     return null;
   }
+  public static long getIDActiveUserAccount(MySQLiteOpenHelper oh, SQLiteDatabase db)
+  {
+    UserAccount active_user_account = UserAccount.getActiveUserAccount(oh, db);
+    return active_user_account != null ? active_user_account._id : UserAccount.NON;
+  }
+
+
 }
