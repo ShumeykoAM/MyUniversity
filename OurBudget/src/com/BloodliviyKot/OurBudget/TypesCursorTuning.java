@@ -43,18 +43,19 @@ public class TypesCursorTuning
   public Cursor runQuery(CharSequence constraint)
   {
     if(constraint.toString().compareTo("") == 0)
-      return getFullCursor(oh, db);
+      cursor[0] = getFullCursor(oh, db);
     else
     {
       Cursor c = db.rawQuery(oh.getQuery(EQ.USER_ACCOUNT_COUNT), null);
       int count = c.getCount();
       if(count > 0)
-        return cursor[0] = db.rawQuery(oh.getQuery(EQ.TYPES_USER_ACC_LIKE_NAME),
+        cursor[0] = db.rawQuery(oh.getQuery(EQ.TYPES_USER_ACC_LIKE_NAME),
           new String[]{"%" + constraint + "%"});
       else
-        return cursor[0] = db.rawQuery(oh.getQuery(EQ.TYPES_USER_NOT_ACC_LIKE_NAME),
+        cursor[0] = db.rawQuery(oh.getQuery(EQ.TYPES_USER_NOT_ACC_LIKE_NAME),
           new String[]{"%" + constraint + "%"});
     }
+    return cursor[0];
   }
   @Override
   public boolean onQueryTextSubmit(String query)

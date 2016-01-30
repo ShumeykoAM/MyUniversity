@@ -45,13 +45,13 @@ public class DetailDialog
   public void onClick(View v)
   {
     dismiss();
-    result_handler.onResult(RESULT.CANCEL);
+    result_handler.onResult(RESULT.CANCEL, null);
   }
   @Override
   public void onCancel(DialogInterface dialog)
   {
     super.onCancel(dialog);
-    result_handler.onResult(RESULT.CANCEL);
+    result_handler.onResult(RESULT.CANCEL, null);
   }
 
 }

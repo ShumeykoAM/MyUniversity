@@ -79,7 +79,7 @@ public class WDetails
     //startActivityForResult(intent, R.layout.details); //Запуск активности с onActivityResult
   }
   @Override
-  public void onResult(RESULT code)
+  public void onResult(RESULT code, Intent data)
   {
     int fdfd=0;
     fdfd++;

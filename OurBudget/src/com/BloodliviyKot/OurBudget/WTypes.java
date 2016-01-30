@@ -3,6 +3,7 @@ package com.BloodliviyKot.OurBudget;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -77,7 +78,7 @@ public class WTypes
     return super.onOptionsItemSelected(item);
   }
   @Override
-  public void onResult(RESULT code)
+  public void onResult(RESULT code, Intent data)
   {
     if(code == RESULT.OK)
     {

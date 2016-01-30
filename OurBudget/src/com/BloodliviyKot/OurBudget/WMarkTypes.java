@@ -2,14 +2,12 @@ package com.BloodliviyKot.OurBudget;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.view.ContextMenu;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
+import android.view.*;
+import android.widget.CheckedTextView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SimpleCursorAdapter;
@@ -19,9 +17,11 @@ import com.BloodliviyKot.OurBudget.Dialogs.TypeDialog;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
 import com.BloodliviyKot.tools.DataBase.entitys.Type;
 
+import java.util.TreeSet;
+
 public class WMarkTypes
   extends Activity
-  implements AdapterView.OnItemClickListener, I_DialogResult
+  implements I_DialogResult, View.OnClickListener
 {
   private SearchView search;
   private ListView list_types;
@@ -33,42 +33,34 @@ public class WMarkTypes
   private SimpleCursorAdapter list_adapter;
   private TypesCursorTuning types_cursor_tuning;
 
+  private TreeSet<Long> checked_ids; //ИДшники отмеченных видов товаров и услуг
+
   //Создание активности
   @Override
   public void onCreate(Bundle savedInstanceState)
   {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.mark_types);
-
     search = (SearchView)findViewById(R.id.mark_types_search);
     list_types = (ListView)findViewById(R.id.mark_types_list_types);
-
     //Читаем параметры переданные из родительской активности
     Bundle extras = getIntent().getExtras();
     //account_id = extras.getLong(getString(R.string.intent_purchases_id));
-
+    checked_ids = new TreeSet<Long>();
     //Создаем помощник управления БД
     oh = new MySQLiteOpenHelper(getApplicationContext());
     db = oh.getWritableDatabase();
     cursor = new Cursor[1];
     cursor[0] = TypesCursorTuning.getFullCursor(oh, db);
     list_adapter = new TypesAdapter(getApplicationContext(), android.R.layout.simple_list_item_multiple_choice,
-      cursor[0], new String[]{"name"},
-      new int[]{android.R.id.text1});
+                                    cursor[0], new String[]{"name"},
+                                    new int[]{android.R.id.text1});
     list_types.setAdapter(list_adapter);
-    list_types.setOnItemClickListener(this);
     list_types.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
     types_cursor_tuning = new TypesCursorTuning(oh, db, cursor, list_adapter);
     list_adapter.setFilterQueryProvider(types_cursor_tuning);
     search.setOnQueryTextListener(types_cursor_tuning);
     registerForContextMenu(list_types);
-  }
-
-  @Override //Выбрали тип, поставим шалочку
-  public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-  {
-
-
   }
 
   //Создаем меню
@@ -103,24 +95,53 @@ public class WMarkTypes
     if(v == list_types)
     {
       //Не будем выдввать контекстное меню а сразу перейдем к параметрам детали
-
+      // onItemLongClick вот чем можно что бы не городить контекстное меню
 
     }
   }
 
   @Override
-  public void onResult(RESULT code)
+  public void onResult(RESULT code, Intent data)
   {
     if(code == RESULT.OK)
     {
+      Bundle extras = data.getExtras();
+      long _id = extras.getLong("_id");
+      checked_ids.add(new Long(_id));
       cursor[0].requery();
       list_adapter.notifyDataSetChanged();
-      //Добавили новый тип, отметим его сразу
-
-
+      int position, count;
+      for(position = 0, count=list_types.getCount();
+          position<count && _id != list_types.getItemIdAtPosition(position); ++position );
+      final int pos = position;
+      list_types.post(new Runnable()
+      {
+        @Override
+        public void run()
+        {
+          list_types.smoothScrollToPosition(pos);
+        }
+      });
     }
   }
 
+  @Override
+  public void onClick(View v)
+  {
+    CheckedTextView checked_text_view = (CheckedTextView)v;
+    boolean new_state = !checked_text_view.isChecked();
+    checked_text_view.setChecked(new_state);
+    int pos = list_types.getPositionForView(v);
+    long id = list_types.getItemIdAtPosition(pos);
+    if(new_state)
+      checked_ids.add(id);
+    else
+      checked_ids.remove(id);
+    //list_types.getCheckedItemIds();
+  }
+
+
+  //Адаптер для списка
   private class TypesAdapter
     extends SimpleCursorAdapter
   {
@@ -133,7 +154,16 @@ public class WMarkTypes
     {
       //Здесь заполнются данными поля указанные в конструкторе
       super.bindView(_view, _context, _cursor);
-
+    }
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent)
+    {
+      View view = super.getView(position, convertView, parent);
+      CheckedTextView checked_text_view = (CheckedTextView)view.findViewById(android.R.id.text1);
+      checked_text_view.setOnClickListener(WMarkTypes.this); //передаем ссылку на Outer класс
+      long id = list_types.getItemIdAtPosition(position);
+      list_types.setItemChecked(position, checked_ids.contains(id));
+      return view;
     }
   }
 }

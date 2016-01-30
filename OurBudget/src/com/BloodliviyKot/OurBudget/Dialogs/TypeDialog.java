@@ -3,6 +3,8 @@ package com.BloodliviyKot.OurBudget.Dialogs;
 import android.annotation.SuppressLint;
 import android.app.DialogFragment;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -11,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import com.BloodliviyKot.OurBudget.R;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
@@ -33,6 +36,7 @@ public class TypeDialog
   private SimpleCursorAdapter unit_adapter;
   private MySQLiteOpenHelper oh;
   private SQLiteDatabase db;
+  private InputMethodManager imm;
 
   public static enum REGIME
   {
@@ -54,7 +58,7 @@ public class TypeDialog
   {
     //getDialog().setTitle("Title!");
     getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-    View v = inflater.inflate(R.layout.type_dialog, null);
+    final View v = inflater.inflate(R.layout.type_dialog, null);
     et_name = (EditText)v.findViewById(R.id.type_dialog_name);
     sp_unit = (Spinner)v.findViewById(R.id.type_dialog_unit);
     button_save = (Button)v.findViewById(R.id.type_dialog_save);
@@ -87,7 +91,17 @@ public class TypeDialog
         sp_unit.setSelection(pos);
         break;
       }
-
+    //Клавиатуру для конкретного view можно корректно вызвать только так
+    et_name.post(new Runnable(){
+      @Override
+      public void run()
+      {
+        InputMethodManager imm = (InputMethodManager)
+          et_name.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(et_name, InputMethodManager.SHOW_IMPLICIT);
+        et_name.requestFocus();
+      }
+    });
     return v;
   }
   @Override
@@ -103,11 +117,12 @@ public class TypeDialog
         unit_adapter.getItemId(unit_adapter.getCursor().getPosition()), 0);
       if(entered_type.name.compareTo(new String("")) != 0)
       {
+        long _id = 0;
         try
         {
           if(regime == REGIME.NEW)
           {
-            if( entered_type.insertDateBase(db) == -1)
+            if( (_id = entered_type.insertDateBase(db)) == -1)
               result = RESULT.ERROR;
             else
               result = RESULT.OK;
@@ -115,15 +130,15 @@ public class TypeDialog
           else if( regime == REGIME.EDIT &&
                   (type.name.compareTo(entered_type.name) != 0 || type.id_unit != entered_type.id_unit) )
           {
+            _id = type._id;
             ContentValues values = new ContentValues();
             values.put("name", entered_type.name);
             values.put("name_lower", entered_type.name_lower);
             values.put("id_unit", entered_type.id_unit);
-
-              if(db.update(Type.table_name, values, "_id = ?", new String[]{new Long(type._id).toString()}) == 0)
-                result = RESULT.ERROR;
-              else
-                result = RESULT.OK;
+            if(db.update(Type.table_name, values, "_id = ?", new String[]{new Long(type._id).toString()}) == 0)
+              result = RESULT.ERROR;
+            else
+              result = RESULT.OK;
           }
         }
         catch(SQLException e)
@@ -138,7 +153,9 @@ public class TypeDialog
         else
         {
           dismiss();
-          result_handler.onResult(result);
+          Intent data = new Intent();
+          data.putExtra("_id", _id);
+          result_handler.onResult(result, data);
         }
       }
     }
