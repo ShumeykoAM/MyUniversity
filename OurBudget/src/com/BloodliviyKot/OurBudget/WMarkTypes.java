@@ -66,6 +66,7 @@ public class WMarkTypes
     list_adapter.setFilterQueryProvider(types_cursor_tuning);
     search.setOnQueryTextListener(types_cursor_tuning);
     button_ok.setOnClickListener(this);
+    button_ok.setClickable(false);
   }
 
   //Создаем меню
@@ -100,7 +101,7 @@ public class WMarkTypes
     {
       Bundle extras = data.getExtras();
       long _id = extras.getLong("_id");
-      selected_ids.add(new DialogParamsSelectedType(_id, false));
+      selected_ids.add(new DialogParamsSelectedType(_id, false, oh, db));
       cursor[0].requery();
       list_adapter.notifyDataSetChanged();
       int position, count;
@@ -115,9 +116,16 @@ public class WMarkTypes
           list_types.smoothScrollToPosition(pos);
         }
       });
+      setParamsSelectedType(_id);
+      button_ok.setClickable(selected_ids.size() > 0);
     }
   }
 
+  private void setParamsSelectedType(long id)
+  {
+    DialogParamsSelectedType selected = selected_ids.floor(new DialogParamsSelectedType(id, true, null, null));
+    selected.show(getFragmentManager(), null);
+  }
   private long getIdCheckedTextView(CheckedTextView checked_text_view)
   {
     int pos = list_types.getPositionForView(checked_text_view);
@@ -145,9 +153,14 @@ public class WMarkTypes
       ((CheckedTextView)v).setChecked(new_state);
       long id = getIdCheckedTextView((CheckedTextView)v);
       if(new_state)
-        selected_ids.add(new DialogParamsSelectedType(id, false));
+      {
+        selected_ids.add(new DialogParamsSelectedType(id, false, oh, db));
+        //Зададим параметры
+        setParamsSelectedType(id);
+      }
       else
-        selected_ids.remove(new DialogParamsSelectedType(id, true));
+        selected_ids.remove(new DialogParamsSelectedType(id, true, null, null));
+      button_ok.setClickable(selected_ids.size() > 0);
     }
   }
 
@@ -156,11 +169,12 @@ public class WMarkTypes
   {
     if(!((CheckedTextView)v).isChecked())
       onClick(v);
-    long id = getIdCheckedTextView((CheckedTextView)v);
-    DialogParamsSelectedType selected = selected_ids.floor(new DialogParamsSelectedType(id, true));
-    //Зададим параметры
-
-
+    else
+    {
+      //Зададим параметры
+      long id = getIdCheckedTextView((CheckedTextView)v);
+      setParamsSelectedType(id);
+    }
     return true;
   }
 
@@ -186,7 +200,8 @@ public class WMarkTypes
       checked_text_view.setOnClickListener(WMarkTypes.this); //передаем ссылку на Outer класс
       checked_text_view.setOnLongClickListener(WMarkTypes.this);
       long id = list_types.getItemIdAtPosition(position);
-      list_types.setItemChecked(position, selected_ids.contains(new DialogParamsSelectedType(id, true)));
+      list_types.setItemChecked(position, selected_ids.contains(
+        new DialogParamsSelectedType(id, true, null, null)));
       return view;
     }
   }

@@ -1,5 +1,6 @@
 package com.BloodliviyKot.OurBudget.Dialogs;
 
+import android.annotation.SuppressLint;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
@@ -11,7 +12,7 @@ import android.view.Window;
 import com.BloodliviyKot.OurBudget.R;
 import com.BloodliviyKot.tools.DataBase.entitys.Detail;
 
-
+@SuppressLint("ValidFragment")
 public class DetailDialog
   extends DialogFragment
   implements View.OnClickListener

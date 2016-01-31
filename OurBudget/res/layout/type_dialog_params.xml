@@ -9,51 +9,44 @@
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" android:id="@+id/type_dialog_ll"
+            android:layout_centerHorizontal="true" android:id="@+id/type_dialog_params_ll"
             android:gravity="center_vertical|center_horizontal">
         <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/type_caption"
-                android:id="@+id/type_dialog_text_name"
-                android:layout_centerHorizontal="true"
-                android:layout_gravity="center_horizontal"/>
-        <EditText
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/type_dialog_name"
-                android:layout_alignParentRight="true" android:layout_alignParentLeft="true"
-                android:singleLine="true"/>
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/type_dialog_params_text_name"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal" android:singleLine="true"/>
         <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
-            <TextView
-                    android:layout_width="wrap_content"
+            <EditText
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/type_text_unit"
-                    android:id="@+id/type_dialog_text_unit" android:layout_centerVertical="true"
+                    android:id="@+id/type_dialog_params_count"
+                    android:singleLine="true" android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
-                    android:layout_marginLeft="10dp" android:layout_toLeftOf="@+id/type_dialog_unit"/>
+                    android:layout_toLeftOf="@+id/type_dialog_params_unit" android:inputType="numberDecimal"
+                    android:gravity="center_vertical|right"/>
             <Spinner
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/type_dialog_unit" android:layout_gravity="center_horizontal"
+                    android:id="@+id/type_dialog_params_unit" android:layout_gravity="center_horizontal"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="4dp" android:layout_alignParentRight="true"/>
         </RelativeLayout>
         <ImageView
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
-                android:id="@+id/type_dialog_line1"
+                android:id="@+id/type_dialog_params_line1"
                 android:layout_centerHorizontal="true" android:layout_marginTop="8dp"
-                android:background="@drawable/ic_g_line" android:layout_below="@+id/linearLayout"/>
+                android:background="@drawable/ic_g_line"/>
         <Button
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/type_button_save"
-                android:id="@+id/type_dialog_save" android:layout_below="@+id/type_dialog_line1"
+                android:text="@string/type_dialog_params_save"
+                android:id="@+id/type_dialog_params_save" android:layout_below="@+id/type_dialog_params_line1"
                 android:layout_centerHorizontal="true" android:layout_marginTop="12dp"/>
     </LinearLayout>
 </RelativeLayout>
