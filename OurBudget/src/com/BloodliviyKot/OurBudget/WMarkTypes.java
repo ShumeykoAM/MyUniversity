@@ -38,6 +38,7 @@ public class WMarkTypes
   private TypesCursorTuning types_cursor_tuning;
 
   private TreeSet<DialogParamsSelectedType> selected_ids; //ИДшники отмеченных видов товаров и услуг
+  Integer state_purchase;
 
   //Создание активности
   @Override
@@ -50,6 +51,8 @@ public class WMarkTypes
     button_ok = (Button)findViewById(R.id.mark_types_button_ok);
     //Читаем параметры переданные из родительской активности
     Bundle extras = getIntent().getExtras();
+    if(extras.containsKey("StatePurchase"))
+      state_purchase = extras.getInt("StatePurchase");
     //account_id = extras.getLong(getString(R.string.intent_purchases_id));
     selected_ids = new TreeSet<DialogParamsSelectedType>(DialogParamsSelectedType.comparator);
     //Создаем помощник управления БД
@@ -143,6 +146,8 @@ public class WMarkTypes
         Intent ires = new Intent();  //Вернем
         ArrayList<DialogParamsSelectedType> selected = new ArrayList<DialogParamsSelectedType>(selected_ids);
         ires.putParcelableArrayListExtra("Selected", selected);
+        if(state_purchase != null)
+          ires.putExtra("StatePurchase", state_purchase);
         setResult(RESULT_OK, ires);  //Возвращаемый в родительскую активность результат
         finish();
       }

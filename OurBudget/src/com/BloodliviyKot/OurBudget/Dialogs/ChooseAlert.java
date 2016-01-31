@@ -15,7 +15,9 @@ public class ChooseAlert
                      String name_button1)
   {
     AlertDialog.Builder builder = new AlertDialog.Builder(context);
-    builder.setTitle(title).setMessage(message);
+    builder.setTitle(title);
+    if(message != null)
+      builder.setMessage(message);
     if(id_icon != null)
       builder.setIcon(id_icon);
     builder.setPositiveButton(name_button1, this);
@@ -26,7 +28,9 @@ public class ChooseAlert
                      String name_button1, String name_button2)
   {
     AlertDialog.Builder builder = new AlertDialog.Builder(context);
-    builder.setTitle(title).setMessage(message);
+    builder.setTitle(title);
+    if(message != null)
+      builder.setMessage(message);
     if(id_icon != null)
       builder.setIcon(id_icon);
     builder.setPositiveButton(name_button1, this);
@@ -38,7 +42,9 @@ public class ChooseAlert
                      String name_button1, String name_button2, String name_button3)
   {
     AlertDialog.Builder builder = new AlertDialog.Builder(context);
-    builder.setTitle(title).setMessage(message);
+    builder.setTitle(title);
+    if(message != null)
+      builder.setMessage(message);
     if(id_icon != null)
       builder.setIcon(id_icon);
     builder.setPositiveButton(name_button1, this);

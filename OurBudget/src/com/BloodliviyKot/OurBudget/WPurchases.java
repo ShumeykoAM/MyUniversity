@@ -8,17 +8,20 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.*;
+import com.BloodliviyKot.OurBudget.Dialogs.ChooseAlert;
 import com.BloodliviyKot.OurBudget.Dialogs.DialogParamsSelectedType;
 import com.BloodliviyKot.tools.DataBase.EQ;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
 import com.BloodliviyKot.tools.DataBase.entitys.Detail;
+import com.BloodliviyKot.tools.DataBase.entitys.Purchase;
+import com.BloodliviyKot.tools.DataBase.entitys.UserAccount;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class WPurchases
   extends Activity
-  implements AdapterView.OnItemClickListener
+  implements AdapterView.OnItemClickListener, ChooseAlert.I_ChooseAlertHandler
 {
   //Перечислим состояния покупок константами
   public static final int STATE_NONE = -1;   //Такого состояния не существует (не может быть в базе)
@@ -40,7 +43,7 @@ public class WPurchases
     list_purchases.setOnItemClickListener(this);
 
 //Для отладки удалим базу
-MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
+//MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
 //Создаем помощник управления БД
     oh = new MySQLiteOpenHelper(getApplicationContext());
     db = oh.getWritableDatabase();
@@ -96,8 +99,9 @@ MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
         //return true;
 
 
-        intent = new Intent(this, WMarkTypes.class);
-        startActivityForResult(intent, R.layout.mark_types); //Запуск активности с onActivityResult
+        ChooseAlert choose_alert = new ChooseAlert(this, "Добавить покупку или оплату",
+          android.R.drawable.ic_dialog_alert, null, "Запланировать", "Исполнить");
+        choose_alert.show(this);
         return true;
       case R.id.m_purchases_user_account:
         intent = new Intent(this, WUserAccount.class);
@@ -109,6 +113,16 @@ MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
         return true;
     }
     return super.onOptionsItemSelected(item);
+  }
+  @Override
+  public void onKlick(ChooseAlert.CHOOSE_BUTTON button)
+  {
+    Intent intent = new Intent(this, WMarkTypes.class);
+    if(button == ChooseAlert.CHOOSE_BUTTON.BUTTON1)
+      intent.putExtra("StatePurchase", STATE_PLAN);
+    else if(button == ChooseAlert.CHOOSE_BUTTON.BUTTON2)
+      intent.putExtra("StatePurchase", STATE_EXECUTE);
+    startActivityForResult(intent, R.layout.mark_types); //Запуск активности с onActivityResult
   }
 
   //Контекстное меню для элемента списка счетов
@@ -146,15 +160,25 @@ MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
       case R.layout.mark_types:
         if(resultCode == RESULT_OK)
         {
-          //Выбрали детали, теперь надо запустить окно с деталями
+          //Выбрали товары и услуги, теперь создаем покупку с этими товарами и услугами и отображаем ее
           ArrayList<DialogParamsSelectedType> selected = data.getParcelableArrayListExtra("Selected");
+          int state_purchase = data.getExtras().getInt("StatePurchase");
+          Purchase purchase = new Purchase(UserAccount.getIDActiveUserAccount(oh, db), null,
+            new java.util.Date().getTime(), state_purchase, 0);
 
-          int fdfdf = 0;
-          fdfdf++;
-          fdfdf++;
+          /*
+          SimpleDateFormat date_format = new SimpleDateFormat("dd.MM.yyyy-hh:mm");
+          SimpleDateFormat date_format2 = new SimpleDateFormat("hh:mm");
+          String dt = date_format.format(purchase.date_time);
+          String dt2 = date_format2.format(purchase.date_time);
+          */
+
+          long id_p = purchase.insertDateBase(db);
+          id_p++;
+
+
         }
         break;
-
 
     }
   }
