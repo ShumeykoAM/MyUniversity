@@ -165,6 +165,15 @@ public class WPurchases
           int state_purchase = data.getExtras().getInt("StatePurchase");
           Purchase purchase = new Purchase(UserAccount.getIDActiveUserAccount(oh, db), null,
             new java.util.Date().getTime(), state_purchase, 0);
+          //Вот тут пеример использования дата пикера
+          //http://developer.alexanderklimov.ru/android/views/datepicker.php
+
+          /*
+          * Далее надо выдать пользователю диалог с надписью "запланировать на" и галочку
+          * и если галочку поставить то станет доступным редактирование поля даты и времени
+          * у меня в телефона в splaner класно реализован выбор даты и времени
+          */
+
 
           /*
           SimpleDateFormat date_format = new SimpleDateFormat("dd.MM.yyyy-hh:mm");
