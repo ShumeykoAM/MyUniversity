@@ -15,6 +15,10 @@
     <string name="purchases_mc_duplicate">Дублировать</string>
     <string name="purchases_mc_delete">Удалить</string>
 
+    <string name="purchase_date_time_tile_plan">Запланировать на</string>
+    <string name="purchase_date_time_tile_execute">Оплата произведена</string>
+    <string name="purchase_date_time_ok">Ok</string>
+
     <string name="user_account_caption">Учетная запись</string>
     <string name="user_account_login">Логин</string>
     <string name="user_account_password">Пароль</string>

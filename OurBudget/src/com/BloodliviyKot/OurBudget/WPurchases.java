@@ -8,8 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.*;
-import com.BloodliviyKot.OurBudget.Dialogs.ChooseAlert;
-import com.BloodliviyKot.OurBudget.Dialogs.DialogParamsSelectedType;
+import com.BloodliviyKot.OurBudget.Dialogs.*;
 import com.BloodliviyKot.tools.DataBase.EQ;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
 import com.BloodliviyKot.tools.DataBase.entitys.Detail;
@@ -163,7 +162,7 @@ public class WPurchases
           //Выбрали товары и услуги, теперь создаем покупку с этими товарами и услугами и отображаем ее
           ArrayList<DialogParamsSelectedType> selected = data.getParcelableArrayListExtra("Selected");
           int state_purchase = data.getExtras().getInt("StatePurchase");
-          Purchase purchase = new Purchase(UserAccount.getIDActiveUserAccount(oh, db), null,
+          final Purchase purchase = new Purchase(UserAccount.getIDActiveUserAccount(oh, db), null,
             new java.util.Date().getTime(), state_purchase, 0);
           //Вот тут пеример использования дата пикера
           //http://developer.alexanderklimov.ru/android/views/datepicker.php
@@ -173,7 +172,15 @@ public class WPurchases
           * и если галочку поставить то станет доступным редактирование поля даты и времени
           * у меня в телефона в splaner класно реализован выбор даты и времени
           */
-
+          PurchaseDateTimeDialog date_time_dialog = new PurchaseDateTimeDialog(new I_DialogResult(){
+              @Override
+              public void onResult(RESULT code, Intent data)
+              {
+                purchase.date_time = data.getExtras().getLong("date_time");
+              }
+            },purchase.date_time
+          );
+          date_time_dialog.show(getFragmentManager(), null);
 
           /*
           SimpleDateFormat date_format = new SimpleDateFormat("dd.MM.yyyy-hh:mm");

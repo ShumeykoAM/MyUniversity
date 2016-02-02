@@ -44,7 +44,6 @@ public class TypeDialog
     EDIT
   }
 
-  @SuppressLint("ValidFragment")
   public TypeDialog(I_DialogResult _result_handler, Type _type, REGIME _regime)
   {
     result_handler = _result_handler;
