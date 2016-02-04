@@ -166,9 +166,10 @@ public class WPurchases
           final Purchase purchase = new Purchase(UserAccount.getIDActiveUserAccount(oh, db), null,
             date_time, state_purchase, 0);
           //Создаем покупку и ее список товаров и услуг
-          long id_p = purchase.insertDateBase(db);
-          id_p++;
+          long id_purchase = purchase.insertDateBase(db);
 
+          //for()
+          //Detail detail = new Detail(UserAccount.getIDActiveUserAccount(oh, db), id_purchase, selected.id_type );
 
 
           //Переходим в окно товаров и услуг данной покупки
