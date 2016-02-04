@@ -10,7 +10,7 @@
             android:layout_alignWithParentIfMissing="false"
             android:layout_alignParentLeft="true"
             android:headerDividersEnabled="false"
-            android:layout_above="@+id/details_status"/>
+            android:layout_alignParentTop="true" android:layout_above="@+id/details_status"/>
     <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

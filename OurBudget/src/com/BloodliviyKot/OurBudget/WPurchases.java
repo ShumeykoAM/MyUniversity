@@ -8,9 +8,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.*;
-import com.BloodliviyKot.OurBudget.Dialogs.*;
+import com.BloodliviyKot.OurBudget.Dialogs.ChooseAlert;
+import com.BloodliviyKot.OurBudget.Dialogs.DialogParamsSelectedType;
 import com.BloodliviyKot.tools.DataBase.EQ;
+import com.BloodliviyKot.tools.DataBase.I_Transaction;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
+import com.BloodliviyKot.tools.DataBase.SQLTransaction;
 import com.BloodliviyKot.tools.DataBase.entitys.Detail;
 import com.BloodliviyKot.tools.DataBase.entitys.Purchase;
 import com.BloodliviyKot.tools.DataBase.entitys.UserAccount;
@@ -30,6 +33,8 @@ public class WPurchases
   private MySQLiteOpenHelper oh;
   private SQLiteDatabase db;
   private ListView list_purchases;
+  private SimpleCursorAdapter list_adapter;
+  private Cursor cursor;
 
   //Создание активности
   @Override
@@ -53,8 +58,8 @@ public class WPurchases
     //Cursor обязательно должен содержать _id иначе SimpleCursorAdapter не заработает
     String q_params[] ={ Long.toString(s_date), Long.toString(e_date),
       Integer.toString(STATE_EXECUTE), Integer.toString(state) };
-    Cursor cursor = db.rawQuery(oh.getQuery(EQ.PURCHASES), q_params);
-    ListAdapter list_adapter = new PurchasesAdapter(this, R.layout.purchases_item, cursor,
+    cursor = db.rawQuery(oh.getQuery(EQ.PURCHASES), q_params);
+    list_adapter = new PurchasesAdapter(this, R.layout.purchases_item, cursor,
       new String[]{},
       new int[]{R.id.purchases_item_contnt, R.id.purchases_item_info, R.id.purchases_item_state},
       db);
@@ -160,27 +165,53 @@ public class WPurchases
         if(resultCode == RESULT_OK)
         {
           //Выбрали товары и услуги, теперь создаем покупку с этими товарами и услугами и отображаем ее
-          ArrayList<DialogParamsSelectedType> selected = data.getParcelableArrayListExtra("Selected");
+          final ArrayList<DialogParamsSelectedType> selected = data.getParcelableArrayListExtra("Selected");
           int state_purchase = data.getExtras().getInt("StatePurchase");
           long date_time = data.getExtras().getLong("date_time");
           final Purchase purchase = new Purchase(UserAccount.getIDActiveUserAccount(oh, db), null,
             date_time, state_purchase, 0);
           //Создаем покупку и ее список товаров и услуг
-          long id_purchase = purchase.insertDateBase(db);
+          final long[] id_purchase = new long[1];
+          SQLTransaction sql_transaction = new SQLTransaction(db, new I_Transaction(){
+            @Override
+            public boolean trnFunc()
+            {
+              id_purchase[0] = purchase.insertDateBase(db);
+              for(DialogParamsSelectedType selected_type : selected)
+              {
+                Detail detail = new Detail(UserAccount.getIDActiveUserAccount(oh, db), id_purchase[0],
+                  selected_type.id_type, null, null, 1, selected_type.id_unit, selected_type.count,
+                  selected_type.id_unit, 0.0, 0);
+                detail.insertDateBase(db);
+              }
+              return true;
+            }
+          });
+          if(sql_transaction.runTransaction())
+          {
+            cursor.requery();
+            list_adapter.notifyDataSetChanged();
 
-          //for()
-          //Detail detail = new Detail(UserAccount.getIDActiveUserAccount(oh, db), id_purchase, selected.id_type );
-
-
-          //Переходим в окно товаров и услуг данной покупки
-
-
-
-
-
+            int position, count;
+            for(position = 0, count=list_purchases.getCount();
+                position<count && id_purchase[0] != list_purchases.getItemIdAtPosition(position);
+                ++position );
+            final int pos = position;
+            list_purchases.post(new Runnable()
+            {
+              @Override
+              public void run()
+              {
+                list_purchases.smoothScrollToPosition(pos);
+              }
+            });
+            //Переходим в окно товаров и услуг данной покупки
+            Intent intent = new Intent(this, WDetails.class);
+            intent.putExtra(getString(R.string.intent_purchases_id), id_purchase[0]);
+            startActivityForResult(intent, R.layout.details); //Запуск активности с onActivityResult
+          }
         }
         break;
-
     }
   }
 
