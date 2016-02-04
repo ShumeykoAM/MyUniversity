@@ -162,35 +162,19 @@ public class WPurchases
           //Выбрали товары и услуги, теперь создаем покупку с этими товарами и услугами и отображаем ее
           ArrayList<DialogParamsSelectedType> selected = data.getParcelableArrayListExtra("Selected");
           int state_purchase = data.getExtras().getInt("StatePurchase");
+          long date_time = data.getExtras().getLong("date_time");
           final Purchase purchase = new Purchase(UserAccount.getIDActiveUserAccount(oh, db), null,
-            new java.util.Date().getTime(), state_purchase, 0);
-          //Вот тут пеример использования дата пикера
-          //http://developer.alexanderklimov.ru/android/views/datepicker.php
-
-          /*
-          * Далее надо выдать пользователю диалог с надписью "запланировать на" и галочку
-          * и если галочку поставить то станет доступным редактирование поля даты и времени
-          * у меня в телефона в splaner класно реализован выбор даты и времени
-          */
-          PurchaseDateTimeDialog date_time_dialog = new PurchaseDateTimeDialog(new I_DialogResult(){
-              @Override
-              public void onResult(RESULT code, Intent data)
-              {
-                purchase.date_time = data.getExtras().getLong("date_time");
-              }
-            },purchase.date_time
-          );
-          date_time_dialog.show(getFragmentManager(), null);
-
-          /*
-          SimpleDateFormat date_format = new SimpleDateFormat("dd.MM.yyyy-hh:mm");
-          SimpleDateFormat date_format2 = new SimpleDateFormat("hh:mm");
-          String dt = date_format.format(purchase.date_time);
-          String dt2 = date_format2.format(purchase.date_time);
-          */
-
+            date_time, state_purchase, 0);
+          //Создаем покупку и ее список товаров и услуг
           long id_p = purchase.insertDateBase(db);
           id_p++;
+
+
+
+          //Переходим в окно товаров и услуг данной покупки
+
+
+
 
 
         }

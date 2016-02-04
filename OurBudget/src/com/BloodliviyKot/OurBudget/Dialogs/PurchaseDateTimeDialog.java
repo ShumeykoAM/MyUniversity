@@ -74,6 +74,8 @@ public class PurchaseDateTimeDialog
   @Override
   public void onClick(View v)
   {
+    //Вот тут пеример использования дата пикера
+    //http://developer.alexanderklimov.ru/android/views/datepicker.php
     if(v == et_date)
     {
       Date date = new Date(date_time);
@@ -90,8 +92,10 @@ public class PurchaseDateTimeDialog
     }
     else if(v == button_save)
     {
-      handlerResult();
       dismiss();
+      Intent data = new Intent();
+      data.putExtra("date_time", date_time);
+      result_handler.onResult(RESULT.OK, data);
     }
   }
   @Override
@@ -118,16 +122,9 @@ public class PurchaseDateTimeDialog
   public void onCancel(DialogInterface dialog)
   {
     super.onCancel(dialog);
-    handlerResult();
-  }
-  private void handlerResult()
-  {
-    if(result_handler != null)
-    {
-      Intent data = new Intent();
-      data.putExtra("date_time", date_time);
-      result_handler.onResult(RESULT.OK, data);
-    }
+    Intent data = new Intent();
+    data.putExtra("date_time", date_time);
+    result_handler.onResult(RESULT.CANCEL, data);
   }
 
   //Строковое представление даты и времени

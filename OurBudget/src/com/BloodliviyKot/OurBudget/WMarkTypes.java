@@ -11,10 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import com.BloodliviyKot.OurBudget.Dialogs.DialogParamsSelectedType;
-import com.BloodliviyKot.OurBudget.Dialogs.I_DialogResult;
-import com.BloodliviyKot.OurBudget.Dialogs.RESULT;
-import com.BloodliviyKot.OurBudget.Dialogs.TypeDialog;
+import com.BloodliviyKot.OurBudget.Dialogs.*;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
 import com.BloodliviyKot.tools.DataBase.entitys.Type;
 import com.BloodliviyKot.tools.DataBase.entitys.UserAccount;
@@ -143,13 +140,24 @@ public class WMarkTypes
         Toast.makeText(v.getContext(), R.string.mark_types_err, Toast.LENGTH_LONG).show();
       else
       {
-        Intent ires = new Intent();  //Вернем
-        ArrayList<DialogParamsSelectedType> selected = new ArrayList<DialogParamsSelectedType>(selected_ids);
-        ires.putParcelableArrayListExtra("Selected", selected);
-        if(state_purchase != null)
-          ires.putExtra("StatePurchase", state_purchase);
-        setResult(RESULT_OK, ires);  //Возвращаемый в родительскую активность результат
-        finish();
+        PurchaseDateTimeDialog date_time_dialog = new PurchaseDateTimeDialog(new I_DialogResult(){
+          @Override
+          public void onResult(RESULT code, Intent data)
+          {
+            if(code == RESULT.OK)
+            {
+              Intent ires = new Intent();  //Вернем
+              ArrayList<DialogParamsSelectedType> selected = new ArrayList<DialogParamsSelectedType>(selected_ids);
+              ires.putParcelableArrayListExtra("Selected", selected);
+              if(state_purchase != null)
+                ires.putExtra("StatePurchase", state_purchase);
+              ires.putExtra("date_time", data.getExtras().getLong("date_time"));
+              setResult(RESULT_OK, ires);  //Возвращаемый в родительскую активность результат
+              finish();
+            }
+          }
+        },new java.util.Date().getTime());
+        date_time_dialog.show(getFragmentManager(), null);
       }
     }
     else //Один из видов товаров и услуг
