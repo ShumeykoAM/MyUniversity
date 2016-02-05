@@ -12,10 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.TimePicker;
+import android.widget.*;
 import com.BloodliviyKot.OurBudget.R;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
 
@@ -31,17 +28,20 @@ public class PurchaseDateTimeDialog
   private MySQLiteOpenHelper oh;
   private SQLiteDatabase db;
 
+  private TextView tv_title;
   private EditText et_date;
   private EditText et_time;
   private Button button_save;
 
-  I_DialogResult result_handler;
+  private I_DialogResult result_handler;
   public long date_time;
+  private boolean is_plan;
 
-  public PurchaseDateTimeDialog(I_DialogResult _result_handler, long _date_time)
+  public PurchaseDateTimeDialog(I_DialogResult _result_handler, long _date_time, boolean _is_plan)
   {
     result_handler = _result_handler;
     date_time = _date_time;
+    is_plan = _is_plan;
   }
 
   @Override
@@ -51,6 +51,7 @@ public class PurchaseDateTimeDialog
     //getDialog().setTitle("Title!");
     getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
     final View v = inflater.inflate(R.layout.purchase_date_time_dialog, null);
+    tv_title = (TextView)v.findViewById(R.id.purchase_date_time_title);
     et_date = (EditText)v.findViewById(R.id.purchase_date_time_date);
     et_time = (EditText)v.findViewById(R.id.purchase_date_time_time);
     button_save = (Button)v.findViewById(R.id.purchase_date_time_save);
@@ -58,6 +59,10 @@ public class PurchaseDateTimeDialog
     oh = new MySQLiteOpenHelper(v.getContext());
     db = oh.getWritableDatabase();
     updateView();
+    if(is_plan)
+      tv_title.setText(R.string.purchase_date_time_tile_plan);
+    else
+      tv_title.setText(R.string.purchase_date_time_tile_execute);
     et_date.setOnClickListener(this);
     et_time.setOnClickListener(this);
     button_save.setOnClickListener(this);

@@ -24,16 +24,22 @@ public class Detail
 
   public Detail(Cursor cursor)
   {
-    _id             = cursor.getLong(cursor.getColumnIndex("_id"));
+    _id              = cursor.getLong(  cursor.getColumnIndex("_id"));
+    _id_user_account = cursor.getLong(  cursor.getColumnIndex("_id_user_account"));
+    _id_purchase     = cursor.getLong(  cursor.getColumnIndex("_id_purchase"));
+    _id_type         = cursor.getLong(  cursor.getColumnIndex("_id_type"));
+    if(!cursor.isNull(cursor.getColumnIndex("id_server")))
+      id_server      = cursor.getLong(  cursor.getColumnIndex("id_server"));
     if(!cursor.isNull(cursor.getColumnIndex("price")))
-      price         = cursor.getDouble(cursor.getColumnIndex("price"));
-    for_amount_unit = cursor.getDouble(cursor.getColumnIndex("for_amount_unit"));
-    for_id_unit     = cursor.getLong(  cursor.getColumnIndex("for_id_unit"));
+      price          = cursor.getDouble(cursor.getColumnIndex("price"));
+    for_amount_unit  = cursor.getDouble(cursor.getColumnIndex("for_amount_unit"));
+    for_id_unit      = cursor.getLong(  cursor.getColumnIndex("for_id_unit"));
     if(!cursor.isNull(cursor.getColumnIndex("amount")))
-      amount          = cursor.getDouble(cursor.getColumnIndex("amount"));
-    id_unit         = cursor.getLong(  cursor.getColumnIndex("id_unit"));
+      amount         = cursor.getDouble(cursor.getColumnIndex("amount"));
+    id_unit          = cursor.getLong(  cursor.getColumnIndex("id_unit"));
     if(!cursor.isNull(cursor.getColumnIndex("cost")))
-      cost          = cursor.getDouble(cursor.getColumnIndex("cost"));
+      cost           = cursor.getDouble(cursor.getColumnIndex("cost"));
+    is_delete        = cursor.getInt(   cursor.getColumnIndex("is_delete"));
   }
   public Detail(long __id_user_account, long __id_purchase, long __id_type, Long _id_server,
                 Double _price, double _for_amount_unit, long _for_id_unit,

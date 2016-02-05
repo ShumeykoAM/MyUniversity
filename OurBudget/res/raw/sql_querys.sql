@@ -22,8 +22,8 @@ SELECT purchase._id, purchase.date_time, purchase.state FROM purchase
 
 -- DETAILS
 SELECT detail._id, detail._id_user_account, detail._id_purchase, detail._id_type, detail.id_server,
-  detail.price, detail.for_amount_unit, detail.for_id_unit,
-  detail.amount, detail.id_unit, detail.cost, type.name FROM detail, type
+  detail.price, detail.for_amount_unit, detail.for_id_unit, detail.amount,
+  detail.id_unit, detail.cost, detail.is_delete, type.name FROM detail, type
   WHERE detail._id_purchase = ? AND type._id=detail._id_type;
 
 -- TYPES_USER_ACC

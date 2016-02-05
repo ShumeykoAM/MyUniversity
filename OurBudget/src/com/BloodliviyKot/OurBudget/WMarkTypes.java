@@ -48,7 +48,7 @@ public class WMarkTypes
     button_ok = (Button)findViewById(R.id.mark_types_button_ok);
     //Читаем параметры переданные из родительской активности
     Bundle extras = getIntent().getExtras();
-    if(extras.containsKey("StatePurchase"))
+    if(extras != null && extras.containsKey("StatePurchase"))
       state_purchase = extras.getInt("StatePurchase");
     //account_id = extras.getLong(getString(R.string.intent_purchases_id));
     selected_ids = new TreeSet<DialogParamsSelectedType>(DialogParamsSelectedType.comparator);
@@ -147,7 +147,8 @@ public class WMarkTypes
             if(code == RESULT.OK)
             {
               Intent ires = new Intent();  //Вернем
-              ArrayList<DialogParamsSelectedType> selected = new ArrayList<DialogParamsSelectedType>(selected_ids);
+              ArrayList<DialogParamsSelectedType> selected =
+                new ArrayList<DialogParamsSelectedType>(selected_ids);
               ires.putParcelableArrayListExtra("Selected", selected);
               if(state_purchase != null)
                 ires.putExtra("StatePurchase", state_purchase);
@@ -156,7 +157,7 @@ public class WMarkTypes
               finish();
             }
           }
-        },new java.util.Date().getTime());
+        },new java.util.Date().getTime(), state_purchase == WPurchases.STATE_PLAN);
         date_time_dialog.show(getFragmentManager(), null);
       }
     }

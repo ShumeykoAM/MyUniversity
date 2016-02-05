@@ -216,7 +216,7 @@ public class WPurchases
   }
 
   //Переопределим SimpleCursorAdapter что бы форматировать данные из базы нужным образом
-  private static class PurchasesAdapter
+  private class PurchasesAdapter
     extends SimpleCursorAdapter
   {
     public static final long SECONDS_IN_DAY = 86400000L;
@@ -261,12 +261,8 @@ public class WPurchases
     private String[] get_contein_and_info(long _id_purchase, int _state, Long _date_time)
     {
       //Получим общую сумму и краткий список деталей
-      String query =
-        "SELECT detail._id, detail.price, detail.for_amount_unit, detail.for_id_unit, " +
-        "detail.amount, detail.id_unit, detail.cost, type.name FROM detail, type " +
-        "WHERE detail._id_purchase = ? AND type._id=detail._id_type;";
       String q_params[] ={ Long.toString(_id_purchase)};
-      Cursor cursor = db.rawQuery(query, q_params);
+      Cursor cursor = db.rawQuery(oh.getQuery(EQ.DETAILS), q_params);
       double sum = 0;
       String s_content = "";
       for(boolean stat=cursor.moveToFirst(), flag=false, fl_len=true;
