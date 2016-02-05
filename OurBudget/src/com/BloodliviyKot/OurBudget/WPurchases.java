@@ -104,7 +104,7 @@ public class WPurchases
 
 
         ChooseAlert choose_alert = new ChooseAlert(this, "Добавить покупку или оплату",
-          android.R.drawable.ic_dialog_alert, null, "Запланировать", "Исполнить");
+          android.R.drawable.ic_dialog_alert, null, "Запланировать", "Уже оплачено");
         choose_alert.show(this);
         return true;
       case R.id.m_purchases_user_account:
