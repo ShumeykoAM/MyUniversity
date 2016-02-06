@@ -87,9 +87,7 @@ public class DialogParamsSelectedType
     tv_type_name.setText(type.name);
     et_count.setText(new DecimalFormat("###.##").format(count));
 
-    //Сформировать список из ед. измер. входящих в группу которой принадлежит текущая заданная ед. измер.
-    Unit unit = new Unit(id_unit);
-    Cursor cursor_unit = Unit.cursorForGroup(unit._id_group);
+    Cursor cursor_unit = Unit.getCursor();
     unit_adapter = new SimpleCursorAdapter(v.getContext(),
       android.R.layout.simple_list_item_1, cursor_unit, new String[]{"name"}, new int[]{android.R.id.text1});
     sp_unit.setAdapter(unit_adapter);

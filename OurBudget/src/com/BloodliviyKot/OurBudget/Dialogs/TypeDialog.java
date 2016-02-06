@@ -68,18 +68,9 @@ public class TypeDialog
     et_name.setText(type.name);
     button_save.setOnClickListener(this);
     //Список единиц измерения
-    Cursor cursor_unit;
-    if(regime == REGIME.NEW)
-    {
-      cursor_unit = Unit.getCursor();
-    }
-    else
-    {
-      //Сформировать список из ед. измер. входящих в группу которой принадлежит текущая заданная ед. измер.
-      Unit unit = new Unit(type.id_unit);
-      cursor_unit = Unit.cursorForGroup(unit._id_group);
+    Cursor cursor_unit = Unit.getCursor();
+    if(regime == REGIME.EDIT)
       button_save.setText(getString(R.string.type_button_save_change));
-    }
     unit_adapter = new SimpleCursorAdapter(v.getContext(),
       android.R.layout.simple_list_item_1, cursor_unit, new String[]{"name"}, new int[]{android.R.id.text1});
     sp_unit.setAdapter(unit_adapter);
