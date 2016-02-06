@@ -16,6 +16,7 @@ import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
 import com.BloodliviyKot.tools.DataBase.SQLTransaction;
 import com.BloodliviyKot.tools.DataBase.entitys.Detail;
 import com.BloodliviyKot.tools.DataBase.entitys.Purchase;
+import com.BloodliviyKot.tools.DataBase.entitys.Purchase.STATE_PURCHASE;
 import com.BloodliviyKot.tools.DataBase.entitys.UserAccount;
 
 import java.text.SimpleDateFormat;
@@ -25,11 +26,6 @@ public class WPurchases
   extends Activity
   implements AdapterView.OnItemClickListener, ChooseAlert.I_ChooseAlertHandler
 {
-  //Перечислим состояния покупок константами
-  public static final int STATE_NONE = -1;   //Такого состояния не существует (не может быть в базе)
-  public static final int STATE_PLAN = 0;    //Запланировано
-  public static final int STATE_EXECUTE = 1; //Исполнено
-
   private MySQLiteOpenHelper oh;
   private SQLiteDatabase db;
   private ListView list_purchases;
@@ -53,11 +49,11 @@ public class WPurchases
     db = oh.getWritableDatabase();
 
     long s_date = 0, e_date = Long.MAX_VALUE;
-    int state = STATE_PLAN; //Должно зависеть от фильтра
+    STATE_PURCHASE state = STATE_PURCHASE.PLAN; //Должно зависеть от фильтра
     //Не группируем, отображаем покупки в хронологическом порядке в диапазоне дат фильтра
     //Cursor обязательно должен содержать _id иначе SimpleCursorAdapter не заработает
     String q_params[] ={ Long.toString(s_date), Long.toString(e_date),
-      Integer.toString(STATE_EXECUTE), Integer.toString(state) };
+      Integer.toString(STATE_PURCHASE.EXECUTE.value), Integer.toString(state.value) };
     cursor = db.rawQuery(oh.getQuery(EQ.PURCHASES), q_params);
     list_adapter = new PurchasesAdapter(this, R.layout.purchases_item, cursor,
       new String[]{},
@@ -123,9 +119,9 @@ public class WPurchases
   {
     Intent intent = new Intent(this, WMarkTypes.class);
     if(button == ChooseAlert.CHOOSE_BUTTON.BUTTON1)
-      intent.putExtra("StatePurchase", STATE_PLAN);
+      intent.putExtra("StatePurchase", STATE_PURCHASE.PLAN.value);
     else if(button == ChooseAlert.CHOOSE_BUTTON.BUTTON2)
-      intent.putExtra("StatePurchase", STATE_EXECUTE);
+      intent.putExtra("StatePurchase", STATE_PURCHASE.EXECUTE.value);
     startActivityForResult(intent, R.layout.mark_types); //Запуск активности с onActivityResult
   }
 
@@ -166,7 +162,7 @@ public class WPurchases
         {
           //Выбрали товары и услуги, теперь создаем покупку с этими товарами и услугами и отображаем ее
           final ArrayList<DialogParamsSelectedType> selected = data.getParcelableArrayListExtra("Selected");
-          int state_purchase = data.getExtras().getInt("StatePurchase");
+          Purchase.STATE_PURCHASE state_purchase = STATE_PURCHASE.getSTATE_PURCHASE(data.getExtras().getInt("StatePurchase"));
           long date_time = data.getExtras().getLong("date_time");
           final Purchase purchase = new Purchase(UserAccount.getIDActiveUserAccount(oh, db), null,
             date_time, state_purchase, 0);
@@ -232,7 +228,7 @@ public class WPurchases
     public void bindView(View _view, Context _context, Cursor _cursor)
     {
       Long id = _cursor.getLong(_cursor.getColumnIndex("_id"));
-      int state = _cursor.getInt(_cursor.getColumnIndex("state"));
+      STATE_PURCHASE state = STATE_PURCHASE.getSTATE_PURCHASE(_cursor.getInt(_cursor.getColumnIndex("state")));
       Long date_time = _cursor.getLong(_cursor.getColumnIndex("date_time"));
       //Подготовим отображаемые данные
       String s_content_info[] = get_contein_and_info(id, state, date_time);
@@ -240,10 +236,10 @@ public class WPurchases
       //ИД Иконки состояния
       switch(state)
       {
-        case WPurchases.STATE_PLAN:
+        case PLAN:
           id_state_icon = R.drawable.ic_exclamation;
           break;
-        case WPurchases.STATE_EXECUTE:
+        case EXECUTE:
           id_state_icon = R.drawable.ic_tick;
           break;
         default:
@@ -258,7 +254,7 @@ public class WPurchases
       tv_info.setText(s_content_info[1]);
       iv_state.setImageResource(id_state_icon);
     }
-    private String[] get_contein_and_info(long _id_purchase, int _state, Long _date_time)
+    private String[] get_contein_and_info(long _id_purchase, STATE_PURCHASE _state, Long _date_time)
     {
       //Получим общую сумму и краткий список деталей
       String q_params[] ={ Long.toString(_id_purchase)};
