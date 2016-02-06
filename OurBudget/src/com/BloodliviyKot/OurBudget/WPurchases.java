@@ -89,16 +89,11 @@ public class WPurchases
   @Override
   public boolean onOptionsItemSelected(MenuItem item)
   {
+    //!!! На эмульке меню можно вызвать нажав на клавишу контекстного меню на клавиатуре, о как!
     Intent intent;
     switch(item.getItemId())
     {
       case R.id.m_purchases_add:
-        //На эмульке меню не робя так что приходится сюда временно тыкать
-        //intent = new Intent(this, WTypes.class);
-        //startActivity(intent); //Запуск активности
-        //return true;
-
-
         ChooseAlert choose_alert = new ChooseAlert(this, "Добавить покупку или оплату",
           android.R.drawable.ic_dialog_alert, null, "Запланировать", "Уже оплачено");
         choose_alert.show(this);
