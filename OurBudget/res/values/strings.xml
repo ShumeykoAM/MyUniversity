@@ -2,12 +2,12 @@
 <resources>
     <string name="app_name">Наш бюджет</string>
 
-    <string name="purchases_caption">Покупки</string>
+    <string name="purchases_caption">Покупки и оплаты</string>
     <string name="purchases_m_add">Добавить</string>
     <string name="purchases_m_user_account">Учетная запись</string>
     <string name="purchases_m_grouping">Группировка</string>
     <string name="purchases_m_filter">Фильтр</string>
-    <string name="purchases_m_type">Типы</string>
+    <string name="purchases_m_type">Виды товаров и услуг</string>
     <string name="purchases_m_about">О программе</string>
     <string name="purchases_m_donate">Пожертвовать</string>
     <string name="purchases_mc_execute">Исполнить</string>
@@ -39,7 +39,7 @@
     <string name="alert_connect_err_server_connect">Сервер временно недоступен</string>
     <string name="alert_connect_err_inet">Отсутствует подключение к интернет</string>
 
-    <string name="mark_types_caption">Выбрать товары или услуги</string>
+    <string name="mark_types_caption">Выбрать товары и услуги</string>
     <string name="mark_types_button_ok">Готово</string>
     <string name="mark_types_err">Нужно выбрать хотя бы один вид</string>
     <string name="mark_types_m_add_type">Добавить вид</string>
