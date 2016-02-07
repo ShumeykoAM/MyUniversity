@@ -2,7 +2,10 @@ package com.BloodliviyKot.tools.DataBase.entitys;
 
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import com.BloodliviyKot.tools.DataBase.EQ;
+import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
 
 public class Purchase
 {
@@ -36,13 +39,23 @@ public class Purchase
   public STATE_PURCHASE state;
   public int is_delete;
 
-  public Purchase(long __id_user_account, Long _id_server, long _date_time, STATE_PURCHASE _state, int _is_delete)
+  public Purchase(long _id_user_account, Long id_server, long date_time, STATE_PURCHASE state, int is_delete)
   {
-    _id_user_account = __id_user_account;
-    id_server        = _id_server;
-    date_time        = _date_time;
-    state            = _state;
-    is_delete        = _is_delete;
+    this._id_user_account = _id_user_account;
+    this.id_server        = id_server;
+    this.date_time        = date_time;
+    this.state            = state;
+    this.is_delete        = is_delete;
+  }
+  public Purchase(Cursor cursor)
+  {
+    this._id              = cursor.getLong(cursor.getColumnIndex("_id"));
+    this._id_user_account = cursor.getLong(cursor.getColumnIndex("_id_user_account"));
+    if(!cursor.isNull(cursor.getColumnIndex("id_server")))
+      this.id_server      = cursor.getLong(cursor.getColumnIndex("id_server"));
+    this.date_time        = cursor.getLong(cursor.getColumnIndex("date_time"));
+    this.state            = STATE_PURCHASE.getSTATE_PURCHASE(cursor.getInt(cursor.getColumnIndex("state")));
+    this.is_delete        = cursor.getInt(cursor.getColumnIndex("is_delete"));
 
   }
   public long insertDateBase(SQLiteDatabase db)
@@ -58,4 +71,12 @@ public class Purchase
     return db.insert(table_name, null, values      );
   }
 
+  public static Purchase getPurhaseFromId(long _id, SQLiteDatabase db, MySQLiteOpenHelper oh)
+  {
+    Cursor cursor_purchase = db.rawQuery(oh.getQuery(EQ.PURCHASE_FROM_ID), new String[]{new Long(_id).toString()});
+    if(cursor_purchase.moveToFirst())
+      return new Purchase(cursor_purchase);
+    else
+      return null;
+  }
 }

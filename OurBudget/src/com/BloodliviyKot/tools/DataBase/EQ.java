@@ -10,6 +10,7 @@ public enum EQ
   USER_ACCOUNT_ID,               //Получить учетную запись по id
   USER_ACCOUNT_LOGIN,            //Получить учетную запись по login
   PURCHASES,                     //Покупки
+  PURCHASE_FROM_ID,              //Покупка по ее id_шнику
   DETAILS,                       //Товары и услуги покупки
   TYPES_USER_ACC,                //Виды товаров и услуг активной учетки
   TYPES_USER_ACC_LIKE_NAME,      //Виды товаров и услуг активной учетки c фильтром по %имени%

@@ -18,6 +18,9 @@
     <string name="purchase_date_time_tile_plan">Запланировать на</string>
     <string name="purchase_date_time_tile_execute">Оплата произведена</string>
     <string name="purchase_date_time_ok">Ok</string>
+    <string name="purchase_date_time_yesterday">вчера</string>
+    <string name="purchase_date_time_today">сегодня</string>
+    <string name="purchase_date_time_tomorrow">завтра</string>
 
     <string name="user_account_caption">Учетная запись</string>
     <string name="user_account_login">Логин</string>
@@ -56,6 +59,11 @@
 
     <string name="details_caption">Товары и услуги</string>
     <string name="details_status">Итого</string>
+    <string name="details_sub_caption_date_time_plan">Запланировано</string>
+    <string name="details_sub_caption_date_time_exec">Оплачено</string>
+    <string name="details_sub_caption_date_time_on">на</string>
+    <string name="details_sub_caption_date_time_in">в</string>
+
     <string name="details_m_add">Добавить</string>
     <string name="details_m_plan">Планирование</string>
     <string name="details_m_execute">Исполнить</string>

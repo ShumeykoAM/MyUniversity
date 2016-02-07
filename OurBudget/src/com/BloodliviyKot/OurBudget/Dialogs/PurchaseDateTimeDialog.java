@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -16,8 +17,8 @@ import android.widget.*;
 import com.BloodliviyKot.OurBudget.R;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
 
-import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @SuppressLint("ValidFragment")
 public class PurchaseDateTimeDialog
@@ -37,6 +38,8 @@ public class PurchaseDateTimeDialog
   public long date_time;
   private boolean is_plan;
 
+  private View v;
+
   public PurchaseDateTimeDialog(I_DialogResult _result_handler, long _date_time, boolean _is_plan)
   {
     result_handler = _result_handler;
@@ -50,7 +53,7 @@ public class PurchaseDateTimeDialog
   {
     //getDialog().setTitle("Title!");
     getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-    final View v = inflater.inflate(R.layout.purchase_date_time_dialog, null);
+    v = inflater.inflate(R.layout.purchase_date_time_dialog, null);
     tv_title = (TextView)v.findViewById(R.id.purchase_date_time_title);
     et_date = (EditText)v.findViewById(R.id.purchase_date_time_date);
     et_time = (EditText)v.findViewById(R.id.purchase_date_time_time);
@@ -72,7 +75,7 @@ public class PurchaseDateTimeDialog
   private void updateView()
   {
     String string_date_time[] = new String[2];
-    getStringDateTime(date_time, string_date_time);
+    getStringDateTime(date_time, string_date_time, v.getContext(), true);
     et_date.setText(string_date_time[0]);
     et_time.setText(string_date_time[1]);
   }
@@ -133,12 +136,30 @@ public class PurchaseDateTimeDialog
   }
 
   //Строковое представление даты и времени
-  public static void getStringDateTime(long date_time, String result_date_time[])
+  public static void getStringDateTime(long date_time, String result_date_time[], Context context,
+                                       boolean string_format)
   {
+    final long SECONDS_IN_DAY = 86400000L;
     SimpleDateFormat date_format = new SimpleDateFormat("dd.MM.yyyy");
     SimpleDateFormat time_format = new SimpleDateFormat("HH:mm"); //HH 0-23  hh 0-12am-pm
     result_date_time[0] = date_format.format(date_time);
     result_date_time[1] = time_format.format(date_time);
+    if(string_format)
+    {
+      //Получить текушее время в секундах
+      long normalize_cur_time = ((new java.util.Date()).getTime()) / SECONDS_IN_DAY * SECONDS_IN_DAY;
+      java.sql.Date yesterday = new java.sql.Date(normalize_cur_time - SECONDS_IN_DAY);
+      java.sql.Date today = new java.sql.Date(normalize_cur_time);
+      java.sql.Date tomorrow = new java.sql.Date(normalize_cur_time + SECONDS_IN_DAY);
+      java.sql.Date purchase_date = new java.sql.Date(date_time / SECONDS_IN_DAY * SECONDS_IN_DAY);
+      java.util.Date purchase_date_time = new java.util.Date(date_time);
+      if(purchase_date.compareTo(yesterday) == 0)
+        result_date_time[0] = context.getString(R.string.purchase_date_time_yesterday);
+      else if(purchase_date.compareTo(today) == 0)
+        result_date_time[0] = context.getString(R.string.purchase_date_time_today);
+      else if(purchase_date.compareTo(tomorrow) == 0)
+        result_date_time[0] = context.getString(R.string.purchase_date_time_tomorrow);
+    }
   }
 
 

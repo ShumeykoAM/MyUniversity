@@ -3,4 +3,5 @@
     <color name="bag_groung">#6A6C91</color>
     <color name="detail_name">#fff3ff00</color>
     <color name="detail_cost">#ff00ff1e</color>
+    <color name="detail_cost_null">#ffff0a02</color>
 </resources>

@@ -20,6 +20,11 @@ SELECT purchase._id, purchase.date_time, purchase.state FROM purchase
   WHERE (purchase.date_time > ? AND purchase.date_time < ? AND purchase.state = ?) OR purchase.state = ?
   ORDER BY purchase.state, purchase.date_time DESC;
 
+-- PURCHASE_FROM_ID
+SELECT purchase._id, purchase._id_user_account, purchase.id_server, purchase.date_time,
+  purchase.state, purchase.is_delete FROM purchase
+  WHERE purchase._id = ?;
+
 -- DETAILS
 SELECT detail._id, detail._id_user_account, detail._id_purchase, detail._id_type, detail.id_server,
   detail.price, detail.for_amount_unit, detail.for_id_unit, detail.amount,

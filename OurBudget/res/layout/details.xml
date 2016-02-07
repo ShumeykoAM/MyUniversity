@@ -10,12 +10,17 @@
             android:layout_alignWithParentIfMissing="false"
             android:layout_alignParentLeft="true"
             android:headerDividersEnabled="false"
-            android:layout_alignParentTop="true" android:layout_above="@+id/details_status"/>
+            android:layout_above="@+id/details_status" android:layout_below="@+id/details_caption"/>
     <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Итого"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/details_caption" android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true" android:layout_alignParentRight="true"/>
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/details_status"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"/>
+            android:layout_centerHorizontal="true" android:textAppearance="?android:attr/textAppearanceMedium"/>
 </RelativeLayout>

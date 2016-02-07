@@ -110,7 +110,7 @@ public class WPurchases
     return super.onOptionsItemSelected(item);
   }
   @Override
-  public void onKlick(ChooseAlert.CHOOSE_BUTTON button)
+  public void onClick(ChooseAlert.CHOOSE_BUTTON button)
   {
     Intent intent = new Intent(this, WMarkTypes.class);
     if(button == ChooseAlert.CHOOSE_BUTTON.BUTTON1)

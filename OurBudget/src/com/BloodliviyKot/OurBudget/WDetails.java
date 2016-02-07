@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -15,11 +14,13 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import com.BloodliviyKot.OurBudget.Dialogs.DetailDialog;
 import com.BloodliviyKot.OurBudget.Dialogs.I_DialogResult;
+import com.BloodliviyKot.OurBudget.Dialogs.PurchaseDateTimeDialog;
 import com.BloodliviyKot.OurBudget.Dialogs.RESULT;
 import com.BloodliviyKot.tools.DataBase.EQ;
-import com.BloodliviyKot.tools.DataBase.entitys.Detail;
-import com.BloodliviyKot.tools.DataBase.entitys.Unit;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
+import com.BloodliviyKot.tools.DataBase.entitys.Detail;
+import com.BloodliviyKot.tools.DataBase.entitys.Purchase;
+import com.BloodliviyKot.tools.DataBase.entitys.Unit;
 
 public class WDetails
   extends Activity
@@ -27,8 +28,9 @@ public class WDetails
 {
   private MySQLiteOpenHelper oh;
   private SQLiteDatabase db;
-  private long account_id;
+  private long _id_purchase;
   private ListView list_details;
+  private TextView sub_caption;
   private TextView status;
   private Cursor cursor;
   private DetailDialog detailDialog;
@@ -42,25 +44,51 @@ public class WDetails
 
     list_details = (ListView)findViewById(R.id.details_list_details);
     status = (TextView)findViewById(R.id.details_status);
+    sub_caption = (TextView)findViewById(R.id.details_caption);
     list_details.setOnItemClickListener(this);
 
     //Читаем параметры переданные из родительской активности
     Bundle extras = getIntent().getExtras();
-    account_id = extras.getLong(getString(R.string.intent_purchases_id));
+    _id_purchase = extras.getLong(getString(R.string.intent_purchases_id));
 
     //Создаем помощник управления БД
     oh = new MySQLiteOpenHelper(getApplicationContext());
     db = oh.getWritableDatabase();
     //Cursor обязательно должен содержать _id иначе SimpleCursorAdapter не заработает
-    cursor = db.rawQuery(oh.getQuery(EQ.DETAILS), new String[]{Long.toString(account_id)});
-    int to[] = {R.id.details_item_type, R.id.details_item_price,
-                R.id.details_item_amount, R.id.details_item_cost};
+    cursor = db.rawQuery(oh.getQuery(EQ.DETAILS), new String[]{Long.toString(_id_purchase)});
+    int to[] = {R.id.details_item_type, R.id.details_item_amount, R.id.details_item_cost};
     DetailsAdapter list_adapter = new DetailsAdapter(this, R.layout.details_item, cursor,
       new String[]{}, to);
     list_details.setAdapter(list_adapter);
+    calcCaptionStatus();
 
     registerForContextMenu(list_details);
     detailDialog = new DetailDialog(this);
+  }
+  private void calcCaptionStatus()
+  {
+    String for_date_time = getString(R.string.details_sub_caption_date_time_plan);
+    Purchase purchase = Purchase.getPurhaseFromId(_id_purchase, db, oh);
+    if(purchase.date_time != 0)
+    {
+      String result_date_time[] = new String[2];
+      PurchaseDateTimeDialog.getStringDateTime(purchase.date_time, result_date_time, getApplicationContext(), true);
+      if(purchase.state == Purchase.STATE_PURCHASE.PLAN)
+        for_date_time += " " + getString(R.string.details_sub_caption_date_time_on) + " " + result_date_time[0] +
+          " " + getString(R.string.details_sub_caption_date_time_on) + " " + result_date_time[1];
+      else
+        for_date_time = getString(R.string.details_sub_caption_date_time_exec) + " " + result_date_time[0] +
+          " " + getString(R.string.details_sub_caption_date_time_in) + " " + result_date_time[1];
+    }
+    double total = 0;
+    for(boolean status=cursor.moveToFirst(); status; status=cursor.moveToNext())
+    {
+      Detail detail = new Detail(cursor);
+      if(detail.calcCost(false))
+        total += detail.cost;
+    }
+    sub_caption.setText(for_date_time);
+    status.setText("Итого на сумму " + Detail.formatmoney(total));
   }
 
   @Override //Выбрали деталь, просмотрим ее характеристики
@@ -68,21 +96,14 @@ public class WDetails
   {
     cursor.requery();
     Detail detail = new Detail(cursor);
-
-
     detailDialog.use(getFragmentManager(), "d1", detail);
-
-    int fdfdf=0;
-    fdfdf++;
-    //Intent intent = new Intent(this, Details.class);
-    //intent.putExtra(getString(R.string.intent_purchases_id), id);
-    //startActivityForResult(intent, R.layout.details); //Запуск активности с onActivityResult
   }
+  //Обработчик диалога переметров детали
   @Override
   public void onResult(RESULT code, Intent data)
   {
-    int fdfd=0;
-    fdfd++;
+
+
   }
 
   //Создаем меню
@@ -102,9 +123,16 @@ public class WDetails
     {
       case R.id.m_details_add:
         Intent intent = new Intent(this, WMarkTypes.class);
-        //intent.putExtra(getString(R.string.intent_purchases_id), id);
         startActivityForResult(intent, R.layout.mark_types); //Запуск активности с onActivityResult
         return true;
+      case R.id.m_details_plan:
+
+
+        break;
+      case R.id.m_details_execute:
+
+
+        break;
     }
     return super.onOptionsItemSelected(item);
   }
@@ -118,7 +146,6 @@ public class WDetails
     {
       MenuInflater inflater = getMenuInflater();
       inflater.inflate(R.menu.details_context_list_details, menu);
-
     }
   }
   //Обрабатываем нажатие выбор пункта контекстного меню
@@ -128,6 +155,8 @@ public class WDetails
     switch(item.getItemId())
     {
       case R.id.m_details_c_delete:
+
+
         return true;
 
     }
@@ -148,11 +177,8 @@ public class WDetails
       Detail detail = new Detail(_cursor);
       String name = _cursor.getString(_cursor.getColumnIndex("name"));
       //Получим значения
-      String price  = "";
       String amount = "";
       String cost   = "";
-      if(detail.calcPrice())
-        price = "ц. " + Detail.formatmoney(detail.price);
       if(detail.calcAmount())
       {
         if(detail.amount == (int)(double)detail.amount)
@@ -160,35 +186,27 @@ public class WDetails
         else
           amount = detail.amount.toString() + new Unit(detail.id_unit).name;
       }
-      if(detail.calcCost(false));
+      boolean cost_is_null = false;
+      if(detail.calcCost(false))
+      {
         cost = Detail.formatmoney(detail.cost);
+        if(detail.cost == 0.0)
+          cost_is_null = true;
+      }
+      else
+      {
+        cost = Detail.formatmoney(0.0);
+        cost_is_null = true;
+      }
       //Сопоставляем
       TextView tv_name   = (TextView)_view.findViewById(R.id.details_item_type);
-      TextView tv_price  = (TextView)_view.findViewById(R.id.details_item_price);
       TextView tv_amount = (TextView)_view.findViewById(R.id.details_item_amount);
       TextView tv_cost   = (TextView)_view.findViewById(R.id.details_item_cost);
       tv_name.setText(name);
-      tv_price.setText(price);
       tv_amount.setText(amount);
       tv_cost.setText(cost);
-
-      //Представление
-      if(cost.length() >= 11)
-        tv_cost.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
-      else
-        tv_cost.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-      if(price.length() >= 10)
-        tv_price.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
-      else
-        tv_price.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
-      if(amount.length() >= 8)
-        tv_price.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
-      else
-        tv_price.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
-      if(name.length() >= 10)
-        tv_name.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
-      else
-        tv_name.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+      if(cost_is_null)
+        tv_cost.setTextColor(_context.getResources().getColor(R.color.detail_cost_null));
     }
   }
 
