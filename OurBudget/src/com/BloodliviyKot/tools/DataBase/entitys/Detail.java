@@ -135,7 +135,7 @@ public class Detail
 
   }
 
-  static public String formatmoney(double money)
+  static public String formatMoney(double money)
   {
     //Locale rus = new Locale("ru", "RU");
     NumberFormat r_format = NumberFormat.getCurrencyInstance();

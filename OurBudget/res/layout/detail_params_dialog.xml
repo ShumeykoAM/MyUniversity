@@ -10,7 +10,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Рыба"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_alignParentBottom="false"
             android:layout_alignParentLeft="false"
@@ -39,7 +38,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="Цена"
+                        android:text="@string/detail_params_price"
                         android:id="@+id/textView3" android:layout_centerVertical="true"
                         android:layout_alignParentLeft="true"
                         android:layout_marginRight="4dp" android:textColor="@color/detail_params_price"/>
@@ -55,20 +54,20 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="р."
+                        android:text="@string/detail_params_currency_name"
                         android:id="@+id/textView4"
                         android:layout_alignTop="@+id/textView3" android:layout_alignParentRight="true"
                         android:layout_marginLeft="4dp" android:textColor="@color/detail_params_price"/>
             </RelativeLayout>
             <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:layout_below="@+id/textView5"
-                    android:layout_centerHorizontal="true" android:layout_gravity="center_horizontal">
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal">
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="за"
+                        android:text="@string/detail_params_for"
                         android:id="@+id/textView6" android:layout_centerVertical="true"
                         android:layout_alignParentLeft="true"
                         android:layout_marginRight="8dp" android:layout_marginLeft="10dp"
@@ -98,7 +97,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="Кол-во"
+                        android:text="@string/detail_params_amount"
                         android:id="@+id/textView5" android:layout_centerVertical="true"
                         android:layout_alignParentLeft="true"
                         android:layout_marginRight="4dp" android:textColor="@color/detail_params_amount"/>
@@ -129,7 +128,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Стоимость"
+                android:text="@string/detail_params_cost"
                 android:id="@+id/textView"
                 android:layout_alignTop="@+id/textView2" android:layout_alignParentLeft="true"
                 android:layout_marginRight="4dp" android:textColor="@color/detail_params_cost"/>
@@ -140,12 +139,12 @@
                 android:layout_toRightOf="@+id/textView" android:layout_toLeftOf="@+id/textView2"
                 android:numeric="decimal" android:singleLine="true" android:inputType="numberDecimal"
                 android:layout_centerVertical="true" android:gravity="right"
-                android:textColorHighlight="@color/detail_params_cost"/>
+                android:textColor="@color/detail_params_cost"/>
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="р."
+                android:text="@string/detail_params_currency_name"
                 android:id="@+id/textView2"
                 android:layout_centerVertical="true" android:layout_alignParentRight="true"
                 android:layout_marginLeft="4dp" android:textColor="@color/detail_params_cost"/>
@@ -153,7 +152,7 @@
     <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Сохранить"
+            android:text="@string/detail_params_save"
             android:id="@+id/detail_params_save" android:layout_below="@+id/imageView2"
             android:layout_centerHorizontal="true" android:layout_marginTop="12dp"/>
     <ImageView

@@ -73,9 +73,9 @@ public class Purchase
 
   public static Purchase getPurhaseFromId(long _id, SQLiteDatabase db, MySQLiteOpenHelper oh)
   {
-    Cursor cursor_purchase = db.rawQuery(oh.getQuery(EQ.PURCHASE_FROM_ID), new String[]{new Long(_id).toString()});
-    if(cursor_purchase.moveToFirst())
-      return new Purchase(cursor_purchase);
+    Cursor cursor = db.rawQuery(oh.getQuery(EQ.PURCHASE_FROM_ID), new String[]{new Long(_id).toString()});
+    if(cursor.moveToFirst())
+      return new Purchase(cursor);
     else
       return null;
   }

@@ -69,6 +69,13 @@
     <string name="details_m_execute">Исполнить</string>
     <string name="details_mс_delete">Удалить</string>
 
+    <string name="detail_params_currency_name">руб.</string>
+    <string name="detail_params_price">Цена</string>
+    <string name="detail_params_for">за</string>
+    <string name="detail_params_amount">Кол-во</string>
+    <string name="detail_params_cost">Стоимость</string>
+    <string name="detail_params_save">Сохранить</string>
+
     <string name="movement_m_context_list_mov_delete">Удалить движение</string>
     <string name="common_currency">р.</string>
     <string name="common_currency_small">к.</string>

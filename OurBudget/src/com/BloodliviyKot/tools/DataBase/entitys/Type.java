@@ -4,6 +4,8 @@ package com.BloodliviyKot.tools.DataBase.entitys;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import com.BloodliviyKot.tools.DataBase.EQ;
+import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
 
 public class Type
 {
@@ -36,6 +38,14 @@ public class Type
     id_server        = _id_server;
     id_unit          = _id_unit;
     is_delete        = _is_delete;
+  }
+  public static Type getFromId(long _id, SQLiteDatabase db, MySQLiteOpenHelper oh)
+  {
+    Cursor cursor = db.rawQuery(oh.getQuery(EQ.TYPE_FROM_ID), new String[]{new Long(_id).toString()});
+    if(cursor.moveToFirst())
+      return new Type(cursor);
+    else
+      return null;
   }
 
   public long insertDateBase(SQLiteDatabase db)

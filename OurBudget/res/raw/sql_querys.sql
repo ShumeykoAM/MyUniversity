@@ -41,7 +41,7 @@ SELECT type._id, type._id_user_account, type.name, type.name_lower,
   type.id_server, type.id_unit, type.is_delete
   FROM type WHERE type._id_user_account = ? AND (type.name_lower LIKE ?);
 
--- TYPES_USER_ID
+-- TYPE_FROM_ID
 SELECT type._id, type._id_user_account, type.name, type.name_lower,
   type.id_server, type.id_unit, type.is_delete
   FROM type WHERE type._id = ?;

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +15,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import com.BloodliviyKot.OurBudget.R;
+import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
 import com.BloodliviyKot.tools.DataBase.entitys.Detail;
+import com.BloodliviyKot.tools.DataBase.entitys.Type;
 
 import java.text.DecimalFormat;
 
@@ -25,6 +28,8 @@ public class DetailParamsDialog
 {
   private I_DialogResult result_handler = null;
   private Detail detail;
+  MySQLiteOpenHelper oh;
+  SQLiteDatabase db;
 
   private TextView tv_name_detail;
   private EditText et_price;
@@ -35,9 +40,11 @@ public class DetailParamsDialog
   private EditText et_cost;
   private Button button_save;
 
-  public DetailParamsDialog(I_DialogResult _result_handler)
+  public DetailParamsDialog(I_DialogResult _result_handler, MySQLiteOpenHelper oh, SQLiteDatabase db)
   {
     result_handler = _result_handler;
+    this.oh = oh;
+    this.db = db;
   }
   public void use(FragmentManager manager, String tag, Detail _detail)
   {
@@ -62,6 +69,8 @@ public class DetailParamsDialog
     et_cost            = (EditText)v.findViewById(R.id.detail_params_cost);
     button_save        = (Button  )v.findViewById(R.id.detail_params_save);
 
+    Type type = Type.getFromId(detail._id_type, db, oh);
+    tv_name_detail.setText(type.name);
     et_price.setText(new DecimalFormat("###.##").format(detail.price));
     et_for_amount_unit.setText(new DecimalFormat("###.##").format(detail.for_amount_unit));
     //sp_for_id_unit

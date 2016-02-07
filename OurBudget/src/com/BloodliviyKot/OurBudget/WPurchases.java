@@ -291,7 +291,7 @@ public class WPurchases
         s_date = "завтра в " + y_t_t_format.format(purchase_date_time);
       else
         s_date = date_format.format(purchase_date_time);
-      return new String[]{s_content, s_date + " на сумму " + Detail.formatmoney(sum)};
+      return new String[]{s_content, s_date + " на сумму " + Detail.formatMoney(sum)};
     }
   }
 }

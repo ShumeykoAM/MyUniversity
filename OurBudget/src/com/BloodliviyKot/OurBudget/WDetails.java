@@ -63,7 +63,7 @@ public class WDetails
     calcCaptionStatus();
 
     registerForContextMenu(list_details);
-    detailDialog = new DetailParamsDialog(this);
+    detailDialog = new DetailParamsDialog(this, oh, db);
   }
   private void calcCaptionStatus()
   {
@@ -88,7 +88,7 @@ public class WDetails
         total += detail.cost;
     }
     sub_caption.setText(for_date_time);
-    status.setText("Итого на сумму " + Detail.formatmoney(total));
+    status.setText("Итого на сумму " + Detail.formatMoney(total));
   }
 
   @Override //Выбрали деталь, просмотрим ее характеристики
@@ -189,13 +189,13 @@ public class WDetails
       boolean cost_is_null = false;
       if(detail.calcCost(false))
       {
-        cost = Detail.formatmoney(detail.cost);
+        cost = Detail.formatMoney(detail.cost);
         if(detail.cost == 0.0)
           cost_is_null = true;
       }
       else
       {
-        cost = Detail.formatmoney(0.0);
+        cost = Detail.formatMoney(0.0);
         cost_is_null = true;
       }
       //Сопоставляем

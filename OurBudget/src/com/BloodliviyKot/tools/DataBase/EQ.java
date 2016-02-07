@@ -14,7 +14,7 @@ public enum EQ
   DETAILS,                       //Товары и услуги покупки
   TYPES_USER_ACC,                //Виды товаров и услуг активной учетки
   TYPES_USER_ACC_LIKE_NAME,      //Виды товаров и услуг активной учетки c фильтром по %имени%
-  TYPES_USER_ID,                 //Вид товара или услуги по _id
+  TYPE_FROM_ID,                  //Вид товара или услуги по _id
 
   EQ_COUNT;
   public final int value;

@@ -56,7 +56,7 @@ public class DialogParamsSelectedType
       //Подкачаем значения на основе данных из базы (по последним или по средним и т.д.)
 
       //Пока что не по последним
-      Cursor cursor_type = db.rawQuery(oh.getQuery(EQ.TYPES_USER_ID),
+      Cursor cursor_type = db.rawQuery(oh.getQuery(EQ.TYPE_FROM_ID),
         new String[]{new Long(id_type).toString()});
       if(cursor_type.moveToFirst())
       {
