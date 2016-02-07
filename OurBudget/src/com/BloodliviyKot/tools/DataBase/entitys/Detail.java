@@ -108,6 +108,33 @@ public class Detail
     //стоимость = (цена/за_кол_единиц) * кол_единиц * (множитель_единиц/за_множитель_единиц);
     return amount != null;
   }
+
+  public Detail clone()
+  {
+    Detail result = new Detail(_id_user_account, _id_purchase, _id_type, id_server, price, for_amount_unit,
+      for_id_unit, amount, id_unit, cost, is_delete);
+    result._id = _id;
+    return result;
+  }
+
+  public void calcAll()
+  {
+    if(cost == null)
+    {
+      if(price == null)
+        price = new Double(0.0);
+      if(amount == null)
+        amount = new Double(0.0);
+      calcCost(false);
+    }
+    if(price == null)
+    {
+      price = new Double(0.0);
+
+    }
+
+  }
+
   static public String formatmoney(double money)
   {
     //Locale rus = new Locale("ru", "RU");

@@ -12,7 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
-import com.BloodliviyKot.OurBudget.Dialogs.DetailDialog;
+import com.BloodliviyKot.OurBudget.Dialogs.DetailParamsDialog;
 import com.BloodliviyKot.OurBudget.Dialogs.I_DialogResult;
 import com.BloodliviyKot.OurBudget.Dialogs.PurchaseDateTimeDialog;
 import com.BloodliviyKot.OurBudget.Dialogs.RESULT;
@@ -33,7 +33,7 @@ public class WDetails
   private TextView sub_caption;
   private TextView status;
   private Cursor cursor;
-  private DetailDialog detailDialog;
+  private DetailParamsDialog detailDialog;
 
   //Создание активности
   @Override
@@ -63,7 +63,7 @@ public class WDetails
     calcCaptionStatus();
 
     registerForContextMenu(list_details);
-    detailDialog = new DetailDialog(this);
+    detailDialog = new DetailParamsDialog(this);
   }
   private void calcCaptionStatus()
   {
