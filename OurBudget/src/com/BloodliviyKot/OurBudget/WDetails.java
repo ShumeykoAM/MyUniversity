@@ -33,7 +33,6 @@ public class WDetails
   private TextView sub_caption;
   private TextView status;
   private Cursor cursor;
-  private DetailParamsDialog detailDialog;
 
   //Создание активности
   @Override
@@ -63,7 +62,6 @@ public class WDetails
     calcCaptionStatus();
 
     registerForContextMenu(list_details);
-    detailDialog = new DetailParamsDialog(this, oh, db);
   }
   private void calcCaptionStatus()
   {
@@ -94,16 +92,20 @@ public class WDetails
   @Override //Выбрали деталь, просмотрим ее характеристики
   public void onItemClick(AdapterView<?> parent, View view, int position, long id)
   {
-    cursor.requery();
+    cursor.moveToPosition(position);
     Detail detail = new Detail(cursor);
+    DetailParamsDialog detailDialog = new DetailParamsDialog(this, oh, db);
     detailDialog.use(getFragmentManager(), "d1", detail);
   }
   //Обработчик диалога переметров детали
   @Override
   public void onResult(RESULT code, Intent data)
   {
+    if(code == RESULT.OK)
+    {
 
 
+    }
   }
 
   //Создаем меню

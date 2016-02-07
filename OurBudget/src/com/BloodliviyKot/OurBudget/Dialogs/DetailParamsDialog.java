@@ -6,6 +6,8 @@ import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,6 +80,11 @@ public class DetailParamsDialog
     //sp_id_unit
     et_cost.setText(new DecimalFormat("###.##").format(detail.cost));
 
+    et_price.addTextChangedListener(new TextChangeListener(et_price));
+    et_for_amount_unit.addTextChangedListener(new TextChangeListener(et_for_amount_unit));
+    et_amount.addTextChangedListener(new TextChangeListener(et_amount));
+    et_cost.addTextChangedListener(new TextChangeListener(et_cost));
+
     button_save.setOnClickListener(this);
     return v;
   }
@@ -100,4 +107,50 @@ public class DetailParamsDialog
     result_handler.onResult(RESULT.CANCEL, null);
   }
 
+  class TextChangeListener
+    implements TextWatcher
+  {
+    private EditText view;
+    public TextChangeListener(EditText view)
+    {
+      this.view = view;
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after)
+    {
+
+    }
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count)
+    {
+
+    }
+    @Override
+    public void afterTextChanged(Editable s)
+    {
+      if(view == et_price)
+      {
+        String s_price = et_price.getText().toString();
+        if(s_price.length() > 0)
+          detail.price = new Double(s_price);
+        else
+          detail.price = 0.0;
+        detail.calcCost(true);
+        et_cost.setText(new DecimalFormat("###.##").format(detail.cost));
+      }
+      else if(view == et_for_amount_unit)
+      {
+
+      }
+      else if(view == et_amount)
+      {
+
+      }
+      else if(view == et_cost)
+      {
+
+      }
+    }
+  }
 }
