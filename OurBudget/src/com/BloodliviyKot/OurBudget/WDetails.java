@@ -184,7 +184,7 @@ public class WDetails
         if(detail.amount == (int)(double)detail.amount)
           amount = Integer.toString((int)(double)detail.amount) + new Unit(detail.id_unit).name;
         else
-          amount = detail.amount.toString() + new Unit(detail.id_unit).name;
+          amount = new Double(detail.amount).toString() + new Unit(detail.id_unit).name;
       }
       boolean cost_is_null = false;
       if(detail.calcCost(false))

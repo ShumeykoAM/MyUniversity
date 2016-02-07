@@ -50,7 +50,7 @@ CREATE TABLE detail
   price                REAL,
   for_amount_unit      REAL NOT NULL,
   for_id_unit          INTEGER NOT NULL,
-  amount               REAL,
+  amount               REAL NOT NULL,
   id_unit              INTEGER NOT NULL,
   cost                 REAL,
   is_delete            INTEGER NOT NULL,

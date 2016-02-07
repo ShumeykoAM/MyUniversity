@@ -17,7 +17,7 @@ public class Detail
   public Double price;           //Цена
   public double for_amount_unit; //  количество единиц измерения за которое куказана цена
   public long for_id_unit;       //  единица измерения за которую указана цена
-  public Double amount;          //Количество
+  public double amount;          //Количество
   public long id_unit;           //  единица измерения количества
   public Double cost;            //Стоимость
   public int is_delete;
@@ -71,8 +71,7 @@ public class Detail
       values.put("price"         , price            );
     values.put("for_amount_unit" , for_amount_unit  );
     values.put("for_id_unit"     , for_id_unit      );
-    if(amount != null)
-      values.put("amount"        , amount           );
+    values.put("amount"          , amount           );
     values.put("id_unit"         , id_unit          );
     if(cost != null)
       values.put("cost"          , cost             );
@@ -86,7 +85,7 @@ public class Detail
     //стоимость = (цена/за_кол_единиц) * кол_единиц * (множитель_единиц/за_множитель_единиц);
     if(fl_recalc || cost == null)
     {
-      if(price != null && amount != null)
+      if(price != null)
       {
         Unit o_for_amount_unit = new Unit(for_id_unit);
         Unit o_unit = new Unit(id_unit);
@@ -106,7 +105,7 @@ public class Detail
   public boolean calcAmount()
   {
     //стоимость = (цена/за_кол_единиц) * кол_единиц * (множитель_единиц/за_множитель_единиц);
-    return amount != null;
+    return true;
   }
 
   public Detail clone()
@@ -123,8 +122,6 @@ public class Detail
     {
       if(price == null)
         price = new Double(0.0);
-      if(amount == null)
-        amount = new Double(0.0);
       calcCost(false);
     }
     if(price == null)
