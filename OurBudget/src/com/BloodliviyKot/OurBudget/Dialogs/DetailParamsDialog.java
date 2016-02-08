@@ -19,11 +19,10 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import com.BloodliviyKot.OurBudget.R;
+import com.BloodliviyKot.tools.Common.MyDecimalFormat;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
 import com.BloodliviyKot.tools.DataBase.entitys.Detail;
 import com.BloodliviyKot.tools.DataBase.entitys.Type;
-
-import java.text.DecimalFormat;
 
 @SuppressLint("ValidFragment")
 public class DetailParamsDialog
@@ -43,6 +42,9 @@ public class DetailParamsDialog
   private Spinner sp_id_unit;
   private EditText et_cost;
   private Button button_save;
+
+  public static final MyDecimalFormat FORMAT_MONEY = new MyDecimalFormat("###.##");
+  public static final MyDecimalFormat FORMAT_AMOUNT = new MyDecimalFormat("###.###");
 
   public DetailParamsDialog(I_DialogResult _result_handler, MySQLiteOpenHelper oh, SQLiteDatabase db)
   {
@@ -75,12 +77,12 @@ public class DetailParamsDialog
 
     Type type = Type.getFromId(detail._id_type, db, oh);
     tv_name_detail.setText(type.name);
-    et_price.setText(new DecimalFormat("###.##").format(detail.price));
-    et_for_amount_unit.setText(new DecimalFormat("###.###").format(detail.for_amount_unit));
+    et_price.setText(FORMAT_MONEY.double_format(detail.price));
+    et_for_amount_unit.setText(FORMAT_AMOUNT.double_format(detail.for_amount_unit));
     //sp_for_id_unit
-    et_amount.setText(new DecimalFormat("###.###").format(detail.amount));
+    et_amount.setText(FORMAT_AMOUNT.double_format(detail.amount));
     //sp_id_unit
-    et_cost.setText(new DecimalFormat("###.##").format(detail.cost));
+    et_cost.setText(FORMAT_MONEY.double_format(detail.cost));
 
     et_price.addTextChangedListener(new TextChangeListener(et_price));
     et_for_amount_unit.addTextChangedListener(new TextChangeListener(et_for_amount_unit));
@@ -144,7 +146,7 @@ public class DetailParamsDialog
     }
     else
     {
-      DecimalFormat decimal_format = null;
+      MyDecimalFormat decimal_format = null;
       String s_value = edit_text.getText().toString();
       Double value = s_value.length()>0 ? new Double(s_value) : null;
       //Подправим поля
@@ -152,28 +154,28 @@ public class DetailParamsDialog
       {
         if(value == null)
           value = new Double(TextChangeListener.DEFAULT_PRICE);
-        decimal_format = new DecimalFormat("###.##");
+        decimal_format = FORMAT_MONEY;
       }
       else if(edit_text == et_for_amount_unit)
       {
         if(value == null || value == 0.0)
           value = new Double(TextChangeListener.DEFAULT_FOR_AMOUNT_UNIT);
-        decimal_format = new DecimalFormat("###.###");
+        decimal_format = FORMAT_AMOUNT;
       }
       else if(edit_text == et_amount)
       {
         if(value == null || value == 0.0)
           value = new Double(TextChangeListener.DEFAULT_AMOUNT);
-        decimal_format = new DecimalFormat("###.###");
+        decimal_format = FORMAT_AMOUNT;
       }
       else if(edit_text == et_cost)
       {
         if(value == null)
           value = new Double(TextChangeListener.DEFAULT_COST);
-        decimal_format = new DecimalFormat("###.##");
+        decimal_format = FORMAT_MONEY;
       }
       if(decimal_format != null)
-        edit_text.setText(decimal_format.format(value));
+        edit_text.setText(decimal_format.double_format(value));
     }
   }
 
@@ -217,7 +219,7 @@ public class DetailParamsDialog
         {
           detail.price = price;
           detail.calcCost(true);
-          et_cost.setText(new DecimalFormat("###.##").format(detail.cost));
+          et_cost.setText(FORMAT_MONEY.double_format(detail.cost));
         }
       }
       else if(view == et_for_amount_unit)
@@ -234,7 +236,7 @@ public class DetailParamsDialog
         {
           detail.for_amount_unit = for_amount_unit;
           detail.calcCost(true);
-          et_cost.setText(new DecimalFormat("###.##").format(detail.cost));
+          et_cost.setText(FORMAT_MONEY.double_format(detail.cost));
         }
       }
       else if(view == et_amount)
@@ -251,7 +253,7 @@ public class DetailParamsDialog
         {
           detail.amount = amount;
           detail.calcCost(true);
-          et_cost.setText(new DecimalFormat("###.##").format(detail.cost));
+          et_cost.setText(FORMAT_MONEY.double_format(detail.cost));
         }
       }
       else if(view == et_cost)
@@ -266,7 +268,7 @@ public class DetailParamsDialog
         {
           detail.cost = cost;
           detail.calcPrice(true);
-          et_price.setText(new DecimalFormat("###.##").format(detail.price));
+          et_price.setText(FORMAT_MONEY.double_format(detail.price));
         }
       }
     }
