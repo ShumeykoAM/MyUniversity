@@ -256,7 +256,18 @@ public class DetailParamsDialog
       }
       else if(view == et_cost)
       {
-
+        double cost;
+        String s_cost = et_cost.getText().toString();
+        if(s_cost.length() > 0)
+          cost = new Double(s_cost);
+        else
+          cost = DEFAULT_COST;
+        if(cost != detail.cost)
+        {
+          detail.cost = cost;
+          detail.calcPrice(true);
+          et_price.setText(new DecimalFormat("###.##").format(detail.price));
+        }
       }
     }
   }

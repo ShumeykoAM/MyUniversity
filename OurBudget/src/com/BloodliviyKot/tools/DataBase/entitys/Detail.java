@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.NumberFormat;
 
 public class Detail
@@ -90,6 +92,7 @@ public class Detail
         Unit o_for_amount_unit = new Unit(for_id_unit);
         Unit o_unit = new Unit(id_unit);
         cost = (price/for_amount_unit)*amount*(o_unit.multiplier/o_for_amount_unit.multiplier);
+        cost = new BigDecimal(cost).setScale(2, RoundingMode.HALF_EVEN).doubleValue();
         success = true;
       }
     }
@@ -97,10 +100,24 @@ public class Detail
       success = true;
     return success;
   }
-  public boolean calcPrice()
+  public boolean calcPrice(boolean fl_recalc)
   {
-    //стоимость = (цена/за_кол_единиц) * кол_единиц * (множитель_единиц/за_множитель_единиц);
-    return price != null;
+    boolean success = false;
+    //цена = за_кол_единиц * стоимость / (кол_единиц * (множитель_единиц/за_множитель_единиц));
+    if(fl_recalc || price == null)
+    {
+      if(cost != null)
+      {
+        Unit o_for_amount_unit = new Unit(for_id_unit);
+        Unit o_unit = new Unit(id_unit);
+        price = for_amount_unit * cost / (amount * (o_unit.multiplier/o_for_amount_unit.multiplier));
+        price = new BigDecimal(price).setScale(2, RoundingMode.HALF_EVEN).doubleValue();
+        success = true;
+      }
+    }
+    else
+      success = true;
+    return success;
   }
   public boolean calcAmount()
   {
