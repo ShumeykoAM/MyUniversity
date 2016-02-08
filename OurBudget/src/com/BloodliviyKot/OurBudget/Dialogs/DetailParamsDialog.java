@@ -3,6 +3,7 @@ package com.BloodliviyKot.OurBudget.Dialogs;
 import android.annotation.SuppressLint;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -26,7 +28,7 @@ import java.text.DecimalFormat;
 @SuppressLint("ValidFragment")
 public class DetailParamsDialog
   extends DialogFragment
-  implements View.OnClickListener
+  implements View.OnClickListener, View.OnFocusChangeListener
 {
   private I_DialogResult result_handler = null;
   private Detail detail;
@@ -74,9 +76,9 @@ public class DetailParamsDialog
     Type type = Type.getFromId(detail._id_type, db, oh);
     tv_name_detail.setText(type.name);
     et_price.setText(new DecimalFormat("###.##").format(detail.price));
-    et_for_amount_unit.setText(new DecimalFormat("###.##").format(detail.for_amount_unit));
+    et_for_amount_unit.setText(new DecimalFormat("###.###").format(detail.for_amount_unit));
     //sp_for_id_unit
-    et_amount.setText(new DecimalFormat("###.##").format(detail.amount));
+    et_amount.setText(new DecimalFormat("###.###").format(detail.amount));
     //sp_id_unit
     et_cost.setText(new DecimalFormat("###.##").format(detail.cost));
 
@@ -85,7 +87,26 @@ public class DetailParamsDialog
     et_amount.addTextChangedListener(new TextChangeListener(et_amount));
     et_cost.addTextChangedListener(new TextChangeListener(et_cost));
 
+    et_price.setOnFocusChangeListener(this);
+    et_for_amount_unit.setOnFocusChangeListener(this);
+    et_amount.setOnFocusChangeListener(this);
+    et_cost.setOnFocusChangeListener(this);
+
     button_save.setOnClickListener(this);
+
+    //Клавиатуру для конкретного view можно корректно вызвать только так
+    et_price.post(new Runnable(){
+      @Override
+      public void run()
+      {
+        et_price.setSelection(0, et_price.getText().length());
+        InputMethodManager imm = (InputMethodManager)
+          et_price.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(et_price, InputMethodManager.SHOW_IMPLICIT);
+        et_price.requestFocus();
+      }
+    });
+
     return v;
   }
 
@@ -107,9 +128,64 @@ public class DetailParamsDialog
     result_handler.onResult(RESULT.CANCEL, null);
   }
 
+  @Override
+  public void onFocusChange(final View v, boolean hasFocus)
+  {
+    final EditText edit_text = (EditText)v;
+    if(hasFocus)
+    {
+      edit_text.post(new Runnable(){
+        @Override
+        public void run()
+        {
+          edit_text.setSelection(0, edit_text.getText().length());
+        }
+      });
+    }
+    else
+    {
+      DecimalFormat decimal_format = null;
+      String s_value = edit_text.getText().toString();
+      Double value = s_value.length()>0 ? new Double(s_value) : null;
+      //Подправим поля
+      if(edit_text == et_price)
+      {
+        if(value == null)
+          value = new Double(TextChangeListener.DEFAULT_PRICE);
+        decimal_format = new DecimalFormat("###.##");
+      }
+      else if(edit_text == et_for_amount_unit)
+      {
+        if(value == null || value == 0.0)
+          value = new Double(TextChangeListener.DEFAULT_FOR_AMOUNT_UNIT);
+        decimal_format = new DecimalFormat("###.###");
+      }
+      else if(edit_text == et_amount)
+      {
+        if(value == null || value == 0.0)
+          value = new Double(TextChangeListener.DEFAULT_AMOUNT);
+        decimal_format = new DecimalFormat("###.###");
+      }
+      else if(edit_text == et_cost)
+      {
+        if(value == null)
+          value = new Double(TextChangeListener.DEFAULT_COST);
+        decimal_format = new DecimalFormat("###.##");
+      }
+      if(decimal_format != null)
+        edit_text.setText(decimal_format.format(value));
+    }
+  }
+
   class TextChangeListener
     implements TextWatcher
   {
+    public static final double DEFAULT_PRICE = 0.0;
+    public static final double DEFAULT_FOR_AMOUNT_UNIT = 1.0;
+    public static final double DEFAULT_AMOUNT = 1.0;
+    public static final double DEFAULT_COST = 0.0;
+
+
     private EditText view;
     public TextChangeListener(EditText view)
     {
@@ -131,21 +207,52 @@ public class DetailParamsDialog
     {
       if(view == et_price)
       {
+        double price;
         String s_price = et_price.getText().toString();
         if(s_price.length() > 0)
-          detail.price = new Double(s_price);
+          price = new Double(s_price);
         else
-          detail.price = 0.0;
-        detail.calcCost(true);
-        et_cost.setText(new DecimalFormat("###.##").format(detail.cost));
+          price = DEFAULT_PRICE;
+        if(price != detail.price)
+        {
+          detail.price = price;
+          detail.calcCost(true);
+          et_cost.setText(new DecimalFormat("###.##").format(detail.cost));
+        }
       }
       else if(view == et_for_amount_unit)
       {
-
+        double for_amount_unit;
+        String s_for_amount_unit = et_for_amount_unit.getText().toString();
+        if(s_for_amount_unit.length() > 0)
+          for_amount_unit = new Double(s_for_amount_unit);
+        else
+          for_amount_unit = DEFAULT_FOR_AMOUNT_UNIT;
+        if(for_amount_unit == 0.0)
+          for_amount_unit = DEFAULT_FOR_AMOUNT_UNIT;
+        if(for_amount_unit != detail.for_amount_unit)
+        {
+          detail.for_amount_unit = for_amount_unit;
+          detail.calcCost(true);
+          et_cost.setText(new DecimalFormat("###.##").format(detail.cost));
+        }
       }
       else if(view == et_amount)
       {
-
+        double amount;
+        String s_amount = et_amount.getText().toString();
+        if(s_amount.length() > 0)
+          amount = new Double(s_amount);
+        else
+          amount = DEFAULT_AMOUNT;
+        if(amount == 0.0)
+          amount = DEFAULT_AMOUNT;
+        if(amount != detail.amount)
+        {
+          detail.amount = amount;
+          detail.calcCost(true);
+          et_cost.setText(new DecimalFormat("###.##").format(detail.cost));
+        }
       }
       else if(view == et_cost)
       {
