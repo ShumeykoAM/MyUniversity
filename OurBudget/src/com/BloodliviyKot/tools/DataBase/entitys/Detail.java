@@ -148,6 +148,51 @@ public class Detail
     }
 
   }
+  //Обновляет запись если есть что обновлять
+  public boolean update(Detail new_detail, SQLiteDatabase db)
+  {
+    if(_id == null || new_detail._id == null || !_id.equals(new_detail._id))
+      return false;
+    ContentValues values = new ContentValues();
+    if(_id_user_account != new_detail._id_user_account)
+      values.put("_id_user_account", new Long(new_detail._id_user_account).toString());
+    if(_id_purchase != new_detail._id_purchase)
+      values.put("_id_purchase", new Long(new_detail._id_purchase).toString());
+    if(_id_type != new_detail._id_type)
+      values.put("_id_type", new Long(new_detail._id_type).toString());
+    if(_id_ != new_detail._id_)
+      values.put("", new Long(new_detail._id_).toString());
+
+
+
+    if(_id_ != new_detail._id_)
+      values.put("", new Long(new_detail._id_).toString());
+
+    if(values.size() > 0)
+      return db.update(table_name, values, "_id=?", new String[]{new Long(_id).toString()}) == 1;
+    return true;
+  }
+  public boolean equal(Detail detail)//хранимые в базе данные
+  {
+
+
+    return
+      //this._id.equals(detail._id)                      &&
+      this._id_user_account == detail._id_user_account &&
+      this._id_purchase     == detail._id_purchase     &&
+      this._id_type         == detail._id_type         &&
+      (this.id_server == null && detail.id_server == null ||
+       this.id_server != null && detail.id_server != null && this.id_server.equals(detail.id_server)) &&
+      (this.price == null && detail.price == null ||
+       this.price != null && detail.price != null         && this.price.equals(detail.price)) &&
+      this.for_amount_unit  == detail.for_amount_unit  &&
+      this.for_id_unit      == detail.for_id_unit      &&
+      this.amount           == detail.amount           &&
+      this.id_unit          == detail.id_unit          &&
+      (this.cost == null && detail.cost == null ||
+       this.cost != null && detail.cost != null && this.cost.equals(detail.cost)) &&
+      this.is_delete        == detail.is_delete;
+  }
 
   static public String formatMoney(double money)
   {

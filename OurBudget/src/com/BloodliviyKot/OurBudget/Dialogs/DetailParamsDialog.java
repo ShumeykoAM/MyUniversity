@@ -29,10 +29,11 @@ public class DetailParamsDialog
   implements View.OnClickListener, View.OnFocusChangeListener
 {
   private I_DialogResult result_handler = null;
-  private Detail detail;
+  public Detail detail;
   MySQLiteOpenHelper oh;
   SQLiteDatabase db;
 
+  private View v;
   private TextView tv_name_detail;
   private EditText et_price;
   private EditText et_for_amount_unit;
@@ -56,9 +57,9 @@ public class DetailParamsDialog
   }
   public void use(FragmentManager manager, String tag, Detail _detail)
   {
-    super.show(manager, tag);
     detail = _detail.clone();
     detail.calcAll();
+    super.show(manager, tag);
   }
 
   @Override
@@ -67,7 +68,7 @@ public class DetailParamsDialog
   {
     //getDialog().setTitle("Title!");
     getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-    View v = inflater.inflate(R.layout.detail_params_dialog, null);
+    v = inflater.inflate(R.layout.detail_params_dialog, null);
     tv_name_detail     = (TextView)v.findViewById(R.id.detail_params_name_detail);
     et_price           = (EditText)v.findViewById(R.id.detail_params_price);
     et_for_amount_unit = (EditText)v.findViewById(R.id.detail_params_for_amount_unit);
@@ -124,7 +125,7 @@ public class DetailParamsDialog
         sp_id_unit.setSelection(pos);
         break;
       }
-    sp_id_unit.setOnItemSelectedListener(new ItemClickListener(sp_for_id_unit));
+    sp_id_unit.setOnItemSelectedListener(new ItemClickListener(sp_id_unit));
 
     //Клавиатуру для конкретного view можно корректно вызвать только так
     et_price.post(new Runnable()
@@ -149,8 +150,6 @@ public class DetailParamsDialog
     if(v == button_save)
     {
       dismiss();
-      detail.price = Double.parseDouble(et_price.getText().toString());
-      detail.cost = Double.parseDouble(et_cost.getText().toString());
       result_handler.onResult(RESULT.OK, null);
     }
   }
@@ -349,16 +348,35 @@ public class DetailParamsDialog
       Unit unit = new Unit(detail.id_unit);
       if(spinner == sp_for_id_unit)
       {
-        detail.id_unit = new_unit._id;
+        detail.for_id_unit = new_unit._id;
         if(new_unit._id_group != unit._id_group)
         {
+          detail.id_unit = detail.for_id_unit;
 
+          Cursor cursor_unit = Unit.cursorForGroup(new_unit._id_group);
+          unit_adapter = new SimpleCursorAdapter(v.getContext(),
+            android.R.layout.simple_list_item_1, cursor_unit, new String[]{"name"}, new int[]{android.R.id.text1});
+          sp_id_unit.setAdapter(unit_adapter);
+          int pos = 0;
+          for(boolean status=cursor_unit.moveToFirst(); status ;status=cursor_unit.moveToNext(), pos++)
+            if(cursor_unit.getLong(cursor_unit.getColumnIndex("_id")) == detail.id_unit)
+            {
+              sp_id_unit.setSelection(pos);
+              break;
+            }
+          unit_adapter.notifyDataSetChanged();
+        }
+        else
+        {
+          detail.calcCost(true);
+          et_cost.setText(FORMAT_MONEY.double_format(detail.cost));
         }
       }
       else if(spinner == sp_id_unit)
       {
-
-
+        detail.id_unit = new_unit._id;
+        detail.calcCost(true);
+        et_cost.setText(FORMAT_MONEY.double_format(detail.cost));
       }
     }
     @Override

@@ -34,6 +34,9 @@ public class WDetails
   private TextView status;
   private Cursor cursor;
 
+  private DetailParamsDialog detailDialog;
+  private Detail detail_for_dialog;
+
   //Создание активности
   @Override
   public void onCreate(Bundle savedInstanceState)
@@ -93,9 +96,9 @@ public class WDetails
   public void onItemClick(AdapterView<?> parent, View view, int position, long id)
   {
     cursor.moveToPosition(position);
-    Detail detail = new Detail(cursor);
-    DetailParamsDialog detailDialog = new DetailParamsDialog(this, oh, db);
-    detailDialog.use(getFragmentManager(), "d1", detail);
+    detail_for_dialog = new Detail(cursor);
+    detailDialog = new DetailParamsDialog(this, oh, db);
+    detailDialog.use(getFragmentManager(), "d1", detail_for_dialog);
   }
   //Обработчик диалога переметров детали
   @Override
@@ -103,7 +106,13 @@ public class WDetails
   {
     if(code == RESULT.OK)
     {
+      if(!detailDialog.detail.equal(detail_for_dialog))
+      {
+        /detail_for_dialog.update(detailDialog.detail, db);
+        int fdfd = 34;
+        fdfd++;
 
+      }
 
     }
   }

@@ -76,19 +76,19 @@ public class Unit
     //штуки
     g_id = id;
     cursor.addRow(new Object[]{id++, "шт.", 1, g_id});
-    cursor.addRow(new Object[]{id++, "дес.", 1, g_id}); //десяток
+    cursor.addRow(new Object[]{id++, "дес.", 10, g_id}); //десяток //10шт в дес
     //граммы
     g_id = id;
-    cursor.addRow(new Object[]{id++, "г", 1, g_id});
+    cursor.addRow(new Object[]{id++, "г", 0.001, g_id}); //1000г в Кг
     cursor.addRow(new Object[]{id++, "Кг", 1, g_id});
     //литры
     g_id = id;
     cursor.addRow(new Object[]{id++, "л", 1, g_id});
-    cursor.addRow(new Object[]{id++, "мл", 1, g_id});
+    cursor.addRow(new Object[]{id++, "мл", 0.001, g_id}); //1000мл в л
     //метры
     g_id = id;
     cursor.addRow(new Object[]{id++, "м", 1, g_id});
-    cursor.addRow(new Object[]{id++, "см", 1, g_id});
+    cursor.addRow(new Object[]{id++, "см", 0.01, g_id}); //100см в м
     //Киловаты в час
     g_id = id;
     cursor.addRow(new Object[]{id++, "КВт.ч", 1, g_id});
