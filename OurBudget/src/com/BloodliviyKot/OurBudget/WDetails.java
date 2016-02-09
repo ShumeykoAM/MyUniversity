@@ -33,6 +33,7 @@ public class WDetails
   private TextView sub_caption;
   private TextView status;
   private Cursor cursor;
+  private DetailsAdapter list_adapter;
 
   private DetailParamsDialog detailDialog;
   private Detail detail_for_dialog;
@@ -59,7 +60,7 @@ public class WDetails
     //Cursor обязательно должен содержать _id иначе SimpleCursorAdapter не заработает
     cursor = db.rawQuery(oh.getQuery(EQ.DETAILS), new String[]{Long.toString(_id_purchase)});
     int to[] = {R.id.details_item_type, R.id.details_item_amount, R.id.details_item_cost};
-    DetailsAdapter list_adapter = new DetailsAdapter(this, R.layout.details_item, cursor,
+    list_adapter = new DetailsAdapter(this, R.layout.details_item, cursor,
       new String[]{}, to);
     list_details.setAdapter(list_adapter);
     calcCaptionStatus();
@@ -106,14 +107,12 @@ public class WDetails
   {
     if(code == RESULT.OK)
     {
-      if(!detailDialog.detail.equal(detail_for_dialog))
+      if(detail_for_dialog.update(detailDialog.detail, db))
       {
-        /detail_for_dialog.update(detailDialog.detail, db);
-        int fdfd = 34;
-        fdfd++;
-
+        cursor.requery();
+        list_adapter.notifyDataSetInvalidated();
+        calcCaptionStatus();
       }
-
     }
   }
 

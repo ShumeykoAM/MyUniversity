@@ -152,7 +152,7 @@ public class Detail
   public boolean update(Detail new_detail, SQLiteDatabase db)
   {
     if(_id == null || new_detail._id == null || !_id.equals(new_detail._id))
-      return false;
+      throw new Error();
     ContentValues values = new ContentValues();
     if(_id_user_account != new_detail._id_user_account)
       values.put("_id_user_account", new Long(new_detail._id_user_account).toString());
@@ -160,38 +160,35 @@ public class Detail
       values.put("_id_purchase", new Long(new_detail._id_purchase).toString());
     if(_id_type != new_detail._id_type)
       values.put("_id_type", new Long(new_detail._id_type).toString());
-    if(_id_ != new_detail._id_)
-      values.put("", new Long(new_detail._id_).toString());
-
-
-
-    if(_id_ != new_detail._id_)
-      values.put("", new Long(new_detail._id_).toString());
-
+    if(id_server != null && new_detail.id_server == null)
+      values.putNull("id_server");
+    else if(id_server == null && new_detail.id_server != null ||
+            id_server != null && new_detail.id_server != null && id_server.compareTo(new_detail.id_server) != 0)
+      values.put("id_server", new Long(new_detail.id_server).toString());
+    if(price != null && new_detail.price == null)
+      values.putNull("price");
+    else if(price == null && new_detail.price != null ||
+            price != null && new_detail.price != null && price.compareTo(new_detail.price) != 0)
+      values.put("price", new Double(new_detail.price).toString());
+    if(for_amount_unit != new_detail.for_amount_unit)
+      values.put("for_amount_unit", new Double(new_detail.for_amount_unit).toString());
+    if(for_id_unit != new_detail.for_id_unit)
+      values.put("for_id_unit", new Long(new_detail.for_id_unit).toString());
+    if(amount != new_detail.amount)
+      values.put("amount", new Double(new_detail.amount).toString());
+    if(id_unit != new_detail.id_unit)
+      values.put("id_unit", new Long(new_detail.id_unit).toString());
+    if(cost != null && new_detail.cost == null)
+      values.putNull("cost");
+    else if(cost == null && new_detail.cost != null ||
+            cost != null && new_detail.cost != null && cost.compareTo(new_detail.cost) != 0)
+      values.put("cost", new Double(new_detail.cost).toString());
+    if(is_delete != new_detail.is_delete)
+      values.put("", new Long(new_detail.is_delete).toString());
     if(values.size() > 0)
       return db.update(table_name, values, "_id=?", new String[]{new Long(_id).toString()}) == 1;
-    return true;
-  }
-  public boolean equal(Detail detail)//хранимые в базе данные
-  {
-
-
-    return
-      //this._id.equals(detail._id)                      &&
-      this._id_user_account == detail._id_user_account &&
-      this._id_purchase     == detail._id_purchase     &&
-      this._id_type         == detail._id_type         &&
-      (this.id_server == null && detail.id_server == null ||
-       this.id_server != null && detail.id_server != null && this.id_server.equals(detail.id_server)) &&
-      (this.price == null && detail.price == null ||
-       this.price != null && detail.price != null         && this.price.equals(detail.price)) &&
-      this.for_amount_unit  == detail.for_amount_unit  &&
-      this.for_id_unit      == detail.for_id_unit      &&
-      this.amount           == detail.amount           &&
-      this.id_unit          == detail.id_unit          &&
-      (this.cost == null && detail.cost == null ||
-       this.cost != null && detail.cost != null && this.cost.equals(detail.cost)) &&
-      this.is_delete        == detail.is_delete;
+    else
+      return false;
   }
 
   static public String formatMoney(double money)
