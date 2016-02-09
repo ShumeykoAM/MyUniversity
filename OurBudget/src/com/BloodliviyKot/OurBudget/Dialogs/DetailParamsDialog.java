@@ -5,6 +5,7 @@ import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Editable;
@@ -14,15 +15,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
+import android.widget.*;
 import com.BloodliviyKot.OurBudget.R;
 import com.BloodliviyKot.tools.Common.MyDecimalFormat;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
 import com.BloodliviyKot.tools.DataBase.entitys.Detail;
 import com.BloodliviyKot.tools.DataBase.entitys.Type;
+import com.BloodliviyKot.tools.DataBase.entitys.Unit;
 
 @SuppressLint("ValidFragment")
 public class DetailParamsDialog
@@ -45,6 +44,9 @@ public class DetailParamsDialog
 
   public static final MyDecimalFormat FORMAT_MONEY = new MyDecimalFormat("###.##");
   public static final MyDecimalFormat FORMAT_AMOUNT = new MyDecimalFormat("###.###");
+
+  private SimpleCursorAdapter unit_adapter;
+  private SimpleCursorAdapter for_amount_unit_adapter;
 
   public DetailParamsDialog(I_DialogResult _result_handler, MySQLiteOpenHelper oh, SQLiteDatabase db)
   {
@@ -69,7 +71,7 @@ public class DetailParamsDialog
     tv_name_detail     = (TextView)v.findViewById(R.id.detail_params_name_detail);
     et_price           = (EditText)v.findViewById(R.id.detail_params_price);
     et_for_amount_unit = (EditText)v.findViewById(R.id.detail_params_for_amount_unit);
-    sp_for_id_unit     = (Spinner )v.findViewById(R.id.detail_params_id_unit);
+    sp_for_id_unit     = (Spinner )v.findViewById(R.id.detail_params_for_id_unit);
     et_amount          = (EditText)v.findViewById(R.id.detail_params_amount);
     sp_id_unit         = (Spinner )v.findViewById(R.id.detail_params_id_unit);
     et_cost            = (EditText)v.findViewById(R.id.detail_params_cost);
@@ -79,9 +81,7 @@ public class DetailParamsDialog
     tv_name_detail.setText(type.name);
     et_price.setText(FORMAT_MONEY.double_format(detail.price));
     et_for_amount_unit.setText(FORMAT_AMOUNT.double_format(detail.for_amount_unit));
-    //sp_for_id_unit
     et_amount.setText(FORMAT_AMOUNT.double_format(detail.amount));
-    //sp_id_unit
     et_cost.setText(FORMAT_MONEY.double_format(detail.cost));
 
     et_price.addTextChangedListener(new TextChangeListener(et_price));
@@ -96,8 +96,39 @@ public class DetailParamsDialog
 
     button_save.setOnClickListener(this);
 
+    Unit current_unit = new Unit(detail.id_unit);
+
+    Cursor cursor_for_amount_unit = Unit.getCursor();
+    for_amount_unit_adapter = new SimpleCursorAdapter(v.getContext(), android.R.layout.simple_list_item_1,
+      cursor_for_amount_unit, new String[]{"name"}, new int[]{android.R.id.text1});
+    sp_for_id_unit.setAdapter(for_amount_unit_adapter);
+    int pos = 0;
+    for(boolean status=cursor_for_amount_unit.moveToFirst();
+        status;
+        status=cursor_for_amount_unit.moveToNext(), pos++)
+      if(cursor_for_amount_unit.getLong(cursor_for_amount_unit.getColumnIndex("_id")) == detail.for_id_unit)
+      {
+        sp_for_id_unit.setSelection(pos);
+        break;
+      }
+    sp_for_id_unit.setOnItemSelectedListener(new ItemClickListener(sp_for_id_unit));
+
+    Cursor cursor_unit = Unit.cursorForGroup(current_unit._id_group);
+    unit_adapter = new SimpleCursorAdapter(v.getContext(),
+      android.R.layout.simple_list_item_1, cursor_unit, new String[]{"name"}, new int[]{android.R.id.text1});
+    sp_id_unit.setAdapter(unit_adapter);
+    pos = 0;
+    for(boolean status=cursor_unit.moveToFirst(); status ;status=cursor_unit.moveToNext(), pos++)
+      if(cursor_unit.getLong(cursor_unit.getColumnIndex("_id")) == detail.id_unit)
+      {
+        sp_id_unit.setSelection(pos);
+        break;
+      }
+    sp_id_unit.setOnItemSelectedListener(new ItemClickListener(sp_for_id_unit));
+
     //Клавиатуру для конкретного view можно корректно вызвать только так
-    et_price.post(new Runnable(){
+    et_price.post(new Runnable()
+    {
       @Override
       public void run()
       {
@@ -179,7 +210,7 @@ public class DetailParamsDialog
     }
   }
 
-  class TextChangeListener
+  private class TextChangeListener
     implements TextWatcher
   {
     public static final double DEFAULT_PRICE = 0.0;
@@ -299,6 +330,41 @@ public class DetailParamsDialog
           et_price.setText(FORMAT_MONEY.double_format(detail.price));
         }
       }
+    }
+  }
+
+  private class ItemClickListener
+    implements AdapterView.OnItemSelectedListener
+  {
+    private Spinner spinner;
+    public ItemClickListener(Spinner spinner)
+    {
+      this.spinner = spinner;
+    }
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+    {
+      Unit new_unit = new Unit(id);
+      Unit for_amount_unit = new Unit(detail.for_id_unit);
+      Unit unit = new Unit(detail.id_unit);
+      if(spinner == sp_for_id_unit)
+      {
+        detail.id_unit = new_unit._id;
+        if(new_unit._id_group != unit._id_group)
+        {
+
+        }
+      }
+      else if(spinner == sp_id_unit)
+      {
+
+
+      }
+    }
+    @Override
+    public void onNothingSelected(AdapterView<?> parent)
+    {
+
     }
   }
 }
