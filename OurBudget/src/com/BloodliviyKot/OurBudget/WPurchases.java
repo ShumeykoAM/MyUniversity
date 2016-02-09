@@ -170,8 +170,27 @@ public class WPurchases
               id_purchase[0] = purchase.insertDateBase(db);
               for(DialogParamsSelectedType selected_type : selected)
               {
+                //Найдем последнюю оплаченную, если нету то неоплаченную запись с данным видом товара и
+                //  возьмем от туда цену
+                Double last_price = null;
+                Cursor cursor_last_price = db.rawQuery(oh.getQuery(EQ.LAST_PRICE),
+                  new String[]{new Long(selected_type.id_type).toString()});
+                for(boolean status=cursor_last_price.moveToFirst(); status; status = cursor_last_price.moveToNext())
+                {
+                  double price = cursor_last_price.getDouble(cursor_last_price.getColumnIndex("price"));
+                  long id_unit = cursor_last_price.getLong(cursor_last_price.getColumnIndex("id_unit"));
+                  if(selected_type.id_unit == id_unit)
+                  {
+                    last_price = new Double(price);
+                    break;
+                  }
+                  //Доделать если из одной группы единицы измерения, то использовать последние
+                  // единицы измерения для цены и последнюю цену
+
+                  id_unit = 0;
+                }
                 Detail detail = new Detail(UserAccount.getIDActiveUserAccount(oh, db), id_purchase[0],
-                  selected_type.id_type, null, null, 1, selected_type.id_unit, selected_type.count,
+                  selected_type.id_type, null, last_price, 1, selected_type.id_unit, selected_type.count,
                   selected_type.id_unit, 0.0, 0);
                 detail.insertDateBase(db);
               }

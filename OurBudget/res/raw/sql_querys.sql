@@ -18,7 +18,7 @@ SELECT user_account._id, user_account.login, user_account.password, user_account
 -- PURCHASES
 SELECT purchase._id, purchase.date_time, purchase.state FROM purchase
   WHERE (purchase.date_time > ? AND purchase.date_time < ? AND purchase.state = ?) OR purchase.state = ?
-  ORDER BY purchase.state, purchase.date_time DESC;
+    ORDER BY purchase.state, purchase.date_time DESC;
 
 -- PURCHASE_FROM_ID
 SELECT purchase._id, purchase._id_user_account, purchase.id_server, purchase.date_time,
@@ -45,3 +45,9 @@ SELECT type._id, type._id_user_account, type.name, type.name_lower,
 SELECT type._id, type._id_user_account, type.name, type.name_lower,
   type.id_server, type.id_unit, type.is_delete
   FROM type WHERE type._id = ?;
+
+-- LAST_PRICE
+SELECT detail.price, detail.id_unit FROM detail, purchase
+  WHERE detail._id_type = ? AND detail._id_purchase = purchase._id
+  AND NOT detail.price IS NULL AND detail.price != 0
+  ORDER BY purchase.date_time DESC;
