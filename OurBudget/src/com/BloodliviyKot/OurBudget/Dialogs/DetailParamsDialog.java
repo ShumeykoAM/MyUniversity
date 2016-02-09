@@ -202,11 +202,39 @@ public class DetailParamsDialog
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count)
     {
-
+      String string = s.toString();
+      if(string.compareTo(".") == 0)
+      {
+        view.setText("0.");
+        view.setSelection(view.getText().length());
+      }
+      else
+      {
+        String s_value = view.getText().toString();
+        Double value = s_value.length()>0 ? new Double(s_value) : null;
+        if(value != null)
+        {
+          String normalise = null;
+          if(view == et_price || view == et_cost)
+            normalise = FORMAT_MONEY.double_format(value);
+          else if(view == et_for_amount_unit || view == et_amount)
+            normalise = FORMAT_AMOUNT.double_format(value);
+          if(normalise != null && normalise.compareTo(s_value) != 0 && (normalise+".").compareTo(s_value) != 0)
+          {
+            int index_selection = view.getSelectionStart();
+            view.setText(normalise);
+            int length_text = view.getText().toString().length();
+            index_selection = index_selection <= length_text ? index_selection : length_text;
+            view.setSelection(index_selection);
+          }
+        }
+      }
     }
     @Override
     public void afterTextChanged(Editable s)
     {
+      if(s.toString().compareTo(".") == 0)
+        return;
       if(view == et_price)
       {
         double price;

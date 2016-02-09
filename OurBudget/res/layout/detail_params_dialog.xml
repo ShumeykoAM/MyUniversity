@@ -50,7 +50,9 @@
                         android:singleLine="true" android:inputType="numberDecimal"
                         android:layout_toLeftOf="@+id/textView4" android:gravity="right"
                         android:textColor="@color/detail_params_price"
-                        android:nextFocusDown="@+id/detail_params_amount"/>
+                        android:nextFocusDown="@+id/detail_params_amount"
+                        android:nextFocusForward="@+id/detail_params_amount"
+                        android:nextFocusRight="@+id/detail_params_amount"/>
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -109,7 +111,9 @@
                         android:layout_centerVertical="true" android:layout_toLeftOf="@+id/detail_params_id_unit"
                         android:numeric="decimal" android:singleLine="true"
                         android:inputType="numberDecimal" android:layout_toRightOf="@+id/textView5"
-                        android:gravity="right" android:textColor="@color/detail_params_amount"/>
+                        android:gravity="right" android:textColor="@color/detail_params_amount"
+                        android:nextFocusLeft="@+id/detail_params_price"
+                        android:nextFocusUp="@+id/detail_params_price"/>
                 <Spinner
                         android:layout_width="90dp"
                         android:layout_height="wrap_content"
