@@ -48,23 +48,36 @@ public class DialogParamsSelectedType
 
   public DialogParamsSelectedType(long _id_type, boolean isFiction, MySQLiteOpenHelper _oh, SQLiteDatabase _db)
   {
+    init(_id_type, isFiction, _oh, _db);
+  }
+  public DialogParamsSelectedType(long _id_type, boolean isFiction, MySQLiteOpenHelper _oh, SQLiteDatabase _db,
+                                  double amount, long id_unit)
+  {
+    init(_id_type, true, _oh, _db);
+    this.amount = amount;
+    this.id_unit = id_unit;
+  }
+  private void init(long _id_type, boolean isFiction, MySQLiteOpenHelper _oh, SQLiteDatabase _db)
+  {
     id_type = _id_type;
     oh = _oh;
     db = _db;
     if(!isFiction)
     {
+      init_type();
       //Подкачаем значения на основе данных из базы (по последним или по средним и т.д.)
 
       //Пока что не по последним
-      Cursor cursor_type = db.rawQuery(oh.getQuery(EQ.TYPE_FROM_ID),
-        new String[]{new Long(id_type).toString()});
-      if(cursor_type.moveToFirst())
-      {
-        type = new Type(cursor_type);
-        id_unit = type.id_unit;
-      }
-      amount = 1;
+      id_unit = type.id_unit;
+      this.amount = 1;
     }
+  }
+  private void init_type()
+  {
+    Cursor cursor_type = db.rawQuery(oh.getQuery(EQ.TYPE_FROM_ID),
+      new String[]{new Long(id_type).toString()});
+    if(cursor_type.moveToFirst())
+      type = new Type(cursor_type);
   }
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -84,6 +97,8 @@ public class DialogParamsSelectedType
       db = oh.getReadableDatabase();
 
     button_ok.setOnClickListener(this);
+    if(type == null)
+      init_type();
     tv_type_name.setText(type.name);
     et_count.setText(new DecimalFormat("###.##").format(amount));
 

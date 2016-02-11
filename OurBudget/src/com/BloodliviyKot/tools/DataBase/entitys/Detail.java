@@ -187,6 +187,13 @@ public class Detail
       if(found && price != null) //Если найденный price не задан, то поищем еще, иначе все что искали нашли
         break;
     }
+    if(!result)
+    {
+      this.price           = null;
+      this.for_amount_unit = 1;
+      this.for_id_unit     = id_unit;
+      this.cost = null;
+    }
     return result;
   }
 

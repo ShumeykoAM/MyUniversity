@@ -47,15 +47,23 @@ public class WMarkTypes
     search = (SearchView)findViewById(R.id.mark_types_search);
     list_types = (ListView)findViewById(R.id.mark_types_list_types);
     button_ok = (Button)findViewById(R.id.mark_types_button_ok);
-    //Читаем параметры переданные из родительской активности
-    Bundle extras = getIntent().getExtras();
-    if(extras != null && extras.containsKey("StatePurchase"))
-      state_purchase = STATE_PURCHASE.getSTATE_PURCHASE(extras.getInt("StatePurchase"));
-    //account_id = extras.getLong(getString(R.string.intent_purchases_id));
-    selected_ids = new TreeSet<DialogParamsSelectedType>(DialogParamsSelectedType.comparator);
     //Создаем помощник управления БД
     oh = new MySQLiteOpenHelper(getApplicationContext());
     db = oh.getWritableDatabase();
+    selected_ids = new TreeSet<DialogParamsSelectedType>(DialogParamsSelectedType.comparator);
+    //Читаем параметры переданные из родительской активности
+    Intent data = getIntent();
+    Bundle extras = data.getExtras();
+    if(extras != null && extras.containsKey("StatePurchase"))
+      state_purchase = STATE_PURCHASE.getSTATE_PURCHASE(extras.getInt("StatePurchase"));
+    final ArrayList<DialogParamsSelectedType> selected;
+    selected = data.getParcelableArrayListExtra("Selected");
+    if(selected != null)
+      for(DialogParamsSelectedType selected_type : selected)
+      {
+        selected_ids.add(new DialogParamsSelectedType(selected_type.id_type, false, oh, db,
+          selected_type.amount, selected_type.id_unit));
+      }
     cursor = new Cursor[1];
     cursor[0] = TypesCursorTuning.getFullCursor(oh, db);
     list_adapter = new TypesAdapter(getApplicationContext(), android.R.layout.simple_list_item_multiple_choice,
@@ -67,7 +75,8 @@ public class WMarkTypes
     list_adapter.setFilterQueryProvider(types_cursor_tuning);
     search.setOnQueryTextListener(types_cursor_tuning);
     button_ok.setOnClickListener(this);
-    button_ok.setClickable(false);
+    if(selected_ids.size() == 0)
+      button_ok.setClickable(false);
   }
 
   //Создаем меню
@@ -141,25 +150,33 @@ public class WMarkTypes
         Toast.makeText(v.getContext(), R.string.mark_types_err, Toast.LENGTH_LONG).show();
       else
       {
-        PurchaseDateTimeDialog date_time_dialog = new PurchaseDateTimeDialog(new I_DialogResult(){
+        I_DialogResult dialog_result =  new I_DialogResult()
+        {
           @Override
           public void onResult(RESULT code, Intent data)
           {
             if(code == RESULT.OK)
             {
               Intent ires = new Intent();  //Вернем
-              ArrayList<DialogParamsSelectedType> selected =
-                new ArrayList<DialogParamsSelectedType>(selected_ids);
+              ArrayList<DialogParamsSelectedType> selected = new ArrayList<DialogParamsSelectedType>(selected_ids);
               ires.putParcelableArrayListExtra("Selected", selected);
               if(state_purchase != null)
                 ires.putExtra("StatePurchase", state_purchase.value);
-              ires.putExtra("date_time", data.getExtras().getLong("date_time"));
+              if(data != null)
+                ires.putExtra("date_time", data.getExtras().getLong("date_time"));
               setResult(RESULT_OK, ires);  //Возвращаемый в родительскую активность результат
               finish();
             }
           }
-        },new java.util.Date().getTime(), state_purchase == STATE_PURCHASE.PLAN);
-        date_time_dialog.show(getFragmentManager(), null);
+        };
+        if(state_purchase != null)
+        {
+          PurchaseDateTimeDialog date_time_dialog = new PurchaseDateTimeDialog(dialog_result,
+            new java.util.Date().getTime(), state_purchase == STATE_PURCHASE.PLAN);
+          date_time_dialog.show(getFragmentManager(), null);
+        }
+        else
+          dialog_result.onResult(RESULT.OK, null);
       }
     }
     else //Один из видов товаров и услуг

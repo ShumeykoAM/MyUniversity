@@ -134,6 +134,17 @@ public class WDetails
     {
       case R.id.m_details_add:
         Intent intent = new Intent(this, WMarkTypes.class);
+
+        ArrayList<DialogParamsSelectedType> selected = new ArrayList<DialogParamsSelectedType>();
+        String exist_details_query_params[] ={ Long.toString(_id_purchase), Long.toString(0) };
+        Cursor exist_details = db.rawQuery(oh.getQuery(EQ.DETAILS), exist_details_query_params);
+        for(boolean status=exist_details.moveToFirst(); status; status=exist_details.moveToNext())
+        {
+          Detail exist_detail = new Detail(exist_details);
+          selected.add(new DialogParamsSelectedType(exist_detail._id_type, true, null, null,
+            exist_detail.amount, exist_detail.id_unit));
+        }
+        intent.putParcelableArrayListExtra("Selected", selected);
         startActivityForResult(intent, R.layout.mark_types); //Запуск активности с onActivityResult
         return true;
       case R.id.m_details_plan:
@@ -159,7 +170,6 @@ public class WDetails
           //Выбрали товары и услуги, теперь добавляем или обновляем их в текущую покупку,
           //  а те с которых сняли галочку удаляем (помечаем как удаленные), или восстанавливаем если они в удаленных
           final ArrayList<DialogParamsSelectedType> selected = data.getParcelableArrayListExtra("Selected");
-          Purchase.STATE_PURCHASE state_purchase = Purchase.STATE_PURCHASE.getSTATE_PURCHASE(data.getExtras().getInt("StatePurchase"));
           SQLTransaction sql_transaction = new SQLTransaction(db, new I_Transaction(){
             @Override
             public boolean trnFunc()
