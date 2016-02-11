@@ -22,7 +22,7 @@ public class Detail
   public double amount;          //Количество
   public long id_unit;           //  единица измерения количества
   public Double cost;            //Стоимость
-  public int is_delete;
+  public boolean is_delete;
 
   public Detail(Cursor cursor)
   {
@@ -41,11 +41,11 @@ public class Detail
     id_unit          = cursor.getLong(  cursor.getColumnIndex("id_unit"));
     if(!cursor.isNull(cursor.getColumnIndex("cost")))
       cost           = cursor.getDouble(cursor.getColumnIndex("cost"));
-    is_delete        = cursor.getInt(   cursor.getColumnIndex("is_delete"));
+    is_delete        = cursor.getInt(   cursor.getColumnIndex("is_delete")) == 1;
   }
   public Detail(long __id_user_account, long __id_purchase, long __id_type, Long _id_server,
                 Double _price, double _for_amount_unit, long _for_id_unit,
-                Double _amount, long _id_unit, Double _cost, int _is_delete )
+                Double _amount, long _id_unit, Double _cost, boolean _is_delete )
   {
     _id_user_account = __id_user_account;
     _id_purchase     = __id_purchase;
@@ -77,7 +77,7 @@ public class Detail
     values.put("id_unit"         , id_unit          );
     if(cost != null)
       values.put("cost"          , cost             );
-    values.put("is_delete"       , is_delete        );
+    values.put("is_delete"       , is_delete ? 1 : 0);
     return db.insert(table_name, null, values);
   }
 
@@ -184,7 +184,7 @@ public class Detail
             cost != null && new_detail.cost != null && cost.compareTo(new_detail.cost) != 0)
       values.put("cost", new Double(new_detail.cost).toString());
     if(is_delete != new_detail.is_delete)
-      values.put("", new Long(new_detail.is_delete).toString());
+      values.put("is_delete", new Long(new_detail.is_delete ? 1 : 0).toString());
     if(values.size() > 0)
       return db.update(table_name, values, "_id=?", new String[]{new Long(_id).toString()}) == 1;
     else

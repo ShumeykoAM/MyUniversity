@@ -12,15 +12,16 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
-import com.BloodliviyKot.OurBudget.Dialogs.DetailParamsDialog;
-import com.BloodliviyKot.OurBudget.Dialogs.I_DialogResult;
-import com.BloodliviyKot.OurBudget.Dialogs.PurchaseDateTimeDialog;
-import com.BloodliviyKot.OurBudget.Dialogs.RESULT;
+import com.BloodliviyKot.OurBudget.Dialogs.*;
 import com.BloodliviyKot.tools.DataBase.EQ;
+import com.BloodliviyKot.tools.DataBase.I_Transaction;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
+import com.BloodliviyKot.tools.DataBase.SQLTransaction;
 import com.BloodliviyKot.tools.DataBase.entitys.Detail;
 import com.BloodliviyKot.tools.DataBase.entitys.Purchase;
 import com.BloodliviyKot.tools.DataBase.entitys.Unit;
+
+import java.util.ArrayList;
 
 public class WDetails
   extends Activity
@@ -147,6 +148,123 @@ public class WDetails
     return super.onOptionsItemSelected(item);
   }
 
+  @Override
+  public void onActivityResult(int requestCode, int resultCode, Intent data)
+  {
+    switch(requestCode)
+    {
+      case R.layout.mark_types:
+        if(resultCode == RESULT_OK)
+        {
+          //Выбрали товары и услуги, теперь добавляем или обновляем их в текущую покупку,
+          //  а те с которых сняли галочку удаляем (помечаем как удаленные), или восстанавливаем если они в удаленных
+          final ArrayList<DialogParamsSelectedType> selected = data.getParcelableArrayListExtra("Selected");
+          Purchase.STATE_PURCHASE state_purchase = Purchase.STATE_PURCHASE.getSTATE_PURCHASE(data.getExtras().getInt("StatePurchase"));
+          SQLTransaction sql_transaction = new SQLTransaction(db, new I_Transaction(){
+            @Override
+            public boolean trnFunc()
+            {
+              //Пометим как удаленные те детали с которых сняли галочку (перебираем в базе все записи и ищем
+              //  их в selected, если нету значит удалили
+              String exist_details_query_params[] ={ Long.toString(_id_purchase)};
+              Cursor exist_details = db.rawQuery(oh.getQuery(EQ.DETAILS), exist_details_query_params);
+              label_exist:
+              for(boolean status=exist_details.moveToFirst(); status; status=exist_details.moveToNext())
+              {
+                Detail exist_detail = new Detail(exist_details);
+                for(DialogParamsSelectedType selected_type : selected)
+                {
+                  if(exist_detail._id_type == selected_type.id_type)
+                    continue label_exist;
+                }
+                if(!exist_detail.is_delete)
+                {
+                  //Пометим как удаленная
+                  Detail detail = exist_detail.clone();
+                  detail.is_delete = true;
+                  exist_detail.update(detail, db);
+                }
+              }
+              //Снимем признак удаленности и изменим количество с тех деталей которые находятся в удаленных
+
+
+              //Добавим новые делали (которые есть в selected и нет среди неудаленных или удаленных)
+
+
+
+
+              //Изменим количество с деталей которые в неудаленных
+
+              /*
+              for(DialogParamsSelectedType selected_type : selected)
+              {
+                //Найдем последнюю оплаченную, если нету то неоплаченную запись с данным видом товара и
+                //  возьмем от туда цену
+                Double last_price = null;
+                Cursor cursor_last_price = db.rawQuery(oh.getQuery(EQ.LAST_PRICE),
+                  new String[]{new Long(selected_type.id_type).toString()});
+                long id_unit_for = selected_type.id_unit;
+                for(boolean status=cursor_last_price.moveToFirst(); status; status = cursor_last_price.moveToNext())
+                {
+                  double price = cursor_last_price.getDouble(cursor_last_price.getColumnIndex("price"));
+                  long id_unit = cursor_last_price.getLong(cursor_last_price.getColumnIndex("id_unit"));
+                  if(selected_type.id_unit == id_unit)
+                  {
+                    last_price = new Double(price);
+                    break;
+                  }
+                  else
+                  {
+                    Unit selected_unit = new Unit(selected_type.id_unit);
+                    Unit unit = new Unit(id_unit);
+                    if(selected_unit._id_group == unit._id_group)
+                    {
+                      last_price = new Double(price);
+                      id_unit_for = id_unit;
+                      break;
+                    }
+                  }
+                }
+                Detail detail = new Detail(UserAccount.getIDActiveUserAccount(oh, db), id_purchase[0],
+                  selected_type.id_type, null, last_price, 1, id_unit_for, selected_type.count,
+                  selected_type.id_unit, null, 0);
+                detail.calcCost(true);
+                detail.insertDateBase(db);
+
+              }*/
+              return true;
+            }
+          });
+          if(sql_transaction.runTransaction())
+          {
+            cursor.requery();
+            list_adapter.notifyDataSetChanged();
+
+            /*
+            int position, count;
+            for(position = 0, count=list_purchases.getCount();
+                position<count && id_purchase[0] != list_purchases.getItemIdAtPosition(position);
+                ++position );
+            final int pos = position;
+            list_purchases.post(new Runnable()
+            {
+              @Override
+              public void run()
+              {
+                list_purchases.smoothScrollToPosition(pos);
+              }
+            });
+            //Переходим в окно товаров и услуг данной покупки
+            Intent intent = new Intent(this, WDetails.class);
+            intent.putExtra(getString(R.string.intent_purchases_id), id_purchase[0]);
+            startActivityForResult(intent, R.layout.details); //Запуск активности с onActivityResult
+            */
+          }
+        }
+        break;
+    }
+  }
+
   //Контекстное меню для элемента списка счетов
   @Override
   public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
@@ -217,6 +335,8 @@ public class WDetails
       tv_cost.setText(cost);
       if(cost_is_null)
         tv_cost.setTextColor(_context.getResources().getColor(R.color.detail_cost_null));
+      else
+        tv_cost.setTextColor(_context.getResources().getColor(R.color.detail_cost));
     }
   }
 

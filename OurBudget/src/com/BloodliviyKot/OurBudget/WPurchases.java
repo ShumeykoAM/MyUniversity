@@ -200,7 +200,7 @@ public class WPurchases
                 }
                 Detail detail = new Detail(UserAccount.getIDActiveUserAccount(oh, db), id_purchase[0],
                   selected_type.id_type, null, last_price, 1, id_unit_for, selected_type.count,
-                  selected_type.id_unit, null, 0);
+                  selected_type.id_unit, null, false);
                 detail.calcCost(true);
                 detail.insertDateBase(db);
               }
