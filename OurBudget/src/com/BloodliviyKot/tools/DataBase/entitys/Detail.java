@@ -3,6 +3,8 @@ package com.BloodliviyKot.tools.DataBase.entitys;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import com.BloodliviyKot.tools.DataBase.EQ;
+import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -148,6 +150,46 @@ public class Detail
     }
 
   }
+  //Найдем последнюю цену и единицы измерения для этой цены по единицам измерения количества id_unit
+  public boolean find_and_fill_last_price_and_unit_for(SQLiteDatabase db, MySQLiteOpenHelper oh)
+  {
+    boolean result = false;
+    //Находим все последние цены для вида товара
+    Cursor cursor = db.rawQuery(oh.getQuery(EQ.LAST_PRICE), new String[]{new Long(_id_type).toString()});
+    for(boolean status=cursor.moveToFirst(); status; status = cursor.moveToNext())
+    {
+      boolean found = false;
+      Double price = cursor.isNull(cursor.getColumnIndex("price")) ? null :
+        cursor.getDouble(cursor.getColumnIndex("price"));
+      double for_amount_unit = cursor.getDouble(cursor.getColumnIndex("for_amount_unit"));
+      long for_id_unit       = cursor.getInt(cursor.getColumnIndex("for_id_unit"));
+      //Если совпадают единицы измерения
+      if(this.id_unit == for_id_unit)
+      {
+        this.price           = price;
+        this.for_amount_unit = for_amount_unit;
+        this.for_id_unit     = for_id_unit;
+        result = found = true;
+      }
+      else
+      {
+        //Если совпадают группы единиц измерения
+        Unit c_unit = new Unit(for_id_unit);
+        Unit t_unit   = new Unit(this.id_unit);
+        if(c_unit._id_group == t_unit._id_group)
+        {
+          this.price           = price;
+          this.for_amount_unit = for_amount_unit;
+          this.for_id_unit     = for_id_unit;
+          result = found = true;
+        }
+      }
+      if(found && price != null) //Если найденный price не задан, то поищем еще, иначе все что искали нашли
+        break;
+    }
+    return result;
+  }
+
   //Обновляет запись если есть что обновлять
   public boolean update(Detail new_detail, SQLiteDatabase db)
   {

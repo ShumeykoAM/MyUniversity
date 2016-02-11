@@ -29,7 +29,13 @@ SELECT purchase._id, purchase._id_user_account, purchase.id_server, purchase.dat
 SELECT detail._id, detail._id_user_account, detail._id_purchase, detail._id_type, detail.id_server,
   detail.price, detail.for_amount_unit, detail.for_id_unit, detail.amount,
   detail.id_unit, detail.cost, detail.is_delete, type.name FROM detail, type
-  WHERE detail._id_purchase = ? AND type._id=detail._id_type;
+  WHERE detail._id_purchase = ? AND detail.is_delete = ? AND type._id=detail._id_type;
+
+-- DETAILS_ALL
+SELECT detail._id, detail._id_user_account, detail._id_purchase, detail._id_type, detail.id_server,
+  detail.price, detail.for_amount_unit, detail.for_id_unit, detail.amount,
+  detail.id_unit, detail.cost, detail.is_delete, type.name FROM detail, type
+WHERE detail._id_purchase = ? AND type._id=detail._id_type;
 
 -- TYPES_USER_ACC
 SELECT type._id, type._id_user_account, type.name, type.name_lower,
@@ -47,7 +53,9 @@ SELECT type._id, type._id_user_account, type.name, type.name_lower,
   FROM type WHERE type._id = ?;
 
 -- LAST_PRICE
-SELECT detail.price, detail.id_unit FROM detail, purchase
+SELECT detail.price,
+  detail.for_amount_unit, detail.for_id_unit
+  FROM detail, purchase
   WHERE detail._id_type = ? AND detail._id_purchase = purchase._id
   AND NOT detail.price IS NULL AND detail.price != 0
   ORDER BY purchase.date_time DESC;

@@ -17,7 +17,6 @@ import com.BloodliviyKot.tools.DataBase.SQLTransaction;
 import com.BloodliviyKot.tools.DataBase.entitys.Detail;
 import com.BloodliviyKot.tools.DataBase.entitys.Purchase;
 import com.BloodliviyKot.tools.DataBase.entitys.Purchase.STATE_PURCHASE;
-import com.BloodliviyKot.tools.DataBase.entitys.Unit;
 import com.BloodliviyKot.tools.DataBase.entitys.UserAccount;
 
 import java.text.SimpleDateFormat;
@@ -171,36 +170,10 @@ public class WPurchases
               id_purchase[0] = purchase.insertDateBase(db);
               for(DialogParamsSelectedType selected_type : selected)
               {
-                //Найдем последнюю оплаченную, если нету то неоплаченную запись с данным видом товара и
-                //  возьмем от туда цену
-                Double last_price = null;
-                Cursor cursor_last_price = db.rawQuery(oh.getQuery(EQ.LAST_PRICE),
-                  new String[]{new Long(selected_type.id_type).toString()});
-                long id_unit_for = selected_type.id_unit;
-                for(boolean status=cursor_last_price.moveToFirst(); status; status = cursor_last_price.moveToNext())
-                {
-                  double price = cursor_last_price.getDouble(cursor_last_price.getColumnIndex("price"));
-                  long id_unit = cursor_last_price.getLong(cursor_last_price.getColumnIndex("id_unit"));
-                  if(selected_type.id_unit == id_unit)
-                  {
-                    last_price = new Double(price);
-                    break;
-                  }
-                  else
-                  {
-                    Unit selected_unit = new Unit(selected_type.id_unit);
-                    Unit unit = new Unit(id_unit);
-                    if(selected_unit._id_group == unit._id_group)
-                    {
-                      last_price = new Double(price);
-                      id_unit_for = id_unit;
-                      break;
-                    }
-                  }
-                }
                 Detail detail = new Detail(UserAccount.getIDActiveUserAccount(oh, db), id_purchase[0],
-                  selected_type.id_type, null, last_price, 1, id_unit_for, selected_type.count,
+                  selected_type.id_type, null, null, 1, selected_type.id_unit, selected_type.amount,
                   selected_type.id_unit, null, false);
+                detail.find_and_fill_last_price_and_unit_for(db, oh);
                 detail.calcCost(true);
                 detail.insertDateBase(db);
               }
@@ -281,7 +254,7 @@ public class WPurchases
     private String[] get_contein_and_info(long _id_purchase, STATE_PURCHASE _state, Long _date_time)
     {
       //Получим общую сумму и краткий список деталей
-      String q_params[] ={ Long.toString(_id_purchase)};
+      String q_params[] ={ Long.toString(_id_purchase), Long.toString(0)};
       Cursor cursor = db.rawQuery(oh.getQuery(EQ.DETAILS), q_params);
       double sum = 0;
       String s_content = "";

@@ -20,6 +20,7 @@ import com.BloodliviyKot.tools.DataBase.SQLTransaction;
 import com.BloodliviyKot.tools.DataBase.entitys.Detail;
 import com.BloodliviyKot.tools.DataBase.entitys.Purchase;
 import com.BloodliviyKot.tools.DataBase.entitys.Unit;
+import com.BloodliviyKot.tools.DataBase.entitys.UserAccount;
 
 import java.util.ArrayList;
 
@@ -59,10 +60,9 @@ public class WDetails
     oh = new MySQLiteOpenHelper(getApplicationContext());
     db = oh.getWritableDatabase();
     //Cursor обязательно должен содержать _id иначе SimpleCursorAdapter не заработает
-    cursor = db.rawQuery(oh.getQuery(EQ.DETAILS), new String[]{Long.toString(_id_purchase)});
+    cursor = db.rawQuery(oh.getQuery(EQ.DETAILS), new String[]{Long.toString(_id_purchase), Long.toString(0)});
     int to[] = {R.id.details_item_type, R.id.details_item_amount, R.id.details_item_cost};
-    list_adapter = new DetailsAdapter(this, R.layout.details_item, cursor,
-      new String[]{}, to);
+    list_adapter = new DetailsAdapter(this, R.layout.details_item, cursor, new String[]{}, to);
     list_details.setAdapter(list_adapter);
     calcCaptionStatus();
 
@@ -166,18 +166,57 @@ public class WDetails
             {
               //Пометим как удаленные те детали с которых сняли галочку (перебираем в базе все записи и ищем
               //  их в selected, если нету значит удалили
-              String exist_details_query_params[] ={ Long.toString(_id_purchase)};
-              Cursor exist_details = db.rawQuery(oh.getQuery(EQ.DETAILS), exist_details_query_params);
+              String exist_details_query_params[] ={ Long.toString(_id_purchase) };
+              Cursor exist_details = db.rawQuery(oh.getQuery(EQ.DETAILS_ALL), exist_details_query_params);
               label_exist:
               for(boolean status=exist_details.moveToFirst(); status; status=exist_details.moveToNext())
               {
                 Detail exist_detail = new Detail(exist_details);
                 for(DialogParamsSelectedType selected_type : selected)
                 {
-                  if(exist_detail._id_type == selected_type.id_type)
+                  if(exist_detail._id_type == selected_type.id_type) //Деталь выбрана и она уже есть в покупке
+                  {
+                    Detail detail = exist_detail.clone();
+                    boolean need_udate = false;
+                    //Меняем если нужно количество
+                    if(exist_detail.amount != selected_type.amount)
+                    {
+                      need_udate = true;
+                      detail.amount = selected_type.amount;
+                    }
+                    //Меняем если нужно единицы измерения
+                    if(exist_detail.id_unit != selected_type.id_unit)
+                    {
+                      need_udate = true;
+                      detail.id_unit = selected_type.id_unit;
+                      //Проверим группу id_unit_for
+                      Unit unit_for = new Unit(exist_detail.for_id_unit);
+                      Unit unit = new Unit(selected_type.id_unit);
+                      //Единицы измерения детали покупки и единицы измерения выделенной деьали в разных группах
+                      if(unit_for._id_group != unit._id_group)
+                      {
+                        //  надо искать последнюю цену и единицы измерения для этой группы
+                        detail.find_and_fill_last_price_and_unit_for(db, oh);
+                      }
+                    }
+                    if(need_udate)
+                    {
+                      detail.calcCost(true);
+                    }
+                    //Снимем признак удаленности если он установлен
+                    if(exist_detail.is_delete)
+                    {
+                      need_udate = true;
+                      detail.is_delete = false;
+                    }
+                    if(need_udate)
+                    {
+                      exist_detail.update(detail, db);
+                    }
                     continue label_exist;
+                  }
                 }
-                if(!exist_detail.is_delete)
+                if(!exist_detail.is_delete) //Деталь есть в покупке но она не выбрана (сняли с нее выбор) и не удалена
                 {
                   //Пометим как удаленная
                   Detail detail = exist_detail.clone();
@@ -185,53 +224,24 @@ public class WDetails
                   exist_detail.update(detail, db);
                 }
               }
-              //Снимем признак удаленности и изменим количество с тех деталей которые находятся в удаленных
-
-
-              //Добавим новые делали (которые есть в selected и нет среди неудаленных или удаленных)
-
-
-
-
-              //Изменим количество с деталей которые в неудаленных
-
-              /*
+              //Добавим новые детали (которые есть в selected и нет среди неудаленных или удаленных)
+              label_selected:
               for(DialogParamsSelectedType selected_type : selected)
               {
-                //Найдем последнюю оплаченную, если нету то неоплаченную запись с данным видом товара и
-                //  возьмем от туда цену
-                Double last_price = null;
-                Cursor cursor_last_price = db.rawQuery(oh.getQuery(EQ.LAST_PRICE),
-                  new String[]{new Long(selected_type.id_type).toString()});
-                long id_unit_for = selected_type.id_unit;
-                for(boolean status=cursor_last_price.moveToFirst(); status; status = cursor_last_price.moveToNext())
+                for(boolean status = exist_details.moveToFirst(); status; status = exist_details.moveToNext())
                 {
-                  double price = cursor_last_price.getDouble(cursor_last_price.getColumnIndex("price"));
-                  long id_unit = cursor_last_price.getLong(cursor_last_price.getColumnIndex("id_unit"));
-                  if(selected_type.id_unit == id_unit)
-                  {
-                    last_price = new Double(price);
-                    break;
-                  }
-                  else
-                  {
-                    Unit selected_unit = new Unit(selected_type.id_unit);
-                    Unit unit = new Unit(id_unit);
-                    if(selected_unit._id_group == unit._id_group)
-                    {
-                      last_price = new Double(price);
-                      id_unit_for = id_unit;
-                      break;
-                    }
-                  }
+                  Detail exist_detail = new Detail(exist_details);
+                  if(exist_detail._id_type == selected_type.id_type) //Деталь выбрана и она уже есть в покупке
+                    continue label_selected;
                 }
-                Detail detail = new Detail(UserAccount.getIDActiveUserAccount(oh, db), id_purchase[0],
-                  selected_type.id_type, null, last_price, 1, id_unit_for, selected_type.count,
-                  selected_type.id_unit, null, 0);
+                //Такой детали в покупке нету, добавим
+                Detail detail = new Detail(UserAccount.getIDActiveUserAccount(oh, db), _id_purchase,
+                  selected_type.id_type, null, null, 1, selected_type.id_unit, selected_type.amount,
+                  selected_type.id_unit, null, false);
+                detail.find_and_fill_last_price_and_unit_for(db, oh);
                 detail.calcCost(true);
                 detail.insertDateBase(db);
-
-              }*/
+              }
               return true;
             }
           });
@@ -239,26 +249,7 @@ public class WDetails
           {
             cursor.requery();
             list_adapter.notifyDataSetChanged();
-
-            /*
-            int position, count;
-            for(position = 0, count=list_purchases.getCount();
-                position<count && id_purchase[0] != list_purchases.getItemIdAtPosition(position);
-                ++position );
-            final int pos = position;
-            list_purchases.post(new Runnable()
-            {
-              @Override
-              public void run()
-              {
-                list_purchases.smoothScrollToPosition(pos);
-              }
-            });
-            //Переходим в окно товаров и услуг данной покупки
-            Intent intent = new Intent(this, WDetails.class);
-            intent.putExtra(getString(R.string.intent_purchases_id), id_purchase[0]);
-            startActivityForResult(intent, R.layout.details); //Запуск активности с onActivityResult
-            */
+            calcCaptionStatus();
           }
         }
         break;

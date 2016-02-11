@@ -33,7 +33,7 @@ public class DialogParamsSelectedType
 {
   public long id_type;
   public long id_unit;
-  public double count;
+  public double amount;
 
   private MySQLiteOpenHelper oh;
   private SQLiteDatabase db;
@@ -63,7 +63,7 @@ public class DialogParamsSelectedType
         type = new Type(cursor_type);
         id_unit = type.id_unit;
       }
-      count = 1;
+      amount = 1;
     }
   }
   @Override
@@ -85,7 +85,7 @@ public class DialogParamsSelectedType
 
     button_ok.setOnClickListener(this);
     tv_type_name.setText(type.name);
-    et_count.setText(new DecimalFormat("###.##").format(count));
+    et_count.setText(new DecimalFormat("###.##").format(amount));
 
     Cursor cursor_unit = Unit.getCursor();
     unit_adapter = new SimpleCursorAdapter(v.getContext(),
@@ -115,7 +115,7 @@ public class DialogParamsSelectedType
 
   private void changeParams()
   {
-    count = Double.valueOf(et_count.getText().toString());
+    amount = Double.valueOf(et_count.getText().toString());
     id_unit = unit_adapter.getItemId(unit_adapter.getCursor().getPosition());
   }
   @Override
@@ -154,7 +154,7 @@ public class DialogParamsSelectedType
   {
     id_type = in.readLong();
     id_unit = in.readLong();
-    count   = in.readDouble();
+    amount = in.readDouble();
   }
   @Override
   public int describeContents()
@@ -177,7 +177,7 @@ public class DialogParamsSelectedType
   {
     dest.writeLong(id_type);
     dest.writeLong(id_unit);
-    dest.writeDouble(count);
+    dest.writeDouble(amount);
   }
 
 }
