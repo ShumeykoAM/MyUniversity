@@ -66,9 +66,9 @@ public class WMarkTypes
       }
     cursor = new Cursor[1];
     cursor[0] = TypesCursorTuning.getFullCursor(oh, db);
-    list_adapter = new TypesAdapter(getApplicationContext(), android.R.layout.simple_list_item_multiple_choice,
+    list_adapter = new TypesAdapter(getApplicationContext(), R.layout.mark_types_item,
                                     cursor[0], new String[]{"name"},
-                                    new int[]{android.R.id.text1});
+                                    new int[]{R.id.mark_type_item_name});
     list_types.setAdapter(list_adapter);
     list_types.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
     types_cursor_tuning = new TypesCursorTuning(oh, db, cursor, list_adapter);
@@ -181,9 +181,10 @@ public class WMarkTypes
     }
     else //Один из видов товаров и услуг
     {
-      boolean new_state = !((CheckedTextView)v).isChecked();
-      ((CheckedTextView)v).setChecked(new_state);
-      long id = getIdCheckedTextView((CheckedTextView)v);
+      CheckedTextView tv_amount = (CheckedTextView)v.findViewById(R.id.mark_type_item_amount);
+      boolean new_state = !tv_amount.isChecked();
+      tv_amount.setChecked(new_state);
+      long id = getIdCheckedTextView(tv_amount);
       if(new_state)
       {
         selected_ids.add(new DialogParamsSelectedType(id, false, oh, db));
@@ -191,7 +192,10 @@ public class WMarkTypes
         setParamsSelectedType(id);
       }
       else
+      {
         selected_ids.remove(new DialogParamsSelectedType(id, true, null, null));
+        tv_amount.setText("");
+      }
       button_ok.setClickable(selected_ids.size() > 0);
     }
   }
@@ -223,18 +227,24 @@ public class WMarkTypes
     {
       //Здесь заполнются данными поля указанные в конструкторе
       super.bindView(_view, _context, _cursor);
+      CheckedTextView tv_amount = (CheckedTextView)_view.findViewById(R.id.mark_type_item_amount);
+      tv_amount.setText("3.500 Кг.");
+      /*
+      Здесь надо подкачивать из selected_ids параметры
+
+      а в DialogParamsSelectedType надо добавить вызов обработчика который вызыовет list_adapter.notifyDataSetInvalidated();
+      */
     }
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
-      View view = super.getView(position, convertView, parent);
-      CheckedTextView checked_text_view = (CheckedTextView)view.findViewById(android.R.id.text1);
-      checked_text_view.setOnClickListener(WMarkTypes.this); //передаем ссылку на Outer класс
-      checked_text_view.setOnLongClickListener(WMarkTypes.this);
+      View linear_layout = super.getView(position, convertView, parent);
+      linear_layout.setOnClickListener(WMarkTypes.this); //передаем ссылку на Outer класс
+      linear_layout.setOnLongClickListener(WMarkTypes.this);
       long id = list_types.getItemIdAtPosition(position);
       list_types.setItemChecked(position, selected_ids.contains(
         new DialogParamsSelectedType(id, true, null, null)));
-      return view;
+      return linear_layout;
     }
   }
 }

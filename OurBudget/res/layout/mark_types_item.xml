@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal" android:gravity="center_vertical">
+
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/mark_type_item_name" android:gravity="left|center_vertical"
+            android:layout_centerVertical="true" android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/mark_type_item_amount" android:text="Хлебушек"/>
+
+    <CheckedTextView
+            android:id="@+id/mark_type_item_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="?android:attr/listPreferredItemHeightSmall"
+            android:layout_gravity="right"
+            android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+            android:gravity="center_vertical|right"
+            android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall"
+            android:singleLine="false" android:layout_alignParentRight="true" android:textSize="14sp"
+            android:text="2 шт."/>
+
+</RelativeLayout>
