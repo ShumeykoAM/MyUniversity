@@ -9,7 +9,8 @@
                  android:icon="@drawable/ic_launcher">
         <activity android:name=".WPurchases"
                   android:label="@string/purchases_caption"
-                  android:icon="@drawable/ic_accounts">
+                  android:icon="@drawable/ic_accounts"
+                  android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -17,23 +18,28 @@
         </activity>
         <activity android:name=".WDetails"
                   android:label="@string/details_caption"
-                  android:icon="@drawable/ic_pencil">
+                  android:icon="@drawable/ic_pencil"
+                  android:screenOrientation="portrait">
         </activity>
         <activity android:name=".WUserAccount"
                   android:label="@string/user_account_caption"
-                  android:icon="@drawable/ic_authentication">
+                  android:icon="@drawable/ic_authentication"
+                  android:screenOrientation="portrait">
         </activity>
         <activity android:name=".WRegistration"
                   android:label="@string/registration_caption"
-                  android:icon="@drawable/ic_add_authentication">
+                  android:icon="@drawable/ic_add_authentication"
+                  android:screenOrientation="portrait">
         </activity>
         <activity android:name=".WMarkTypes"
                   android:label="@string/mark_types_caption"
-                  android:icon="@drawable/ic_g_tick">
+                  android:icon="@drawable/ic_g_tick"
+                  android:screenOrientation="portrait">
         </activity>
         <activity android:name=".WTypes"
                   android:label="@string/types_caption"
-                  android:icon="@drawable/ic_list_types">
+                  android:icon="@drawable/ic_list_types"
+                  android:screenOrientation="portrait">
         </activity>
 
 
