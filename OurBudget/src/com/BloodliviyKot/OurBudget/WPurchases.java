@@ -38,7 +38,10 @@ public class WPurchases
   {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.purchases);
-
+    //Вместо того что бы в манифесте прописать заголовок и иконку приходится динамически их назначать
+    //  если в манифесте их назначить то они подменят название и иконку приложения
+    getActionBar().setTitle(R.string.purchases_caption);
+    getActionBar().setIcon(R.drawable.ic_accounts);
     list_purchases = (ListView)findViewById(R.id.purchases_list_list_purchases);
     list_purchases.setOnItemClickListener(this);
 
