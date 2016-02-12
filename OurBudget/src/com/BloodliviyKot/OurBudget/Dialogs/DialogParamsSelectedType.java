@@ -43,7 +43,7 @@ public class DialogParamsSelectedType
   private EditText et_count;
   private Spinner sp_unit;
   private SimpleCursorAdapter unit_adapter;
-
+  private I_DialogResult i_dialogResult;
   private Type type;
 
   public DialogParamsSelectedType(long _id_type, boolean isFiction, MySQLiteOpenHelper _oh, SQLiteDatabase _db)
@@ -127,7 +127,10 @@ public class DialogParamsSelectedType
     });
     return v;
   }
-
+  public void setOnDialogResultListener(I_DialogResult i_dialogResult)
+  {
+    this.i_dialogResult = i_dialogResult;
+  }
   private void changeParams()
   {
     amount = Double.valueOf(et_count.getText().toString());
@@ -139,6 +142,8 @@ public class DialogParamsSelectedType
     if(v == button_ok)
     {
       changeParams();
+      if(i_dialogResult != null)
+        i_dialogResult.onResult(RESULT.OK, null);
       dismiss();
     }
   }
@@ -146,6 +151,8 @@ public class DialogParamsSelectedType
   public void onCancel(DialogInterface dialog)
   {
     changeParams();
+    if(i_dialogResult != null)
+      i_dialogResult.onResult(RESULT.CANCEL, null);
     super.onCancel(dialog);
   }
 

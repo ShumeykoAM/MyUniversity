@@ -15,6 +15,7 @@ import com.BloodliviyKot.OurBudget.Dialogs.*;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
 import com.BloodliviyKot.tools.DataBase.entitys.Purchase.STATE_PURCHASE;
 import com.BloodliviyKot.tools.DataBase.entitys.Type;
+import com.BloodliviyKot.tools.DataBase.entitys.Unit;
 import com.BloodliviyKot.tools.DataBase.entitys.UserAccount;
 
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ public class WMarkTypes
   private Cursor cursor[];
   private SimpleCursorAdapter list_adapter;
   private TypesCursorTuning types_cursor_tuning;
+  private DialogParamsResultListener dialogParamsResultListener = new DialogParamsResultListener();
 
   private TreeSet<DialogParamsSelectedType> selected_ids; //ИДшники отмеченных видов товаров и услуг
   STATE_PURCHASE state_purchase;
@@ -61,8 +63,10 @@ public class WMarkTypes
     if(selected != null)
       for(DialogParamsSelectedType selected_type : selected)
       {
-        selected_ids.add(new DialogParamsSelectedType(selected_type.id_type, false, oh, db,
-          selected_type.amount, selected_type.id_unit));
+        DialogParamsSelectedType dialog_params_selected_type = new DialogParamsSelectedType(selected_type.id_type,
+          false, oh, db, selected_type.amount, selected_type.id_unit);
+        dialog_params_selected_type.setOnDialogResultListener(dialogParamsResultListener);
+        selected_ids.add(dialog_params_selected_type);
       }
     cursor = new Cursor[1];
     cursor[0] = TypesCursorTuning.getFullCursor(oh, db);
@@ -111,7 +115,9 @@ public class WMarkTypes
     {
       Bundle extras = data.getExtras();
       long _id = extras.getLong("_id");
-      selected_ids.add(new DialogParamsSelectedType(_id, false, oh, db));
+      DialogParamsSelectedType dialog_params_selected_type = new DialogParamsSelectedType(_id, false, oh, db);
+      dialog_params_selected_type.setOnDialogResultListener(dialogParamsResultListener);
+        selected_ids.add(dialog_params_selected_type);
       cursor[0].requery();
       list_adapter.notifyDataSetChanged();
       int position, count;
@@ -187,7 +193,9 @@ public class WMarkTypes
       long id = getIdCheckedTextView(tv_amount);
       if(new_state)
       {
-        selected_ids.add(new DialogParamsSelectedType(id, false, oh, db));
+        DialogParamsSelectedType dialog_params_selected_type = new DialogParamsSelectedType(id, false, oh, db);
+        dialog_params_selected_type.setOnDialogResultListener(dialogParamsResultListener);
+        selected_ids.add(dialog_params_selected_type);
         //Зададим параметры
         setParamsSelectedType(id);
       }
@@ -203,12 +211,13 @@ public class WMarkTypes
   @Override
   public boolean onLongClick(View v)
   {
-    if(!((CheckedTextView)v).isChecked())
+    CheckedTextView tv_amount = (CheckedTextView)v.findViewById(R.id.mark_type_item_amount);
+    if(!tv_amount.isChecked())
       onClick(v);
     else
     {
       //Зададим параметры
-      long id = getIdCheckedTextView((CheckedTextView)v);
+      long id = getIdCheckedTextView(tv_amount);
       setParamsSelectedType(id);
     }
     return true;
@@ -227,13 +236,6 @@ public class WMarkTypes
     {
       //Здесь заполнются данными поля указанные в конструкторе
       super.bindView(_view, _context, _cursor);
-      CheckedTextView tv_amount = (CheckedTextView)_view.findViewById(R.id.mark_type_item_amount);
-      tv_amount.setText("3.500 Кг.");
-      /*
-      Здесь надо подкачивать из selected_ids параметры
-
-      а в DialogParamsSelectedType надо добавить вызов обработчика который вызыовет list_adapter.notifyDataSetInvalidated();
-      */
     }
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
@@ -241,10 +243,25 @@ public class WMarkTypes
       View linear_layout = super.getView(position, convertView, parent);
       linear_layout.setOnClickListener(WMarkTypes.this); //передаем ссылку на Outer класс
       linear_layout.setOnLongClickListener(WMarkTypes.this);
+      CheckedTextView tv_amount = (CheckedTextView)linear_layout.findViewById(R.id.mark_type_item_amount);
       long id = list_types.getItemIdAtPosition(position);
-      list_types.setItemChecked(position, selected_ids.contains(
-        new DialogParamsSelectedType(id, true, null, null)));
+      if(selected_ids.contains(new DialogParamsSelectedType(id, true, null, null)))
+      {
+        DialogParamsSelectedType selected = selected_ids.floor(new DialogParamsSelectedType(id, true, null, null));
+        Unit unit = new Unit(selected.id_unit);
+        tv_amount.setChecked(true);
+        tv_amount.setText(DetailParamsDialog.FORMAT_MONEY.double_format(selected.amount) + " " + unit.name);
+      }
       return linear_layout;
+    }
+  }
+  private class DialogParamsResultListener
+    implements I_DialogResult
+  {
+    @Override
+    public void onResult(RESULT code, Intent data)
+    {
+      list_adapter.notifyDataSetInvalidated();
     }
   }
 }
