@@ -163,7 +163,7 @@ public class WPurchases
           Purchase.STATE_PURCHASE state_purchase = STATE_PURCHASE.getSTATE_PURCHASE(data.getExtras().getInt("StatePurchase"));
           long date_time = data.getExtras().getLong("date_time");
           final Purchase purchase = new Purchase(UserAccount.getIDActiveUserAccount(oh, db), null,
-            date_time, state_purchase, 0);
+            date_time, state_purchase, false);
           //Создаем покупку и ее список товаров и услуг
           final long[] id_purchase = new long[1];
           SQLTransaction sql_transaction = new SQLTransaction(db, new I_Transaction(){

@@ -246,4 +246,12 @@ public class Detail
     NumberFormat r_format = NumberFormat.getCurrencyInstance();
     return r_format.format(money);
   }
+  public static Detail getDetailFromId(long _id, SQLiteDatabase db, MySQLiteOpenHelper oh)
+  {
+    Cursor cursor = db.rawQuery(oh.getQuery(EQ.DETAIL_FROM_ID), new String[]{Long.toString(_id)});
+    if(cursor.moveToFirst())
+      return new Detail(cursor);
+    else
+      return null;
+  }
 }

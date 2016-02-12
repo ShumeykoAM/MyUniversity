@@ -284,12 +284,51 @@ public class WDetails
     switch(item.getItemId())
     {
       case R.id.m_details_c_delete:
-
-
+        AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+        final long id_detail = list_adapter.getItemId(acmi.position);
+        boolean need_delete_detail = false;
+        if(cursor.getCount() == 1)
+        {
+          //Удаляем единственную запись, спросим нужно ли удалить покупку
+          ChooseAlert choose_alert = new ChooseAlert(this, "Попытка удалить единственную запись",
+            android.R.drawable.ic_dialog_alert, "Удалить покупку?", "Да", "Нет");
+          choose_alert.show(new ChooseAlert.I_ChooseAlertHandler(){
+            @Override
+            public void onClick(ChooseAlert.CHOOSE_BUTTON button)
+            {
+              if(button == ChooseAlert.CHOOSE_BUTTON.BUTTON1)
+              {
+                delete_detail(id_detail);
+                //Удалим пукупку
+                Purchase purchase = Purchase.getPurhaseFromId(_id_purchase, db, oh);
+                Purchase new_purchase = purchase.clone(purchase);
+                new_purchase.is_delete = true;
+                purchase.update(new_purchase, db);
+                finish();
+              }
+            }
+          });
+        }
+        else
+          need_delete_detail = true;
+        if(need_delete_detail)
+          delete_detail(id_detail);
         return true;
-
     }
     return super.onContextItemSelected(item);
+  }
+  private void delete_detail(long id_detail)
+  {
+    //Пометим как удаленная
+    Detail exist_detail = Detail.getDetailFromId(id_detail, db, oh);
+    Detail deleted_detail = exist_detail.clone();
+    deleted_detail.is_delete = true;
+    if(exist_detail.update(deleted_detail, db))
+    {
+      cursor.requery();
+      list_adapter.notifyDataSetChanged();
+      calcCaptionStatus();
+    }
   }
 
   //Переопределим SimpleCursorAdapter что бы форматировать данные из базы нужным образом
