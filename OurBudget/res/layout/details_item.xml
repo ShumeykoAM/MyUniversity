@@ -24,7 +24,7 @@
                   android:textSize="13sp" android:autoText="false"
                   android:layout_alignParentTop="true"
                   android:layout_toLeftOf="@+id/details_item_cost" android:gravity="center_vertical|right"
-                  android:text="246.23куб.м"/>
+                  android:text="246.23куб.м" android:textColor="@color/purchase_item_date_time_info"/>
         <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/details_item_cost"
                   android:layout_gravity="center_vertical" android:textSize="18sp" android:autoText="false"
                   android:layout_alignParentTop="true" android:layout_alignParentRight="true"

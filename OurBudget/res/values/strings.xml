@@ -59,7 +59,7 @@
 
     <string name="details_caption">Товары и услуги</string>
     <string name="details_status">Итого</string>
-    <string name="details_sub_caption_date_time_plan">Запланировано</string>
+    <string name="details_sub_caption_date_time_plan">План</string>
     <string name="details_sub_caption_date_time_exec">Оплачено</string>
     <string name="details_sub_caption_date_time_on">на</string>
     <string name="details_sub_caption_date_time_in">в</string>

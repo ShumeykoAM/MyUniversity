@@ -16,11 +16,13 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/details_caption" android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true" android:layout_alignParentRight="true"/>
+            android:layout_alignParentLeft="true" android:layout_alignParentRight="true"
+            android:textColor="@color/purchase_item_date_time_info"/>
     <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/details_status"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true" android:textAppearance="?android:attr/textAppearanceMedium"/>
+            android:layout_centerHorizontal="true" android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/purchase_item_date_time_info"/>
 </RelativeLayout>

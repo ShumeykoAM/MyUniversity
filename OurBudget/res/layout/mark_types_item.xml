@@ -10,7 +10,8 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:id="@+id/mark_type_item_name" android:gravity="left|center_vertical"
             android:layout_centerVertical="true" android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@+id/mark_type_item_amount"/>
+            android:layout_toLeftOf="@+id/mark_type_item_amount"
+            android:textColor="@color/detail_params_name_detail"/>
 
     <CheckedTextView
             android:id="@+id/mark_type_item_amount"
@@ -22,6 +23,6 @@
             android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
             android:textAppearance="?android:attr/textAppearanceListItemSmall"
             android:singleLine="false" android:layout_alignParentRight="true" android:textSize="14sp"
-            />
+            android:textColor="@color/purchase_item_date_time_info"/>
 
 </RelativeLayout>

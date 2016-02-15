@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content" android:gravity="center_vertical">
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -10,10 +10,11 @@
             android:autoText="false"
             android:layout_toLeftOf="@+id/purchases_item_state"
             android:layout_alignParentLeft="true" android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Запланировано на завтра на 18-30"/>
+            android:text="Запланировано на завтра на 18-30"
+            android:textColor="@color/purchase_item_date_time_info"/>
     <TextView
             android:layout_width="fill_parent"
-            android:layout_height="38dp"
+            android:layout_height="wrap_content"
             android:id="@+id/purchases_item_content"
             android:layout_gravity="center_vertical"
             android:autoText="false"
@@ -22,14 +23,7 @@
             android:singleLine="true" android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Хлеб, батон, Масло, Сгущенка, Пиво" android:textColor="@color/detail_name"
             android:layout_below="@+id/purchases_item_date_time"
-            android:layout_alignBottom="@+id/purchases_item_total_sum"/>
-    <ImageView
-            android:id="@+id/purchases_item_state"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_launcher"
-            android:layout_alignParentRight="true">
-    </ImageView>
+            />
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -38,5 +32,12 @@
             android:id="@+id/purchases_item_total_sum"
             android:layout_toLeftOf="@+id/purchases_item_state" android:singleLine="true"
             android:textColor="@color/detail_cost" android:layout_below="@+id/purchases_item_date_time"
-            android:layout_alignParentBottom="true"/>
+            android:layout_alignParentBottom="false"/>
+    <ImageView
+            android:id="@+id/purchases_item_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_launcher"
+            android:layout_centerVertical="true" android:layout_alignParentRight="true">
+    </ImageView>
 </RelativeLayout>

@@ -8,4 +8,5 @@
     <color name="detail_params_amount">#ff8afff5</color>
     <color name="detail_params_cost">#ff66ff05</color>
     <color name="detail_params_name_detail">#FFFFFC13</color>
+    <color name="purchase_item_date_time_info">#ffdef1ff</color>
 </resources>
