@@ -209,6 +209,15 @@ public class WPurchases
           }
         }
         break;
+      case R.layout.details:
+        if(data.getExtras().getBoolean("PurchaseIsDeleted"))
+        {
+          cursor.requery();
+          list_adapter.notifyDataSetChanged();
+        }
+        else
+          list_adapter.notifyDataSetInvalidated();
+        break;
     }
   }
 

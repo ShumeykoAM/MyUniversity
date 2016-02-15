@@ -39,7 +39,7 @@ public class WDetails
 
   private DetailParamsDialog detailDialog;
   private Detail detail_for_dialog;
-
+  private boolean purchase_is_deleted = false;
   //Создание активности
   @Override
   public void onCreate(Bundle savedInstanceState)
@@ -304,6 +304,7 @@ public class WDetails
                 Purchase new_purchase = purchase.clone(purchase);
                 new_purchase.is_delete = true;
                 purchase.update(new_purchase, db);
+                purchase_is_deleted = true;
                 finish();
               }
             }
@@ -330,7 +331,14 @@ public class WDetails
       calcCaptionStatus();
     }
   }
-
+  @Override
+  public void finish()
+  {
+    Intent ires = new Intent();
+    ires.putExtra("PurchaseIsDeleted", purchase_is_deleted);
+    setResult(RESULT_OK, ires);
+    super.finish();
+  }
   //Переопределим SimpleCursorAdapter что бы форматировать данные из базы нужным образом
   private static class DetailsAdapter
     extends SimpleCursorAdapter
