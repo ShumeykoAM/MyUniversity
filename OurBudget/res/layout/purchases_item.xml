@@ -4,25 +4,25 @@
                 android:layout_height="wrap_content">
     <TextView
             android:layout_width="wrap_content"
-            android:layout_height="24dp"
-            android:id="@+id/purchases_item_contnt"
+            android:layout_height="wrap_content"
+            android:id="@+id/purchases_item_date_time"
             android:layout_gravity="center_vertical"
-            android:textSize="18sp"
             android:autoText="false"
             android:layout_toLeftOf="@+id/purchases_item_state"
-            android:layout_alignParentLeft="true"/>
+            android:layout_alignParentLeft="true" android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Запланировано на завтра на 18-30"/>
     <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="38dp"
-            android:id="@+id/purchases_item_info"
+            android:id="@+id/purchases_item_content"
             android:layout_gravity="center_vertical"
-            android:textSize="14sp"
             android:autoText="false"
-            android:layout_below="@+id/details_item_type"
-            android:layout_toLeftOf="@+id/purchases_item_state"
-            android:gravity="center_vertical|right"
             android:layout_alignParentLeft="true"
-            android:layout_alignBottom="@+id/purchases_item_state"/>
+            android:layout_toLeftOf="@+id/purchases_item_total_sum"
+            android:singleLine="true" android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Хлеб, батон, Масло, Сгущенка, Пиво" android:textColor="@color/detail_name"
+            android:layout_below="@+id/purchases_item_date_time"
+            android:layout_alignBottom="@+id/purchases_item_total_sum"/>
     <ImageView
             android:id="@+id/purchases_item_state"
             android:layout_width="wrap_content"
@@ -30,4 +30,13 @@
             android:src="@drawable/ic_launcher"
             android:layout_alignParentRight="true">
     </ImageView>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="на 1380.50руб."
+            android:id="@+id/purchases_item_total_sum"
+            android:layout_toLeftOf="@+id/purchases_item_state" android:singleLine="true"
+            android:textColor="@color/detail_cost" android:layout_below="@+id/purchases_item_date_time"
+            android:layout_alignParentBottom="true"/>
 </RelativeLayout>

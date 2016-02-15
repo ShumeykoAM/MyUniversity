@@ -10,6 +10,7 @@ import android.view.*;
 import android.widget.*;
 import com.BloodliviyKot.OurBudget.Dialogs.ChooseAlert;
 import com.BloodliviyKot.OurBudget.Dialogs.DialogParamsSelectedType;
+import com.BloodliviyKot.OurBudget.Dialogs.PurchaseDateTimeDialog;
 import com.BloodliviyKot.tools.DataBase.EQ;
 import com.BloodliviyKot.tools.DataBase.I_Transaction;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
@@ -19,7 +20,6 @@ import com.BloodliviyKot.tools.DataBase.entitys.Purchase;
 import com.BloodliviyKot.tools.DataBase.entitys.Purchase.STATE_PURCHASE;
 import com.BloodliviyKot.tools.DataBase.entitys.UserAccount;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class WPurchases
@@ -60,7 +60,8 @@ public class WPurchases
     cursor = db.rawQuery(oh.getQuery(EQ.PURCHASES), q_params);
     list_adapter = new PurchasesAdapter(this, R.layout.purchases_item, cursor,
       new String[]{},
-      new int[]{R.id.purchases_item_contnt, R.id.purchases_item_info, R.id.purchases_item_state},
+      new int[]{R.id.purchases_item_date_time, R.id.purchases_item_content,
+        R.id.purchases_item_total_sum, R.id.purchases_item_state},
       db);
     list_purchases.setAdapter(list_adapter);
 
@@ -231,7 +232,7 @@ public class WPurchases
       STATE_PURCHASE state = STATE_PURCHASE.getSTATE_PURCHASE(_cursor.getInt(_cursor.getColumnIndex("state")));
       Long date_time = _cursor.getLong(_cursor.getColumnIndex("date_time"));
       //Подготовим отображаемые данные
-      String s_content_info[] = get_contein_and_info(id, state, date_time);
+      String info[] = get_dateTime_content_totalSum(id, state, date_time);
       int id_state_icon;
       //ИД Иконки состояния
       switch(state)
@@ -246,15 +247,17 @@ public class WPurchases
           id_state_icon = R.drawable.ic_launcher;
       }
       //Сопоставляем
-      TextView tv_content = (TextView)_view.findViewById(R.id.purchases_item_contnt);
-      TextView tv_info    = (TextView)_view.findViewById(R.id.purchases_item_info);
+      TextView tv_date_time = (TextView)_view.findViewById(R.id.purchases_item_date_time);
+      TextView tv_content   = (TextView)_view.findViewById(R.id.purchases_item_content);
+      TextView tv_total_sum = (TextView)_view.findViewById(R.id.purchases_item_total_sum);
       ImageView iv_state = (ImageView)_view.findViewById(R.id.purchases_item_state);
 
-      tv_content.setText(s_content_info[0]);
-      tv_info.setText(s_content_info[1]);
+      tv_date_time.setText(info[0]);
+      tv_content.setText(info[1]);
+      tv_total_sum.setText(info[2]);
       iv_state.setImageResource(id_state_icon);
     }
-    private String[] get_contein_and_info(long _id_purchase, STATE_PURCHASE _state, Long _date_time)
+    private String[] get_dateTime_content_totalSum(long _id_purchase, STATE_PURCHASE _state, Long _date_time)
     {
       //Получим общую сумму и краткий список деталей
       String q_params[] ={ Long.toString(_id_purchase), Long.toString(0)};
@@ -277,26 +280,18 @@ public class WPurchases
         if(fl_len && s_content.length() >= MAX_LENGTH_CONTEIN)
           fl_len = false;
       }
-      //Получим описание времени коджа была сделана или на когда запланирована покупка
-      //"завтра hh:mm", "сегодня hh:mm", "вчера hh:mm", "dd.MM.yyyy"
-      SimpleDateFormat y_t_t_format = new SimpleDateFormat("hh:mm");
-      SimpleDateFormat date_format = new SimpleDateFormat("dd.MM.yyyy");
-      String s_date;
-      long normalize_cur_time = ((new java.util.Date()).getTime())/SECONDS_IN_DAY*SECONDS_IN_DAY; //Получить текушее время в секундах
-      java.sql.Date yesterday = new java.sql.Date(normalize_cur_time - SECONDS_IN_DAY);
-      java.sql.Date today = new java.sql.Date(normalize_cur_time);
-      java.sql.Date tomorrow = new java.sql.Date(normalize_cur_time + SECONDS_IN_DAY);
-      java.sql.Date purchase_date = new java.sql.Date(_date_time/SECONDS_IN_DAY*SECONDS_IN_DAY);
-      java.util.Date purchase_date_time = new java.util.Date(_date_time);
-      if(purchase_date.compareTo(yesterday) == 0)
-        s_date = "вчера в " + y_t_t_format.format(purchase_date_time);
-      else if(purchase_date.compareTo(today) == 0)
-        s_date = "сегодня в " + y_t_t_format.format(purchase_date_time);
-      else if(purchase_date.compareTo(tomorrow) == 0)
-        s_date = "завтра в " + y_t_t_format.format(purchase_date_time);
+
+      String for_date_time = getString(R.string.details_sub_caption_date_time_plan);
+      String result_date_time[] = new String[2];
+      PurchaseDateTimeDialog.getStringDateTime(_date_time, result_date_time, getApplicationContext(), true);
+      if(_state == Purchase.STATE_PURCHASE.PLAN)
+        for_date_time += " " + getString(R.string.details_sub_caption_date_time_on) + " " + result_date_time[0] +
+          " " + getString(R.string.details_sub_caption_date_time_on) + " " + result_date_time[1];
       else
-        s_date = date_format.format(purchase_date_time);
-      return new String[]{s_content, s_date + " на сумму " + Detail.formatMoney(sum)};
+        for_date_time = getString(R.string.details_sub_caption_date_time_exec) + " " + result_date_time[0] +
+          " " + getString(R.string.details_sub_caption_date_time_in) + " " + result_date_time[1];
+
+      return new String[]{for_date_time, s_content, " на сумму " + Detail.formatMoney(sum)};
     }
   }
 }
