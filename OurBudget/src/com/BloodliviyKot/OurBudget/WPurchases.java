@@ -8,9 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.*;
-import com.BloodliviyKot.OurBudget.Dialogs.ChooseAlert;
-import com.BloodliviyKot.OurBudget.Dialogs.DialogParamsSelectedType;
-import com.BloodliviyKot.OurBudget.Dialogs.PurchaseDateTimeDialog;
+import com.BloodliviyKot.OurBudget.Dialogs.*;
 import com.BloodliviyKot.tools.DataBase.EQ;
 import com.BloodliviyKot.tools.DataBase.I_Transaction;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
@@ -143,9 +141,32 @@ public class WPurchases
   @Override
   public boolean onContextItemSelected(MenuItem item)
   {
+    AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+    final Purchase purchase = Purchase.getPurhaseFromId(list_adapter.getItemId(acmi.position), db, oh);
     switch(item.getItemId())
     {
       case R.id.m_purchases_c_execute:
+        final Purchase change_purchase = purchase.clone();
+        change_purchase.state = Purchase.STATE_PURCHASE.EXECUTE;
+        I_DialogResult dialog_result =  new I_DialogResult()
+        {
+          @Override
+          public void onResult(RESULT code, Intent data)
+          {
+            if(code == RESULT.OK)
+            {
+              change_purchase.date_time = data.getExtras().getLong("date_time");
+              if( purchase.update(change_purchase, db) )
+              {
+                cursor.requery();
+                list_adapter.notifyDataSetInvalidated();
+              }
+            }
+          }
+        };
+        PurchaseDateTimeDialog date_time_dialog = new PurchaseDateTimeDialog(dialog_result,
+          new java.util.Date().getTime(), change_purchase.state == Purchase.STATE_PURCHASE.PLAN);
+        date_time_dialog.show(getFragmentManager(), null);
         return true;
 
     }
