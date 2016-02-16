@@ -41,6 +41,7 @@ public class WDetails
   private DetailParamsDialog detailDialog;
   private Detail detail_for_dialog;
   private boolean purchase_is_deleted = false;
+  private Menu menu;
   //Создание активности
   @Override
   public void onCreate(Bundle savedInstanceState)
@@ -132,6 +133,7 @@ public class WDetails
       shareMenuItem = menu.findItem(R.id.m_details_execute);
       shareMenuItem.setVisible(false);
     }
+    this.menu = menu;
     return true;
   }
 
@@ -139,7 +141,9 @@ public class WDetails
   @Override
   public boolean onOptionsItemSelected(MenuItem item)
   {
-    switch(item.getItemId())
+    final Purchase change_purchase = purchase.clone();
+    final int item_id;
+    switch(item_id=item.getItemId())
     {
       case R.id.m_details_add:
         Intent intent = new Intent(this, WMarkTypes.class);
@@ -156,6 +160,8 @@ public class WDetails
         intent.putParcelableArrayListExtra("Selected", selected);
         startActivityForResult(intent, R.layout.mark_types); //Запуск активности с onActivityResult
         return true;
+      case R.id.m_details_execute:
+        change_purchase.state = Purchase.STATE_PURCHASE.EXECUTE;
       case R.id.m_details_plan:
         I_DialogResult dialog_result =  new I_DialogResult()
         {
@@ -164,20 +170,25 @@ public class WDetails
           {
             if(code == RESULT.OK)
             {
-              Purchase change_purchase = purchase.clone();
               change_purchase.date_time = data.getExtras().getLong("date_time");
-              purchase.update(change_purchase, db);
-              calcCaptionStatus();
+              if( purchase.update(change_purchase, db) )
+              {
+                calcCaptionStatus();
+                if(item_id == R.id.m_details_execute)
+                {
+                  //Скроем не нужные на данный момент пункты меню
+                  MenuItem shareMenuItem = menu.findItem(R.id.m_details_plan);
+                  shareMenuItem.setVisible(false);
+                  shareMenuItem = menu.findItem(R.id.m_details_execute);
+                  shareMenuItem.setVisible(false);
+                }
+              }
             }
           }
         };
         PurchaseDateTimeDialog date_time_dialog = new PurchaseDateTimeDialog(dialog_result,
-          new java.util.Date().getTime(), purchase.state == Purchase.STATE_PURCHASE.PLAN);
+          new java.util.Date().getTime(), change_purchase.state == Purchase.STATE_PURCHASE.PLAN);
         date_time_dialog.show(getFragmentManager(), null);
-        break;
-      case R.id.m_details_execute:
-
-
         break;
     }
     return super.onOptionsItemSelected(item);
