@@ -10,7 +10,7 @@
     <string name="purchases_m_type">Виды товаров и услуг</string>
     <string name="purchases_m_about">О программе</string>
     <string name="purchases_m_donate">Пожертвовать</string>
-    <string name="purchases_mc_execute">Исполнить</string>
+    <string name="purchases_mc_execute">Оплатить</string>
     <string name="purchases_mc_plan">Планирование</string>
     <string name="purchases_mc_duplicate">Дублировать</string>
     <string name="purchases_mc_delete">Удалить</string>
@@ -66,7 +66,7 @@
 
     <string name="details_m_add">Добавить</string>
     <string name="details_m_plan">Планирование</string>
-    <string name="details_m_execute">Исполнить</string>
+    <string name="details_m_execute">Оплатить</string>
     <string name="details_mс_delete">Удалить</string>
 
     <string name="detail_params_currency_name">руб.</string>

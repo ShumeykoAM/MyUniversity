@@ -333,13 +333,20 @@ public class WDetails
             {
               if(button == ChooseAlert.CHOOSE_BUTTON.BUTTON1)
               {
-                delete_detail(id_detail);
-                //Удалим пукупку
-                Purchase purchase = Purchase.getPurhaseFromId(_id_purchase, db, oh);
-                Purchase new_purchase = purchase.clone();
-                new_purchase.is_delete = true;
-                purchase.update(new_purchase, db);
-                purchase_is_deleted = true;
+                new SQLTransaction(db, new I_Transaction(){
+                  @Override
+                  public boolean trnFunc()
+                  {
+                    delete_detail(id_detail);
+                    //Удалим пукупку
+                    Purchase purchase = Purchase.getPurhaseFromId(_id_purchase, db, oh);
+                    Purchase new_purchase = purchase.clone();
+                    new_purchase.is_delete = true;
+                    purchase.update(new_purchase, db);
+                    purchase_is_deleted = true;
+                    return true;
+                  }
+                }).runTransaction();
                 finish();
               }
             }

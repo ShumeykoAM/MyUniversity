@@ -131,10 +131,16 @@ public class WPurchases
     {
       MenuInflater inflater = getMenuInflater();
       inflater.inflate(R.menu.purchases_context_list_purchases, menu);
-
-      //Скроем не нужные на данный момент пункты меню
-      //MenuItem shareMenuItem = menu.findItem(R.id.m_account_context_list_acc_co_owners);
-      //shareMenuItem.setVisible(false);
+      AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo)menuInfo;
+      final Purchase purchase = Purchase.getPurhaseFromId(list_adapter.getItemId(acmi.position), db, oh);
+      if(purchase.state == STATE_PURCHASE.EXECUTE)
+      {
+        //Скроем не нужные на данный момент пункты меню
+        MenuItem shareMenuItem = menu.findItem(R.id.m_purchases_c_execute);
+        shareMenuItem.setVisible(false);
+        shareMenuItem = menu.findItem(R.id.m_purchases_c_plan);
+        shareMenuItem.setVisible(false);
+      }
     }
   }
   //Обрабатываем нажатие выбор пункта контекстного меню
@@ -143,11 +149,12 @@ public class WPurchases
   {
     AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
     final Purchase purchase = Purchase.getPurhaseFromId(list_adapter.getItemId(acmi.position), db, oh);
+    final Purchase change_purchase = purchase.clone();
     switch(item.getItemId())
     {
       case R.id.m_purchases_c_execute:
-        final Purchase change_purchase = purchase.clone();
         change_purchase.state = Purchase.STATE_PURCHASE.EXECUTE;
+      case R.id.m_purchases_c_plan:
         I_DialogResult dialog_result =  new I_DialogResult()
         {
           @Override
@@ -168,7 +175,38 @@ public class WPurchases
           new java.util.Date().getTime(), change_purchase.state == Purchase.STATE_PURCHASE.PLAN);
         date_time_dialog.show(getFragmentManager(), null);
         return true;
+      case R.id.m_purchases_c_duplicate:
 
+
+        break;
+      case R.id.m_purchases_c_delete:
+        //Переспросим, действительно ли нужно удалить покупку
+
+
+        new SQLTransaction(db, new I_Transaction(){
+          @Override
+          public boolean trnFunc()
+          {
+            //purchase
+            //Удалим все детали для начала
+
+
+
+            //delete_detail(id_detail);
+
+
+
+
+
+            //Удалим пукупку
+            change_purchase.is_delete = true;
+            purchase.update(change_purchase, db);
+            return true;
+          }
+        }).runTransaction();
+        cursor.requery();
+        list_adapter.notifyDataSetChanged();
+        return true;
     }
     return super.onContextItemSelected(item);
   }
