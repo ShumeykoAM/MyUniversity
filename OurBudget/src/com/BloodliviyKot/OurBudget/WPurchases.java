@@ -210,11 +210,9 @@ public class WPurchases
         }
         break;
       case R.layout.details:
+        cursor.requery();
         if(data.getExtras().getBoolean("PurchaseIsDeleted"))
-        {
-          cursor.requery();
           list_adapter.notifyDataSetChanged();
-        }
         else
           list_adapter.notifyDataSetInvalidated();
         break;

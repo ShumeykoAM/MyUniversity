@@ -99,11 +99,11 @@ public class Purchase
       return false;
   }
 
-  public Purchase clone(Purchase purchase)
+  public Purchase clone()
   {
-    Purchase result = new Purchase(purchase._id_user_account, purchase.id_server, purchase.date_time,
-      purchase.state, purchase.is_delete);
-    result._id = purchase._id;
+    Purchase result = new Purchase(this._id_user_account, this.id_server, this.date_time,
+      this.state, this.is_delete);
+    result._id = this._id;
     return result;
   }
 

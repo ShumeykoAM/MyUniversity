@@ -31,6 +31,7 @@ public class WDetails
   private MySQLiteOpenHelper oh;
   private SQLiteDatabase db;
   private long _id_purchase;
+  Purchase purchase;
   private ListView list_details;
   private TextView sub_caption;
   private TextView status;
@@ -71,7 +72,7 @@ public class WDetails
   private void calcCaptionStatus()
   {
     String for_date_time = getString(R.string.details_sub_caption_date_time_plan);
-    Purchase purchase = Purchase.getPurhaseFromId(_id_purchase, db, oh);
+    purchase = Purchase.getPurhaseFromId(_id_purchase, db, oh);
     if(purchase.date_time != 0)
     {
       String result_date_time[] = new String[2];
@@ -123,6 +124,14 @@ public class WDetails
   {
     //Создаем меню из ресурса
     getMenuInflater().inflate(R.menu.details_menu, menu);
+    if(purchase.state == Purchase.STATE_PURCHASE.EXECUTE)
+    {
+      //Скроем не нужные на данный момент пункты меню
+      MenuItem shareMenuItem = menu.findItem(R.id.m_details_plan);
+      shareMenuItem.setVisible(false);
+      shareMenuItem = menu.findItem(R.id.m_details_execute);
+      shareMenuItem.setVisible(false);
+    }
     return true;
   }
 
@@ -148,8 +157,23 @@ public class WDetails
         startActivityForResult(intent, R.layout.mark_types); //Запуск активности с onActivityResult
         return true;
       case R.id.m_details_plan:
-
-
+        I_DialogResult dialog_result =  new I_DialogResult()
+        {
+          @Override
+          public void onResult(RESULT code, Intent data)
+          {
+            if(code == RESULT.OK)
+            {
+              Purchase change_purchase = purchase.clone();
+              change_purchase.date_time = data.getExtras().getLong("date_time");
+              purchase.update(change_purchase, db);
+              calcCaptionStatus();
+            }
+          }
+        };
+        PurchaseDateTimeDialog date_time_dialog = new PurchaseDateTimeDialog(dialog_result,
+          new java.util.Date().getTime(), purchase.state == Purchase.STATE_PURCHASE.PLAN);
+        date_time_dialog.show(getFragmentManager(), null);
         break;
       case R.id.m_details_execute:
 
@@ -301,7 +325,7 @@ public class WDetails
                 delete_detail(id_detail);
                 //Удалим пукупку
                 Purchase purchase = Purchase.getPurhaseFromId(_id_purchase, db, oh);
-                Purchase new_purchase = purchase.clone(purchase);
+                Purchase new_purchase = purchase.clone();
                 new_purchase.is_delete = true;
                 purchase.update(new_purchase, db);
                 purchase_is_deleted = true;
