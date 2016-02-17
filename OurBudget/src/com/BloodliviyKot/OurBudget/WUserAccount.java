@@ -35,6 +35,7 @@ public class WUserAccount
   private EditText et_user_login;
   private Cursor cursor;
   private String current_login;
+  private boolean user_account_change = false;
 
   //Создание активности
   @Override
@@ -168,6 +169,7 @@ public class WUserAccount
           loginPosition();
           b_user_enter.setClickable(false);
           b_user_enter.setText(getString(R.string.user_account_button_entered));
+          user_account_change = true;
         }
       }
     }
@@ -217,7 +219,15 @@ public class WUserAccount
       long _id = (Long)extras.get("_id");
       cursor.requery();
       loginPosition();
+      user_account_change = true;
     }
+  }
+  @Override
+  public void finish()
+  {
+    Intent ires = new Intent();  //Вернем
+    setResult(user_account_change ? RESULT_OK : RESULT_CANCELED); //Возвращаемый в родительскую активность результат
+    super.finish();
   }
 
   @Override

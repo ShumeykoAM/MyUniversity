@@ -102,7 +102,7 @@ public class WPurchases
         return true;
       case R.id.m_purchases_user_account:
         intent = new Intent(this, WUserAccount.class);
-        startActivity(intent); //Запуск активности
+        startActivityForResult(intent, R.id.m_purchases_user_account); //Запуск активности
         return true;
       case R.id.m_purchases_type:
         intent = new Intent(this, WTypes.class);
@@ -274,6 +274,13 @@ public class WPurchases
           list_adapter.notifyDataSetChanged();
         else
           list_adapter.notifyDataSetInvalidated();
+        break;
+      case R.id.m_purchases_user_account:
+        if(resultCode == RESULT_OK)
+        {
+          cursor.requery();
+          list_adapter.notifyDataSetChanged();
+        }
         break;
     }
   }
