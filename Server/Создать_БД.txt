@@ -1,3 +1,11 @@
+Ћокально дома
+в tools\MySQLOpenHelper.php раскоментить код создани€ самой DB
+затем
 http://127.0.0.1//Administration.php          или
 http://mybudgetserver.ru/Administration.php   или
 http://192.168.10.101/Administration.php      - из локалки
+
+
+Ќа хостинге
+—оздать саму базу через панель управлени€ хостингом
+зетем http://diplom.konofeev.ru/Administration.php

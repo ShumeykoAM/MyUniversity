@@ -11,10 +11,12 @@
     public function __construct()
     {
       global $link, $link_for_create; //Такое извращение нужно что бы видеть глобальные, по отношению к этому блоку, переменные
-      $link_for_create = $link = mysqli_connect("localhost", "root", "root");
+      $link_for_create = $link = mysqli_connect("localhost", GLOBALS_VAR\NAME_DB, "diplom_394");
       $result = ($link != null);
       if($result) //Выбираем базу для использования если она уже создана
         $result = $link->select_db(GLOBALS_VAR\NAME_DB);
+      else
+        echo(mysqli_error()."<br/>");
       //Каждый раз нужно указывать кодировку в которой работает база
       $result = $result and $link->query('set names utf8');
       $result = $result and $link->query('set names utf8');
@@ -40,16 +42,17 @@
       $result = ($link_for_create != null);
       if (!$result)
         echo("Ошибка соединения с СУБД.<br/>");
-      if ($result)
-      {
-        //Создаем БД
-        $command = file_get_contents("..\\res\\sql\\CreateDataBase.ddl");
-        $result  = $link_for_create->query($command);
-        if ($result)
-          echo("БД успешно создана.<br/>");
-        else
-          echo("Ошибка создания БД.<br/>");
-      }
+      
+      //if ($result)
+      //{
+      //Создаем БД
+      //  $command = file_get_contents("res\\sql\\CreateDataBase.ddl");
+      //  $result  = $link_for_create->query($command);
+      //  if ($result)
+      //    echo("БД успешно создана.<br/>");
+      //  else
+      //    echo("Ошибка создания БД.<br/>");
+      //}
       if ($result)
       {
         //Выбираем базу для использования
@@ -62,12 +65,21 @@
       if ($result)
       {
         //Создаем таблицы
-        $command = file_get_contents("..\\res\\sql\\CreateTables_1_0_1.ddl");
+        $ddl_create_table = "res/sql/CreateTables_1_0_1.ddl";
+        if(file_exists ($ddl_create_table))
+          echo("Файл CreateTables_1_0_1.ddl существует<br/>");
+        else
+          echo("Отсутствует файл CreateTables_1_0_1.ddl<br/>");
+
+        $command = file_get_contents($ddl_create_table);
         $result  = $link_for_create->multi_query($command); //Команда выполняет сразу несколько запросов
         if ($result)
           echo("Таблицы для версии 1_0_1 успешно созданы<br/>");
         else
+        {
           echo("Не удалось создать таблицы для версии 1_0_1<br/>");
+          echo(mysqli_error()."<br/>");
+        }
       }
       if (!$result)
         echo($link_for_create->error); //Выведем текст ошибки sql

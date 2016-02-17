@@ -1,0 +1,22 @@
+﻿
+Арендовал у Ромы Конофеева 17.02.2016 за 50р в мес, за первый месяц уже заплатил.
+
+
+Наименование базы данных может быть только с префиксом (gabrielle_), создать БД можно только через панель управления.
+Создавать таблицы можно через SQL
+
+Панель управления 
+Адрес доступа: https://libertas.timeweb.ru/pma/index.php
+Логин: gabrielle_diplom
+Пароль: diplom_394
+
+Ftp:
+Логин: gabrielle_diplom
+Пароль: diplom389
+Адоес доступа: ftp://gabrielle_diplom:diplom389@konofeev.ru
+
+Для коннекта к MySql нужно указывать следующие параметры
+  mysqli_connect("localhost", имя_БД_созданной_в_панели_хостинга, "diplom_394");
+
+Адрес сайта http://diplom.konofeev.ru/
+  для моих нужд адрес такой http://diplom.konofeev.ru/RequestHandler.php

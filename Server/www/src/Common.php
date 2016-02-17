@@ -3,7 +3,7 @@
   //Пространство имен для перечисления глобальных переменных
   namespace GLOBALS_VAR
   {
-    const NAME_DB = "OurBudgetDB";
+    const NAME_DB = "gabrielle_diplom";
 
   }
 
