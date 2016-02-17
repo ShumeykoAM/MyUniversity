@@ -4,7 +4,7 @@ CREATE TABLE user_group
   code_for_co_user     INT(8) NULL,
   timestamp_code       INT(8) NULL,
   PRIMARY KEY (_id)
-) AUTO_INCREMENT = 1;
+) ENGINE=InnoDB AUTO_INCREMENT = 1;
 
 CREATE UNIQUE INDEX unique_code ON user_group
 (
@@ -19,7 +19,7 @@ CREATE TABLE user_account
   _id_group            INT(8) NOT NULL,
   PRIMARY KEY (_id_group,_id),
   FOREIGN KEY (_id_group) REFERENCES user_group (_id)
-);
+) ENGINE=InnoDB;
 
 CREATE UNIQUE INDEX unique_login ON user_account
 (
@@ -35,7 +35,7 @@ CREATE TABLE purchase
   is_delete            INT(8) NOT NULL,
   PRIMARY KEY (_id_group,_id),
   FOREIGN KEY (_id_group) REFERENCES user_group (_id)
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE type
 (
@@ -46,7 +46,7 @@ CREATE TABLE type
   is_delete            INT(8) NOT NULL,
   PRIMARY KEY (_id_group,_id),
   FOREIGN KEY (_id_group) REFERENCES user_group (_id)
-);
+) ENGINE=InnoDB;
 
 CREATE UNIQUE INDEX unique_type ON type
 (
@@ -71,7 +71,7 @@ CREATE TABLE detail
   FOREIGN KEY (_id_group_, _id_purchase) REFERENCES purchase (_id_group, _id),
   FOREIGN KEY (_id_group_, _id_type) REFERENCES type (_id_group, _id),
   FOREIGN KEY (_id_group_) REFERENCES user_group (_id)
-);
+) ENGINE=InnoDB;
 
 CREATE UNIQUE INDEX unique_detail ON detail
 (
@@ -89,7 +89,7 @@ CREATE TABLE chronological
   _id_group            INT(8) NOT NULL,
   PRIMARY KEY (_id_group,table_db,_id_record),
   FOREIGN KEY (_id_group) REFERENCES user_group (_id)
-);
+) ENGINE=InnoDB;
 
 CREATE INDEX duplicate_chronological ON chronological
 (
