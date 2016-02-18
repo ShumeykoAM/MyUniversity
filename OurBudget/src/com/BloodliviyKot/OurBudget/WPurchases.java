@@ -175,33 +175,27 @@ public class WPurchases
           new java.util.Date().getTime(), change_purchase.state == Purchase.STATE_PURCHASE.PLAN);
         date_time_dialog.show(getFragmentManager(), null);
         return true;
-      case R.id.m_purchases_c_duplicate:
-
-
-        break;
       case R.id.m_purchases_c_delete:
-        //Переспросим, действительно ли нужно удалить покупку
-
-
         new SQLTransaction(db, new I_Transaction(){
           @Override
           public boolean trnFunc()
           {
+            boolean result = true;
             //purchase
             //Удалим все детали для начала
-
-
-
-            //delete_detail(id_detail);
-
-
-
-
-
+            String q_params[] = { Long.toString(purchase._id), Long.toString(0) };
+            Cursor cursor_details = db.rawQuery(oh.getQuery(EQ.DETAILS), q_params);
+            for(boolean status = cursor_details.moveToFirst(); status && result; status = cursor_details.moveToNext())
+            {
+              Detail detail = new Detail(cursor_details);
+              Detail detail_change = detail.clone();
+              detail_change.is_delete = true;
+              result = result && detail.update(detail_change, db);
+            }
             //Удалим пукупку
             change_purchase.is_delete = true;
-            purchase.update(change_purchase, db);
-            return true;
+            result = result && purchase.update(change_purchase, db);
+            return result;
           }
         }).runTransaction();
         cursor.requery();
