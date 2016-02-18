@@ -39,13 +39,9 @@
                   android:icon="@drawable/ic_list_types"
                   android:screenOrientation="portrait">
         </activity>
-
-
-        <!--
-        <service
-            android:enabled="true"
-            android:name="com.BloodliviyKot.ServiceOurBudjet.AurBudjetServiceClass" >
+        <service android:name="com.BloodliviyKot.synchronization.ServiceSynchronization"
+                 android:enabled="true">
         </service>
-        !-->
+
     </application>
 </manifest>
