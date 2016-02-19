@@ -4,14 +4,20 @@
 
   class MySQLOpenHelper
   {
+    private $it_is_debug_mode;
     private $link;
     private $link_for_create;
 
     //Конструкторы в PHP называются так __construct(параметры)
     public function __construct()
     {
-      global $link, $link_for_create; //Такое извращение нужно что бы видеть глобальные, по отношению к этому блоку, переменные
-      $link_for_create = $link = mysqli_connect("localhost", GLOBALS_VAR\NAME_DB, "diplom_394");
+      global $link, $link_for_create, $it_is_debug_mode; //Такое извращение нужно что бы видеть глобальные, по отношению к этому блоку, переменные
+$it_is_debug_mode = true;
+//$it_is_debug_mode = false;
+      if(!$it_is_debug_mode)
+        $link_for_create = $link = mysqli_connect("localhost", GLOBALS_VAR\NAME_DB, "diplom_394");
+      else
+        $link_for_create = $link = mysqli_connect("localhost", "root", "root");
       $result = ($link != null);
       if($result) //Выбираем базу для использования если она уже создана
         $result = $link->select_db(GLOBALS_VAR\NAME_DB);
@@ -36,23 +42,23 @@
     //Создание БД версию назовем 1.0.1 ===============================================================================
     public function onCreate_1_0_1()
     {
-      global $link_for_create; //Такое извращение нужно что бы видеть глобальные, по отношению к этому блоку, переменные
+      global $link_for_create, $it_is_debug_mode; //Такое извращение нужно что бы видеть глобальные, по отношению к этому блоку, переменные
 
       //Создание БД
       $result = ($link_for_create != null);
       if (!$result)
         echo("Ошибка соединения с СУБД.<br/>");
       
-      //if ($result)
-      //{
+      if ($result && $it_is_debug_mode)
+      {
       //Создаем БД
-      //  $command = file_get_contents("res\\sql\\CreateDataBase.ddl");
-      //  $result  = $link_for_create->query($command);
-      //  if ($result)
-      //    echo("БД успешно создана.<br/>");
-      //  else
-      //    echo("Ошибка создания БД.<br/>");
-      //}
+        $command = file_get_contents("res\\sql\\CreateDataBase.ddl");
+        $result  = $link_for_create->query($command);
+        if ($result)
+          echo("БД успешно создана.<br/>");
+        else
+          echo("Ошибка создания БД.<br/>");
+      }
       if ($result)
       {
         //Выбираем базу для использования

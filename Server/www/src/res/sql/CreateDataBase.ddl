@@ -1,1 +1,1 @@
-CREATE DATABASE OurBudgetDB CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE DATABASE gabrielle_diplom CHARACTER SET utf8 COLLATE utf8_general_ci;
