@@ -24,7 +24,7 @@ public abstract class Request
   private Thread post_thread;
   private Answer answer;
   protected JSONObject JObj = new JSONObject();
-  private static String uri_s[] = new String[3]; //Список адресов с сервером, основной и запасные
+  private static String uri_s[] = new String[8]; //Список адресов с сервером, основной и запасные
   private static String uri = ""; //Рабочий адрес
   private E_MESSID.MExeption.ERR error = E_MESSID.MExeption.ERR.OK;
   //+//Отправляем асинхронный запрос на сервак и получаем ответ
@@ -107,10 +107,10 @@ public abstract class Request
   protected abstract void ConstructRequest() throws E_MESSID.MExeption;
   static
   {
-    uri_s[0] = "http://192.168.10.105/RequestHandler.php";
-    uri_s[1] = "http://192.168.10.101/RequestHandler.php";
-    uri_s[2] = "http://diplom.konofeev.ru/RequestHandler.php";
-    uri = uri_s[2];
+    uri_s[0] = "http://diplom.konofeev.ru/RequestHandler.php"; //Мой хост, арендованный у Ромы
+    uri_s[1] = "http://192.168.10.105/RequestHandler.php"; //Комп
+    uri_s[2] = "http://192.168.10.101/RequestHandler.php"; //Ноут
+    uri = uri_s[1];
   }
   protected Request(int _ID) throws E_MESSID.MExeption
   {
