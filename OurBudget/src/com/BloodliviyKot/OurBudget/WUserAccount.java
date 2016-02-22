@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
+import com.BloodliviyKot.OurBudget.Dialogs.DialogInviteMember;
 import com.BloodliviyKot.tools.DataBase.EQ;
 import com.BloodliviyKot.tools.DataBase.I_Transaction;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
@@ -187,12 +188,12 @@ public class WUserAccount
   @Override
   public boolean onOptionsItemSelected(MenuItem item)
   {
-
+    AlertConnect alert_connect;
     switch(item.getItemId())
     {
       case R.id.m_user_account_registration:
         //Проверим доступность сервака потом если что в регистрацию перейдем
-        AlertConnect alert_connect = new AlertConnect(getApplicationContext());
+        alert_connect = new AlertConnect(getApplicationContext());
         if(alert_connect.getServerAccess(true) == AlertConnect.SERVER_ACCES.ACCES)
         {
           Intent intent = new Intent(this, WRegistration.class);
@@ -202,10 +203,21 @@ public class WUserAccount
         }
         return true;
       case R.id.m_user_account_invite_co_user:
-
+        alert_connect = new AlertConnect(getApplicationContext());
+        if(alert_connect.getServerAccess(true) == AlertConnect.SERVER_ACCES.ACCES)
+        {
+          DialogInviteMember dialog_invite_member = new DialogInviteMember();
+          dialog_invite_member.show(getFragmentManager(), null);
+        }
         return true;
       case R.id.m_user_account_become_co_user:
+        alert_connect = new AlertConnect(getApplicationContext());
+        if(alert_connect.getServerAccess(true) == AlertConnect.SERVER_ACCES.ACCES)
+        {
 
+
+
+        }
         return true;
     }
     return super.onOptionsItemSelected(item);

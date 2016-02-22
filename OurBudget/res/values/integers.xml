@@ -3,4 +3,5 @@
     <integer name="PASSWORD_MAX_LENGHT">20</integer><!--Максимальная длина пароля-->
     <integer name="PASSWORD_MIN_LENGHT">6</integer><!--Минимальная длина пароля-->
     <integer name="EMAIL_MAX_LENGHT">100</integer><!--Максимальная длина почты-логина-->
+    <integer name="TIMEOUT_WAIT_INVITE">60</integer><!--Максимальная длина почты-логина-->
 </resources>

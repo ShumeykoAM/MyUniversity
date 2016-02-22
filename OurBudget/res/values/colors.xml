@@ -9,4 +9,9 @@
     <color name="detail_params_cost">#ff66ff05</color>
     <color name="detail_params_name_detail">#FFFFFC13</color>
     <color name="purchase_item_date_time_info">#ffdef1ff</color>
+
+    <color name="dialog_invite_member_caption">#ffbefffc</color>
+    <color name="dialog_invite_member_code">#ffffe459</color>
+    <color name="dialog_invite_member_status">#ff49ff32</color>
+
 </resources>

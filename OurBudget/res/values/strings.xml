@@ -84,5 +84,16 @@
     <string name="intent_login">intent_login</string>
     <string name="intent_password">intent_password</string>
 
+    <string name="dialog_invite_member_caption">Этот код должен ввести второй пользователь</string>
+    <string name="dialog_invite_member_status">Окончание действия этого кода через %2d секунд</string>
+    <string name="dialog_invite_alert_title">Время попытки вышло</string>
+    <string name="dialog_invite_alert_message">Повторить попытку ?</string>
+
+    <string name="alert_button_yes">Да</string>
+    <string name="alert_button_no">Нет</string>
+    <string name="alert_button_cancel">Отмена</string>
+
+
+
 
 </resources>

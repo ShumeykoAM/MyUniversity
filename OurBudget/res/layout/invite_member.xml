@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:gravity="center_vertical|center_horizontal">
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" android:id="@+id/_type_dialog_params_ll"
+            android:gravity="center_vertical|center_horizontal">
+        <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_gravity="center_horizontal" android:singleLine="false"
+                android:text="@string/dialog_invite_member_caption" android:gravity="center"
+                android:textColor="@color/dialog_invite_member_caption" android:id="@+id/dialog_invite_member_caption"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:id="@+id/dialog_invite_member_code"
+                android:gravity="center_horizontal" android:textSize="40sp" android:textColor="@color/dialog_invite_member_code"/>
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/dialog_invite_member_status"
+                android:id="@+id/dialog_invite_member_status" android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal" android:textColor="@color/dialog_invite_member_status"/>
+    </LinearLayout>
+</RelativeLayout>
