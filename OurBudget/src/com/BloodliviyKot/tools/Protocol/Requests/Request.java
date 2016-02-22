@@ -107,7 +107,7 @@ public abstract class Request
   protected abstract void ConstructRequest() throws E_MESSID.MExeption;
   static
   {
-    uri_s[0] = "http://192.168.10.108/RequestHandler.php";
+    uri_s[0] = "http://192.168.10.105/RequestHandler.php";
     uri_s[1] = "http://192.168.10.101/RequestHandler.php";
     uri_s[2] = "http://diplom.konofeev.ru/RequestHandler.php";
     uri = uri_s[2];
