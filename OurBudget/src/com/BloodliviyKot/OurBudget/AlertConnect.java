@@ -40,7 +40,7 @@ public class AlertConnect
           server_access = SERVER_ACCES.ACCES;
       }
     }
-    catch(E_MESSID.MExeption mExeption)
+    catch(E_MESSID.MException mException)
     {     }
     if(server_access == SERVER_ACCES.SERVER_PROBLEM)
     {
@@ -54,7 +54,7 @@ public class AlertConnect
         {
           server_access = SERVER_ACCES.GOOGLE_PROBLEM;
         }
-      } catch(E_MESSID.MExeption mExeption)
+      } catch(E_MESSID.MException mException)
       {
         server_access = SERVER_ACCES.GOOGLE_PROBLEM;
       }

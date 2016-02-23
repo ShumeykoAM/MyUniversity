@@ -25,6 +25,8 @@ public class WPurchases
   extends Activity
   implements AdapterView.OnItemClickListener, ChooseAlert.I_ChooseAlertHandler
 {
+  public static Context application_context = null;
+
   private MySQLiteOpenHelper oh;
   private SQLiteDatabase db;
   private ListView list_purchases;
@@ -36,6 +38,7 @@ public class WPurchases
   public void onCreate(Bundle savedInstanceState)
   {
     super.onCreate(savedInstanceState);
+    application_context = getApplicationContext(); //Вот такой вот глобализм
     setContentView(R.layout.purchases);
     //Вместо того что бы в манифесте прописать заголовок и иконку приходится динамически их назначать
     //  если в манифесте их назначить то они подменят название и иконку приложения
@@ -47,7 +50,7 @@ public class WPurchases
 //Для отладки удалим базу
 //MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
 //Создаем помощник управления БД
-    oh = new MySQLiteOpenHelper(getApplicationContext());
+    oh = new MySQLiteOpenHelper();
     db = oh.getWritableDatabase();
 
     long s_date = 0, e_date = Long.MAX_VALUE;

@@ -13,13 +13,13 @@ CREATE UNIQUE INDEX unique_code ON user_group
 
 CREATE TABLE user_account
 (
-  _id                  INT(8) NOT NULL,
+  _id                  INT(8) AUTO_INCREMENT,
   login                VARCHAR(40) NOT NULL,
   hash_password        VARCHAR(40) NOT NULL,
   _id_group            INT(8) NOT NULL,
-  PRIMARY KEY (_id_group,_id),
+  PRIMARY KEY (_id),
   FOREIGN KEY (_id_group) REFERENCES user_group (_id)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB AUTO_INCREMENT = 1;
 
 CREATE UNIQUE INDEX unique_login ON user_account
 (

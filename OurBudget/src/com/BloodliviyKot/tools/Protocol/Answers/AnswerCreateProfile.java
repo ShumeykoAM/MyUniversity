@@ -8,7 +8,7 @@ public class AnswerCreateProfile
   extends Answer
 {
   public boolean isCreated;
-  AnswerCreateProfile(int _ID, JSONObject JOBJ) throws E_MESSID.MExeption
+  AnswerCreateProfile(int _ID, JSONObject JOBJ) throws E_MESSID.MException
   {
     super(_ID);
     try
@@ -17,7 +17,7 @@ public class AnswerCreateProfile
     } catch(JSONException e)
     {
       e.printStackTrace();
-      throw new E_MESSID.MExeption(E_MESSID.MExeption.ERR.UNKNOWN);
+      throw new E_MESSID.MException(E_MESSID.MException.ERR.UNKNOWN);
     }
   }
 }

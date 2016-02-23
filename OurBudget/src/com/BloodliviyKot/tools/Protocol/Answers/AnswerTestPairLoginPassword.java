@@ -9,7 +9,7 @@ public class AnswerTestPairLoginPassword
   extends Answer
 {
   public boolean isCorrect;
-  AnswerTestPairLoginPassword(int _ID, JSONObject JOBJ) throws E_MESSID.MExeption
+  AnswerTestPairLoginPassword(int _ID, JSONObject JOBJ) throws E_MESSID.MException
   {
     super(_ID);
     try
@@ -18,7 +18,7 @@ public class AnswerTestPairLoginPassword
     } catch(JSONException e)
     {
       e.printStackTrace();
-      throw new E_MESSID.MExeption(E_MESSID.MExeption.ERR.UNKNOWN);
+      throw new E_MESSID.MException(E_MESSID.MException.ERR.UNKNOWN);
     }
   }
 }

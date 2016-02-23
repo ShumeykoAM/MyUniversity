@@ -59,7 +59,7 @@ public class PurchaseDateTimeDialog
     et_time = (EditText)v.findViewById(R.id.purchase_date_time_time);
     button_save = (Button)v.findViewById(R.id.purchase_date_time_save);
 
-    oh = new MySQLiteOpenHelper(v.getContext());
+    oh = new MySQLiteOpenHelper();
     db = oh.getWritableDatabase();
     updateView();
     if(is_plan)

@@ -15,7 +15,7 @@ public class RequestCreateProfile
     void handlerAnswer(AnswerCreateProfile answer);
   }
 
-  public RequestCreateProfile(String _login, String _password) throws E_MESSID.MExeption
+  public RequestCreateProfile(String _login, String _password) throws E_MESSID.MException
   {
     super(E_MESSID.CREATE_NEW_PROFILE);
     login    = _login;
@@ -23,7 +23,7 @@ public class RequestCreateProfile
     ConstructRequest();
   }
   @Override
-  protected void ConstructRequest() throws E_MESSID.MExeption
+  protected void ConstructRequest() throws E_MESSID.MException
   {
     try
     {
@@ -32,16 +32,16 @@ public class RequestCreateProfile
     } catch(JSONException e)
     {
       e.printStackTrace();
-      throw new E_MESSID.MExeption(E_MESSID.MExeption.ERR.UNKNOWN);
+      throw new E_MESSID.MException(E_MESSID.MException.ERR.UNKNOWN);
     }
   }
   @Override
-  public AnswerCreateProfile getAnswerFromPost() throws E_MESSID.MExeption
+  public AnswerCreateProfile getAnswerFromPost() throws E_MESSID.MException
   {
     return (AnswerCreateProfile)super.getAnswerFromPost();
   }
   @Override
-  public AnswerCreateProfile send() throws E_MESSID.MExeption
+  public AnswerCreateProfile send() throws E_MESSID.MException
   {
     return (AnswerCreateProfile)super.send();
   }
@@ -51,7 +51,7 @@ public class RequestCreateProfile
     if(i_handlerCreateProfile != null)
       i_handlerCreateProfile.handlerAnswer((AnswerCreateProfile)answer);
   }
-  public boolean postHandler(I_HandlerCreateProfile i_handler) throws E_MESSID.MExeption
+  public boolean postHandler(I_HandlerCreateProfile i_handler) throws E_MESSID.MException
   {
     i_handlerCreateProfile = i_handler;
     return post();

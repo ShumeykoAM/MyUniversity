@@ -50,7 +50,7 @@ public class WMarkTypes
     list_types = (ListView)findViewById(R.id.mark_types_list_types);
     button_ok = (Button)findViewById(R.id.mark_types_button_ok);
     //Создаем помощник управления БД
-    oh = new MySQLiteOpenHelper(getApplicationContext());
+    oh = new MySQLiteOpenHelper();
     db = oh.getWritableDatabase();
     selected_ids = new TreeSet<DialogParamsSelectedType>(DialogParamsSelectedType.comparator);
     //Читаем параметры переданные из родительской активности

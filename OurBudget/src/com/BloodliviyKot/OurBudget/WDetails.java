@@ -59,7 +59,7 @@ public class WDetails
     _id_purchase = extras.getLong(getString(R.string.intent_purchases_id));
 
     //Создаем помощник управления БД
-    oh = new MySQLiteOpenHelper(getApplicationContext());
+    oh = new MySQLiteOpenHelper();
     db = oh.getWritableDatabase();
     //Cursor обязательно должен содержать _id иначе SimpleCursorAdapter не заработает
     cursor = db.rawQuery(oh.getQuery(EQ.DETAILS), new String[]{Long.toString(_id_purchase), Long.toString(0)});

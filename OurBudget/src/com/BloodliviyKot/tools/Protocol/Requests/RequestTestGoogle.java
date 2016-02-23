@@ -12,19 +12,19 @@ public class RequestTestGoogle
     void handlerAnswer(AnswerTestGoogle answer);
   }
 
-  public RequestTestGoogle() throws E_MESSID.MExeption
+  public RequestTestGoogle() throws E_MESSID.MException
   {
     super(E_MESSID.TEST_GOOGLE);
   }
   @Override
-  protected void ConstructRequest() throws E_MESSID.MExeption{}
+  protected void ConstructRequest() throws E_MESSID.MException {}
   @Override
-  public AnswerTestGoogle getAnswerFromPost() throws E_MESSID.MExeption
+  public AnswerTestGoogle getAnswerFromPost() throws E_MESSID.MException
   {
     return (AnswerTestGoogle)super.getAnswerFromPost();
   }
   @Override
-  public AnswerTestGoogle send() throws E_MESSID.MExeption
+  public AnswerTestGoogle send() throws E_MESSID.MException
   {
     return (AnswerTestGoogle)super.send();
   }
@@ -34,7 +34,7 @@ public class RequestTestGoogle
     if(i_handlerTestConnectServer != null)
       i_handlerTestConnectServer.handlerAnswer((AnswerTestGoogle)answer);
   }
-  public boolean postHandler(I_HandlerTestGoogle i_handler) throws E_MESSID.MExeption
+  public boolean postHandler(I_HandlerTestGoogle i_handler) throws E_MESSID.MException
   {
     i_handlerTestConnectServer = i_handler;
     return post();

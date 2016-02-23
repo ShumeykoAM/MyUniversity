@@ -74,7 +74,8 @@ public class ChooseAlert
         choose_button = CHOOSE_BUTTON.BUTTON2;
         break;
     }
-    choose_alert_handler.onClick(choose_button);
+    if(choose_alert_handler != null)
+      choose_alert_handler.onClick(choose_button);
   }
   public enum CHOOSE_BUTTON { BUTTON1, BUTTON2, BUTTON3 }
   public interface I_ChooseAlertHandler

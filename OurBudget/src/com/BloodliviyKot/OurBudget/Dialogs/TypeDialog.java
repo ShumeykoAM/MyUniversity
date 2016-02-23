@@ -62,7 +62,7 @@ public class TypeDialog
     sp_unit = (Spinner)v.findViewById(R.id.type_dialog_unit);
     button_save = (Button)v.findViewById(R.id.type_dialog_save);
 
-    oh = new MySQLiteOpenHelper(v.getContext());
+    oh = new MySQLiteOpenHelper();
     db = oh.getWritableDatabase();
 
     et_name.setText(type.name);

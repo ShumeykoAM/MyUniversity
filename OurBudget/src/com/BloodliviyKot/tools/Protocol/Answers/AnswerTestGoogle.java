@@ -6,7 +6,7 @@ public class AnswerTestGoogle
   extends Answer
 {
   public boolean google_access = true;
-  AnswerTestGoogle(int _ID) throws E_MESSID.MExeption
+  AnswerTestGoogle(int _ID) throws E_MESSID.MException
   {
     super(_ID);
   }

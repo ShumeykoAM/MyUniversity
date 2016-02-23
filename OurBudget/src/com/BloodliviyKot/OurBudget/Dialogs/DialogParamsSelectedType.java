@@ -92,7 +92,7 @@ public class DialogParamsSelectedType
     sp_unit      = (Spinner )v.findViewById(R.id.type_dialog_params_unit);
 
     if(oh == null)
-      oh = new MySQLiteOpenHelper(v.getContext());
+      oh = new MySQLiteOpenHelper();
     if(db == null)
       db = oh.getReadableDatabase();
 

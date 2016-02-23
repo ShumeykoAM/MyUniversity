@@ -15,14 +15,14 @@ public class RequestTestLogin
   {
     void handlerAnswer(AnswerTestLogin answer);
   }
-  public RequestTestLogin(String _login) throws E_MESSID.MExeption
+  public RequestTestLogin(String _login) throws E_MESSID.MException
   {
     super(E_MESSID.TEST_LOGIN);
     login = _login;
     ConstructRequest();
   }
   @Override
-  protected void ConstructRequest() throws E_MESSID.MExeption
+  protected void ConstructRequest() throws E_MESSID.MException
   {
     try
     {
@@ -30,16 +30,16 @@ public class RequestTestLogin
     } catch(JSONException e)
     {
       e.printStackTrace();
-      throw new E_MESSID.MExeption(E_MESSID.MExeption.ERR.UNKNOWN);
+      throw new E_MESSID.MException(E_MESSID.MException.ERR.UNKNOWN);
     }
   }
   @Override
-  public AnswerTestLogin getAnswerFromPost() throws E_MESSID.MExeption
+  public AnswerTestLogin getAnswerFromPost() throws E_MESSID.MException
   {
     return (AnswerTestLogin)super.getAnswerFromPost();
   }
   @Override
-  public AnswerTestLogin send() throws E_MESSID.MExeption
+  public AnswerTestLogin send() throws E_MESSID.MException
   {
     return (AnswerTestLogin)super.send();
   }
@@ -49,7 +49,7 @@ public class RequestTestLogin
     if(iHandler_test_login != null)
       iHandler_test_login.handlerAnswer((AnswerTestLogin)answer);
   }
-  public boolean postHandler(I_HandlerTestLogin i_handler) throws E_MESSID.MExeption
+  public boolean postHandler(I_HandlerTestLogin i_handler) throws E_MESSID.MException
   {
     iHandler_test_login = i_handler;
     return post();

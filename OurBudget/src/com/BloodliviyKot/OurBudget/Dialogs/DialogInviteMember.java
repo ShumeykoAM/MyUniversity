@@ -9,9 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.TextView;
+import com.BloodliviyKot.OurBudget.AlertConnect;
 import com.BloodliviyKot.OurBudget.R;
-
-import java.util.Random;
+import com.BloodliviyKot.tools.Protocol.Answers.AnswerCreateGroupCode;
+import com.BloodliviyKot.tools.Protocol.E_MESSID;
+import com.BloodliviyKot.tools.Protocol.Requests.ARequestCreateGroupCode;
 
 @SuppressLint("ValidFragment")
 public class DialogInviteMember
@@ -44,14 +46,29 @@ public class DialogInviteMember
   private int generateCodeAndSendOnServer()
   {
     while_thread = new Thread(this);
-    Random random = new Random();
     final int code[] = new int[1]; code[0] = 0;
-    for(int i=0; i < 5; ++i)
-      code[0] += (Math.abs(random.nextInt()%9+1))*Math.pow(10,i);
-    //Отправим код на сервак
-
-
-
+    try
+    {
+      ARequestCreateGroupCode request_create_groupCode = new ARequestCreateGroupCode();
+      AnswerCreateGroupCode answer_create_group_code;
+      if(request_create_groupCode.post() &&
+          (answer_create_group_code = request_create_groupCode.getAnswerFromPost()) != null )
+        code[0] = answer_create_group_code.group_code;
+      else
+        throw new E_MESSID.MException(E_MESSID.MException.ERR.PROBLEM_WITH_SERVER);
+    }
+    catch(E_MESSID.MException mException)
+    {
+      v.post(new Runnable(){
+        @Override
+        public void run()
+        {
+          AlertConnect alert_connect = new AlertConnect(v.getContext());
+          alert_connect.getServerAccess(true);
+          dismiss();
+        }
+      });
+    }
     tv_code.post(new Runnable(){
       @Override
       public void run()

@@ -8,7 +8,7 @@ public abstract class Answer
 {
   public final int ID;
   //Генерируем ответ на основе JSON-строки
-  public static Answer AnswerFromString(String StrJSON) throws E_MESSID.MExeption
+  public static Answer AnswerFromString(String StrJSON) throws E_MESSID.MException
   {
     Answer answer = null;
     try
@@ -29,17 +29,26 @@ public abstract class Answer
         case E_MESSID.TEST_PAIR_LOGIN_PASSWORD:
           answer = new AnswerTestPairLoginPassword(ID, JOBJ);
           break;
+        case E_MESSID.CREATE_GROUP_CODE:
+          answer = new AnswerCreateGroupCode(ID, JOBJ);
+          break;
+        case E_MESSID.NOT_IDENTIFY:
+          throw new E_MESSID.MException(E_MESSID.MException.ERR.NOT_IDENTIFY);
 
+
+
+        default:
+          answer = null;
       }
     } catch(JSONException e)
     {
       e.printStackTrace();
-      throw new E_MESSID.MExeption(E_MESSID.MExeption.ERR.UNKNOWN);
+      throw new E_MESSID.MException(E_MESSID.MException.ERR.UNKNOWN);
     }
     return answer;
   }
   //Генерируем ответ на основе ID
-  public static Answer AnswerFromID(int ID, String http_answer) throws E_MESSID.MExeption
+  public static Answer AnswerFromID(int ID, String http_answer) throws E_MESSID.MException
   {
     Answer answer = null;
     switch(ID)

@@ -56,7 +56,7 @@ public class WRegistration
     et_password.setText(extras.getCharSequence(getString(R.string.intent_password)));
 
     //Создаем помощник управления БД
-    db = (new MySQLiteOpenHelper(getApplicationContext())).getWritableDatabase();
+    db = new MySQLiteOpenHelper().getWritableDatabase();
 
   }
   private static final int MIN_LENGHT_PASSWORD = 4;
@@ -140,10 +140,10 @@ public class WRegistration
             }
           }
           else
-            throw new E_MESSID.MExeption(E_MESSID.MExeption.ERR.PROBLEM_WITH_SERVER);
+            throw new E_MESSID.MException(E_MESSID.MException.ERR.PROBLEM_WITH_SERVER);
         }
       }
-      catch(E_MESSID.MExeption mExeption)
+      catch(E_MESSID.MException mException)
       {
         AlertConnect alert_connect = new AlertConnect(getApplicationContext());
         alert_connect.getServerAccess(true);
@@ -228,7 +228,7 @@ public class WRegistration
                 }
               }
             });
-          } catch(E_MESSID.MExeption mExeption)
+          } catch(E_MESSID.MException mException)
           {          }
         }
       }

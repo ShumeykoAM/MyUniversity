@@ -41,7 +41,7 @@ public class WTypes
     search = (SearchView)findViewById(R.id.types_search);
     list_types = (ListView)findViewById(R.id.types_list_types);
 
-    oh = new MySQLiteOpenHelper(getApplicationContext());
+    oh = new MySQLiteOpenHelper();
     db = oh.getWritableDatabase();
     cursor = new Cursor[1];
     cursor[0] = TypesCursorTuning.getFullCursor(oh, db);

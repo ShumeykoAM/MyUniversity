@@ -1,6 +1,7 @@
 <?php
+  include 'Common.php';
 
-  //Проверка пары логин пароль и если нужно оставляем флаг фхода в массиве $_SESSION
+  //Проверка пары логин пароль и если нужно оставляем флаг входа в массиве $_SESSION
   class HandlerTestPairLoginPassword
     implements I_Handler
   {
@@ -42,11 +43,10 @@
             $result = $q_result->num_rows != 0;
             if($result)
             {
+              $q_result->data_seek(0);
+              $row = $q_result->fetch_assoc();
               //Добавим инфу о входе в систему в $_SESSION
-
-
-
-
+              $_SESSION[GLOBALS_VAR\ID] = $row['_id'];
             }
           }
           else

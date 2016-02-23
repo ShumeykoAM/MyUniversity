@@ -17,13 +17,13 @@ public class RequestTestConnectServer
     void handlerAnswer(AnswerTestConnectServer answer);
   }
 
-  public RequestTestConnectServer() throws E_MESSID.MExeption
+  public RequestTestConnectServer() throws E_MESSID.MException
   {
     super(E_MESSID.TEST_CONNECT_SERVER);
     ConstructRequest();
   }
   @Override
-  protected void ConstructRequest() throws E_MESSID.MExeption
+  protected void ConstructRequest() throws E_MESSID.MException
   {
     try
     {
@@ -31,16 +31,16 @@ public class RequestTestConnectServer
     } catch(JSONException e)
     {
       e.printStackTrace();
-      throw new E_MESSID.MExeption(E_MESSID.MExeption.ERR.UNKNOWN);
+      throw new E_MESSID.MException(E_MESSID.MException.ERR.UNKNOWN);
     }
   }
   @Override
-  public AnswerTestConnectServer getAnswerFromPost() throws E_MESSID.MExeption
+  public AnswerTestConnectServer getAnswerFromPost() throws E_MESSID.MException
   {
     return (AnswerTestConnectServer)super.getAnswerFromPost();
   }
   @Override
-  public AnswerTestConnectServer send() throws E_MESSID.MExeption
+  public AnswerTestConnectServer send() throws E_MESSID.MException
   {
     return (AnswerTestConnectServer)super.send();
   }
@@ -50,7 +50,7 @@ public class RequestTestConnectServer
     if(i_handlerTestConnectServer != null)
       i_handlerTestConnectServer.handlerAnswer((AnswerTestConnectServer)answer);
   }
-  public boolean postHandler(I_HandlerTestConnectServer i_handler) throws E_MESSID.MExeption
+  public boolean postHandler(I_HandlerTestConnectServer i_handler) throws E_MESSID.MException
   {
     i_handlerTestConnectServer = i_handler;
     return post();

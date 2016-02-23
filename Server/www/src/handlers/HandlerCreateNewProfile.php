@@ -63,8 +63,8 @@
       if($result)
       {
         //UPDATE user_account SET _id_group=2, _id=17 WHERE _id_group=2 AND _id=23;
-        $command = "INSERT INTO user_account (_id_group, _id, login, hash_password)".
-          "  VALUES (LAST_INSERT_ID(), 1,'".$params["login"]."', '".$params["hash_password"]."');";
+        $command = "INSERT INTO user_account (_id_group, login, hash_password)".
+          "  VALUES (LAST_INSERT_ID(),'".$params["login"]."', '".$params["hash_password"]."');";
         $result = $link->query($command);
       }
       return $result;

@@ -1,7 +1,11 @@
 package com.BloodliviyKot.tools.Protocol.Requests;
 
 
+import android.database.sqlite.SQLiteDatabase;
+import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
+import com.BloodliviyKot.tools.DataBase.entitys.UserAccount;
 import com.BloodliviyKot.tools.Protocol.Answers.Answer;
+import com.BloodliviyKot.tools.Protocol.Answers.AnswerTestPairLoginPassword;
 import com.BloodliviyKot.tools.Protocol.E_MESSID;
 import com.BloodliviyKot.tools.Protocol.PHP_Poster;
 import org.apache.http.NameValuePair;
@@ -26,9 +30,9 @@ public abstract class Request
   protected JSONObject JObj = new JSONObject();
   private static String uri_s[] = new String[8]; //Список адресов с сервером, основной и запасные
   private static String uri = ""; //Рабочий адрес
-  private E_MESSID.MExeption.ERR error = E_MESSID.MExeption.ERR.OK;
+  private E_MESSID.MException.ERR error = E_MESSID.MException.ERR.OK;
   //+//Отправляем асинхронный запрос на сервак и получаем ответ
-  public final boolean post() throws E_MESSID.MExeption
+  public final boolean post() throws E_MESSID.MException
   {
     if(post_thread != null || uri == "")
       return false;
@@ -36,27 +40,61 @@ public abstract class Request
       @Override
       public void run()
       {
-        List<NameValuePair> POST_Parm = new ArrayList<NameValuePair>(2);
-        POST_Parm.add(new BasicNameValuePair("Request", JObj.toString()));
-        PHP_Poster PP = new PHP_Poster();
-        try
+        int count_try = 1;
+        while(count_try >= 0)
         {
-          if(ID == E_MESSID.TEST_GOOGLE)
-            answer = Answer.AnswerFromID(E_MESSID.TEST_GOOGLE, PP.Post(E_MESSID.URL_GOOGLE, POST_Parm));
-          else
-            answer = Answer.AnswerFromString(PP.Post(uri, POST_Parm));
+          count_try--;
+          List<NameValuePair> POST_Parm = new ArrayList<NameValuePair>(2);
+          POST_Parm.add(new BasicNameValuePair("Request", JObj.toString()));
+          PHP_Poster PP = new PHP_Poster();
+          try
+          {
+            if(ID == E_MESSID.TEST_GOOGLE)
+              answer = Answer.AnswerFromID(E_MESSID.TEST_GOOGLE, PP.Post(E_MESSID.URL_GOOGLE, POST_Parm));
+            else
+              answer = Answer.AnswerFromString(PP.Post(uri, POST_Parm));
+          }
+          catch(IOException e)
+          {
+            error = E_MESSID.MException.ERR.PROBLEM_WITH_SERVER;
+            answer = null;
+          }
+          catch(E_MESSID.MException _mException)
+          {
+            if(_mException.getError() == E_MESSID.MException.ERR.NOT_IDENTIFY)
+            {
+              //Пытаемся приконнектиться и на второй круг
+              MySQLiteOpenHelper oh = new MySQLiteOpenHelper();
+              SQLiteDatabase db = oh.getWritableDatabase();
+              UserAccount user_account = UserAccount.getActiveUserAccount(oh, db);
+              if(user_account != null)
+              {
+                RequestTestPairLoginPassword rtplp = null;
+                try
+                {
+                  rtplp = new RequestTestPairLoginPassword(user_account.login, user_account.password, true);
+                  if(rtplp.post())
+                  {
+                    AnswerTestPairLoginPassword atplp = rtplp.getAnswerFromPost();
+                    if(atplp == null)
+                      throw new E_MESSID.MException(E_MESSID.MException.ERR.PROBLEM_WITH_SERVER);
+                    if(atplp.isCorrect)
+                      continue;
+                  }
+                }
+                catch(E_MESSID.MException e)
+                {
+                  e.printStackTrace();
+                }
+              }
+            }
+            error = _mException.getError();
+            answer = null;
+          }
+          postAnswerHandler(answer);
+          post_thread = null;
+          break;
         }
-        catch(IOException e)
-        {
-         error = E_MESSID.MExeption.ERR.PROBLEM_WITH_SERVER;
-          answer = null;
-        } catch(E_MESSID.MExeption _mExeption)
-        {
-          error = _mExeption.getError();
-          answer = null;
-        }
-        postAnswerHandler(answer);
-        post_thread = null;
       }
     });
     answer = null;
@@ -66,10 +104,10 @@ public abstract class Request
   //В наследнике нужно реализовать обработчик ответа от post запроса
   protected abstract void postAnswerHandler(Answer answer);
   //+//Получить ответ от асинхронного запроса
-  protected Answer getAnswerFromPost() throws E_MESSID.MExeption
+  protected Answer getAnswerFromPost() throws E_MESSID.MException
   {
     if(answer == null && post_thread == null)
-      throw new E_MESSID.MExeption(error);
+      throw new E_MESSID.MException(error);
     try
     {
       if(post_thread != null)
@@ -77,14 +115,14 @@ public abstract class Request
     } catch(InterruptedException e)
     {
       e.printStackTrace();
-      throw new E_MESSID.MExeption(E_MESSID.MExeption.ERR.UNKNOWN);
+      throw new E_MESSID.MException(E_MESSID.MException.ERR.UNKNOWN);
     }
     if(answer == null)
-      throw new E_MESSID.MExeption(error);
+      throw new E_MESSID.MException(error);
     return answer;
   }
   //+//Отправляем синхронный запрос на сервак и получаем ответ (только не в главном потоке)
-  protected Answer send() throws E_MESSID.MExeption
+  protected Answer send() throws E_MESSID.MException
   {
     Answer answer = null;
     if(uri != "")
@@ -98,13 +136,13 @@ public abstract class Request
       } catch(IOException e)
       {
         e.printStackTrace();
-        throw new E_MESSID.MExeption(E_MESSID.MExeption.ERR.PROBLEM_WITH_SERVER);
+        throw new E_MESSID.MException(E_MESSID.MException.ERR.PROBLEM_WITH_SERVER);
       }
     }
     return answer;
   }
   //В своей реализации метода ConstructRequest заполняем данными JObj
-  protected abstract void ConstructRequest() throws E_MESSID.MExeption;
+  protected abstract void ConstructRequest() throws E_MESSID.MException;
   static
   {
     uri_s[0] = "http://diplom.konofeev.ru/RequestHandler.php"; //Мой хост, арендованный у Ромы
@@ -112,7 +150,7 @@ public abstract class Request
     uri_s[2] = "http://192.168.10.101/RequestHandler.php"; //Ноут
     uri = uri_s[1];
   }
-  protected Request(int _ID) throws E_MESSID.MExeption
+  protected Request(int _ID) throws E_MESSID.MException
   {
     ID = _ID;
     //Создаем JSON объект с полем ID сообщения
@@ -122,7 +160,7 @@ public abstract class Request
     } catch(JSONException e)
     {
       e.printStackTrace();
-      throw new E_MESSID.MExeption(E_MESSID.MExeption.ERR.UNKNOWN);
+      throw new E_MESSID.MException(E_MESSID.MException.ERR.UNKNOWN);
     }
   }
 }

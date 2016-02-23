@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
 import com.BloodliviyKot.OurBudget.R;
+import com.BloodliviyKot.OurBudget.WPurchases;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -22,15 +23,13 @@ public class MySQLiteOpenHelper
   public static final String DBName = "OurBudget.db";
 
   private SQLReader sql_reader;
-  private Context context;
   private static String requests[] = null;
 
-  public MySQLiteOpenHelper(Context _context)
+  public MySQLiteOpenHelper()
   {
     //Здесь создается или открывается БД
-    super(_context, DBName, null, VersionDB);
-    context = _context;
-    sql_reader = new SQLReader(_context.getResources());
+    super(WPurchases.application_context, DBName, null, VersionDB);
+    sql_reader = new SQLReader(WPurchases.application_context.getResources());
   }
   //Создаем таблицы базы
   @Override
@@ -61,7 +60,7 @@ public class MySQLiteOpenHelper
       Stack<Long> stack_id = new Stack<Long>();
       ContentValues values = new ContentValues();
       long _id = 0;
-      XmlPullParser xpp = context.getResources().getXml(R.xml.distrib_db);
+      XmlPullParser xpp = WPurchases.application_context.getResources().getXml(R.xml.distrib_db);
       while (xpp.getEventType() != XmlPullParser.END_DOCUMENT)
       {
         switch (xpp.getEventType())

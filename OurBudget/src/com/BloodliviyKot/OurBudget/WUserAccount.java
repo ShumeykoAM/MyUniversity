@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
+import com.BloodliviyKot.OurBudget.Dialogs.ChooseAlert;
 import com.BloodliviyKot.OurBudget.Dialogs.DialogInviteMember;
 import com.BloodliviyKot.tools.DataBase.EQ;
 import com.BloodliviyKot.tools.DataBase.I_Transaction;
@@ -22,6 +23,7 @@ import com.BloodliviyKot.tools.DataBase.SQLTransaction;
 import com.BloodliviyKot.tools.DataBase.entitys.UserAccount;
 import com.BloodliviyKot.tools.Protocol.Answers.AnswerTestPairLoginPassword;
 import com.BloodliviyKot.tools.Protocol.E_MESSID;
+import com.BloodliviyKot.tools.Protocol.PHP_Poster;
 import com.BloodliviyKot.tools.Protocol.Requests.RequestTestPairLoginPassword;
 
 public class WUserAccount
@@ -54,7 +56,7 @@ public class WUserAccount
     et_user_login.addTextChangedListener(this);
 
     //Создаем помощник управления БД
-    oh = new MySQLiteOpenHelper(getApplicationContext());
+    oh = new MySQLiteOpenHelper();
     db = oh.getWritableDatabase();
     cursor = db.rawQuery(oh.getQuery(EQ.USER_ACCOUNTS), null);
     SpinnerAdapter spinner_adapter = new SimpleCursorAdapter(this, R.layout.user_account_item, cursor,
@@ -113,7 +115,7 @@ public class WUserAccount
           {
             AnswerTestPairLoginPassword atplp = rtplp.getAnswerFromPost();
             if(atplp == null)
-              throw new E_MESSID.MExeption(E_MESSID.MExeption.ERR.PROBLEM_WITH_SERVER);
+              throw new E_MESSID.MException(E_MESSID.MException.ERR.PROBLEM_WITH_SERVER);
             if(atplp.isCorrect)
             {
               //Добавим в локальную базу эту учетку
@@ -133,7 +135,7 @@ public class WUserAccount
               incorrect_login_passewor.show();
             }
           }
-        } catch(E_MESSID.MExeption mExeption)
+        } catch(E_MESSID.MException mException)
         {
           result = false;
           //нет связи с серваком
@@ -171,6 +173,7 @@ public class WUserAccount
           b_user_enter.setClickable(false);
           b_user_enter.setText(getString(R.string.user_account_button_entered));
           user_account_change = true;
+          PHP_Poster.dropCookie();
         }
       }
     }
@@ -191,34 +194,48 @@ public class WUserAccount
     AlertConnect alert_connect;
     switch(item.getItemId())
     {
-      case R.id.m_user_account_registration:
-        //Проверим доступность сервака потом если что в регистрацию перейдем
+    case R.id.m_user_account_registration:
+      //Проверим доступность сервака потом если что в регистрацию перейдем
+      alert_connect = new AlertConnect(getApplicationContext());
+      if(alert_connect.getServerAccess(true) == AlertConnect.SERVER_ACCES.ACCES)
+      {
+        Intent intent = new Intent(this, WRegistration.class);
+        intent.putExtra(getString(R.string.intent_login), et_user_login.getText());
+        intent.putExtra(getString(R.string.intent_password), "");
+        startActivityForResult(intent, R.layout.registration); //Запуск активности с onActivityResult
+      }
+      return true;
+    case R.id.m_user_account_invite_co_user:
+    case R.id.m_user_account_become_co_user:
+      if(UserAccount.getActiveUserAccount(oh, db) != null)
+      {
         alert_connect = new AlertConnect(getApplicationContext());
         if(alert_connect.getServerAccess(true) == AlertConnect.SERVER_ACCES.ACCES)
         {
-          Intent intent = new Intent(this, WRegistration.class);
-          intent.putExtra(getString(R.string.intent_login), et_user_login.getText());
-          intent.putExtra(getString(R.string.intent_password), "");
-          startActivityForResult(intent, R.layout.registration); //Запуск активности с onActivityResult
-        }
-        return true;
-      case R.id.m_user_account_invite_co_user:
-        alert_connect = new AlertConnect(getApplicationContext());
-        if(alert_connect.getServerAccess(true) == AlertConnect.SERVER_ACCES.ACCES)
-        {
-          DialogInviteMember dialog_invite_member = new DialogInviteMember();
-          dialog_invite_member.show(getFragmentManager(), null);
-        }
-        return true;
-      case R.id.m_user_account_become_co_user:
-        alert_connect = new AlertConnect(getApplicationContext());
-        if(alert_connect.getServerAccess(true) == AlertConnect.SERVER_ACCES.ACCES)
-        {
+          switch(item.getItemId())
+          {
+          case R.id.m_user_account_invite_co_user:
+            alert_connect = new AlertConnect(getApplicationContext());
+            if(alert_connect.getServerAccess(true) == AlertConnect.SERVER_ACCES.ACCES)
+            {
+              DialogInviteMember dialog_invite_member = new DialogInviteMember();
+              dialog_invite_member.show(getFragmentManager(), null);
+            }
+            break;
+          case R.id.m_user_account_become_co_user:
 
 
-
+            break;
+          }
         }
-        return true;
+      }
+      else
+      {
+        ChooseAlert choose_alert = new ChooseAlert(this, "Сначала нужно зарегистрироваться",
+          android.R.drawable.ic_dialog_alert, null, "Ок");
+        choose_alert.show(null);
+      }
+      return true;
     }
     return super.onOptionsItemSelected(item);
   }

@@ -18,7 +18,7 @@ public class RequestTestPairLoginPassword
     void handlerAnswer(AnswerTestPairLoginPassword answer);
   }
 
-  public RequestTestPairLoginPassword(String _login, String _password, boolean _needEnter) throws E_MESSID.MExeption
+  public RequestTestPairLoginPassword(String _login, String _password, boolean _needEnter) throws E_MESSID.MException
   {
     super(E_MESSID.TEST_PAIR_LOGIN_PASSWORD);
     login = _login;
@@ -28,7 +28,7 @@ public class RequestTestPairLoginPassword
   }
 
   @Override
-  protected void ConstructRequest() throws E_MESSID.MExeption
+  protected void ConstructRequest() throws E_MESSID.MException
   {
     try
     {
@@ -38,18 +38,18 @@ public class RequestTestPairLoginPassword
     } catch(JSONException e)
     {
       e.printStackTrace();
-      throw new E_MESSID.MExeption(E_MESSID.MExeption.ERR.UNKNOWN);
+      throw new E_MESSID.MException(E_MESSID.MException.ERR.UNKNOWN);
     }
   }
 
   @Override
-  public AnswerTestPairLoginPassword getAnswerFromPost() throws E_MESSID.MExeption
+  public AnswerTestPairLoginPassword getAnswerFromPost() throws E_MESSID.MException
   {
     return (AnswerTestPairLoginPassword)super.getAnswerFromPost();
   }
 
   @Override
-  public AnswerTestPairLoginPassword send() throws E_MESSID.MExeption
+  public AnswerTestPairLoginPassword send() throws E_MESSID.MException
   {
     return (AnswerTestPairLoginPassword)super.send();
   }
@@ -61,7 +61,7 @@ public class RequestTestPairLoginPassword
       i_handlerCreateProfile.handlerAnswer((AnswerTestPairLoginPassword)answer);
   }
 
-  public boolean postHandler(I_HandlerTestPairLoginPassword i_handler) throws E_MESSID.MExeption
+  public boolean postHandler(I_HandlerTestPairLoginPassword i_handler) throws E_MESSID.MException
   {
     i_handlerCreateProfile = i_handler;
     return post();
