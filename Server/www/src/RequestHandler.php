@@ -5,17 +5,17 @@
   //С помощью нее нам доступен массив $_SESSION на всех страницах
   session_start();
 
-  include 'Common.php';
-  include 'handlers/Handlers.php';
+  include_once 'Common.php';
+  include_once 'handlers/Handlers.php';
 
-  include 'tools/MySQLOpenHelper.php'; //Инклюдим здесь
-  include 'tools/SQLTransaction.php';  //  что бы в файлах приинклюденых ниже не инклюдить каждый раз
+  include_once 'tools/MySQLOpenHelper.php'; //Инклюдим здесь
+  include_once 'tools/SQLTransaction.php';  //  что бы в файлах приинклюденых ниже не инклюдить каждый раз
 
-  include 'handlers/HandlerTestConnectServer.php';
-  include 'handlers/HandlerCreateNewProfile.php';
-  include 'handlers/HandlerTestLogin.php';
-  include 'handlers/HandlerTestPairLoginPassword.php';
-  include 'handlers/co_user/AHandlerCreateGroupCode.php';
+  include_once 'handlers/HandlerTestConnectServer.php';
+  include_once 'handlers/HandlerCreateNewProfile.php';
+  include_once 'handlers/HandlerTestLogin.php';
+  include_once 'handlers/HandlerTestPairLoginPassword.php';
+  include_once 'handlers/co_user/AHandlerCreateGroupCode.php';
 
   class RequestHandler
   {

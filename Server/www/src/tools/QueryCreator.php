@@ -1,6 +1,6 @@
 <?php
 
-include 'Common.php';
+  include_once 'Common.php';
   class QueryCreator
   {
 

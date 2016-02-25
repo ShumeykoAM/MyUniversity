@@ -1,5 +1,5 @@
 <?php
-  include 'Common.php';
+  include_once 'Common.php';
 
   //Проверка пары логин пароль и если нужно оставляем флаг входа в массиве $_SESSION
   class HandlerTestPairLoginPassword

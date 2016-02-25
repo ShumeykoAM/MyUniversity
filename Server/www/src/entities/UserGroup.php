@@ -1,5 +1,5 @@
 <?php
-  include "tools/QueryCreator.php";
+  include_once "tools/QueryCreator.php";
 
   //В PHP к сожалению нет перегрузки
   class UserGroup
