@@ -1,4 +1,5 @@
 <?php
+  include "tools/QueryCreator.php";
 
   //В PHP к сожалению нет перегрузки
   class UserGroup
@@ -46,23 +47,9 @@
         $values["timestamp_code"] = $new_user_group->timestamp_code;
       if(count($values) != 0)
       {
-
-
-        //Этот код нужно вынести в отдельный функционал формирования запросов
-        $set = "SET";
-        $separator = " ";
-        while($key_value = each($values)) //http://php.net/manual/ru/function.next.php
-        {
-          $set .= $separator;
-          $set .= $key_value["key"]."=";
-          if($key_value["value"] == null)
-            $set .= "null";
-          else
-            $set .= $link->real_escape_string($key_value["value"]);
-          $separator = ", ";
-
-          $fdfd = $key_value;
-        }
+        $query = "UPDATE user_group ".QueryCreator::construct_SET($link, $values)." WHERE user_group._id = ".
+          $this->_id.";";
+        $result = $link->query($query);
       }
       return $result;
     }
@@ -79,10 +66,8 @@
     {
       global $ENUM_CONSTRUCT_ROW;
       $result = null;
-
-      $request =
-        "SELECT user_group._id, user_group.code_for_co_user, user_group.timestamp_code".
-        "  FROM user_group WHERE user_group._id = ".$_id.";";
+      $values = array($_id); //Параметры для запроса
+      $request = QueryCreator::getQuery( $link, EQ\USER_GROUP_FROM_ID, $values );
       $q_result = $link->query($request);
       if($q_result && $q_result->num_rows != 0)
       {

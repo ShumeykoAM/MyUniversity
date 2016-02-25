@@ -12,9 +12,7 @@
     public function __construct()
     {
       global $link, $link_for_create, $it_is_debug_mode; //Такое извращение нужно что бы видеть глобальные, по отношению к этому блоку, переменные
-$it_is_debug_mode = true;
-//$it_is_debug_mode = false;
-      if(!$it_is_debug_mode)
+      if(!GLOBALS_VAR\it_is_debug_mode)
         $link_for_create = $link = mysqli_connect("localhost", GLOBALS_VAR\NAME_DB, "diplom_394");
       else
         $link_for_create = $link = mysqli_connect("localhost", "root", "root");
@@ -32,6 +30,8 @@ $it_is_debug_mode = true;
       $result = $result and $link->query('set character_set_connection=utf8');
       $result = $result and $link->query('set character_set_database=utf8');
       $result = $result and $link->query('set character_set_server=utf8');
+      if($result)
+        $result = $link->set_charset('utf8');
       if(!$result)
       {
         $link = null;

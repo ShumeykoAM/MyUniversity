@@ -3,8 +3,11 @@
   //Пространство имен для перечисления глобальных переменных
   namespace GLOBALS_VAR
   {
-    const NAME_DB = "gabrielle_diplom";
-    const ID = "_id_user";
+    const it_is_debug_mode = true;
+
+    const NAME_DB  = "gabrielle_diplom";
+    const ID       = "_id_user";
+    const EQ_ARRAY = "EQ_ARRAY";
   }
 
   //Пространство имен для перечисления сообщений которые обрабатывает сервер

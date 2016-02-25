@@ -1,5 +1,6 @@
 <?php
 
+  include "tools/QueryCreator.php";
   //В PHP к сожалению нет перегрузки
   class UserAccount
   {
@@ -34,10 +35,8 @@
     {
       global $ENUM_CONSTRUCT_ROW;
       $result = null;
-
-      $request =
-        "SELECT user_account._id_group , user_account._id, user_account.login,".
-        "  user_account.hash_password FROM user_account WHERE user_account._id = ".$_id.";";
+      $values = array($_id); //Параметры для запроса
+      $request = QueryCreator::getQuery( $link, EQ\USER_ACCOUNT_FROM_ID, $values );
       $q_result = $link->query($request);
       if($q_result && $q_result->num_rows != 0)
       {
