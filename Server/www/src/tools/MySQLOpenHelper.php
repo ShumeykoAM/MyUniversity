@@ -4,14 +4,13 @@
 
   class MySQLOpenHelper
   {
-    private $it_is_debug_mode;
     private $link;
     private $link_for_create;
 
     //Конструкторы в PHP называются так __construct(параметры)
     public function __construct()
     {
-      global $link, $link_for_create, $it_is_debug_mode; //Такое извращение нужно что бы видеть глобальные, по отношению к этому блоку, переменные
+      global $link, $link_for_create; //Такое извращение нужно что бы видеть глобальные, по отношению к этому блоку, переменные
       if(!GLOBALS_VAR\it_is_debug_mode)
         $link_for_create = $link = mysqli_connect("localhost", GLOBALS_VAR\NAME_DB, "diplom_394");
       else
@@ -42,14 +41,14 @@
     //Создание БД версию назовем 1.0.1 ===============================================================================
     public function onCreate_1_0_1()
     {
-      global $link_for_create, $it_is_debug_mode; //Такое извращение нужно что бы видеть глобальные, по отношению к этому блоку, переменные
+      global $link_for_create; //Такое извращение нужно что бы видеть глобальные, по отношению к этому блоку, переменные
 
       //Создание БД
       $result = ($link_for_create != null);
       if (!$result)
         echo("Ошибка соединения с СУБД.<br/>");
       
-      if ($result && $it_is_debug_mode)
+      if ($result)
       {
       //Создаем БД
         $command = file_get_contents("res\\sql\\CreateDataBase.ddl");
