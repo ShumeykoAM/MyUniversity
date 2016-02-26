@@ -70,14 +70,14 @@
       }
       if ($result)
       {
+        //Удаляем все таблицы
+        $command = "DROP TABLE IF EXISTS chronological, detail, type, purchase, user_account, user_group;";
+        $result  = $link_for_create->query($command);
+      }
+      if ($result)
+      {
         //Создаем таблицы
-        $ddl_create_table = "res/sql/CreateTables_1_0_1.ddl";
-        if(file_exists ($ddl_create_table))
-          echo("Файл CreateTables_1_0_1.ddl существует<br/>");
-        else
-          echo("Отсутствует файл CreateTables_1_0_1.ddl<br/>");
-
-        $command = file_get_contents($ddl_create_table);
+        $command = file_get_contents("res/sql/CreateTables_1_0_1.ddl");
         $result  = $link_for_create->multi_query($command); //Команда выполняет сразу несколько запросов
         if ($result)
           echo("Таблицы для версии 1_0_1 успешно созданы<br/>");

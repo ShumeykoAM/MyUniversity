@@ -11,15 +11,22 @@
 </html>
 
 <?php
-//Удобно проверять работоспособность конфигурации
-if($rc = mysql_connect("localhost","root","root"))
-{
-  echo "<p>Hello, MySql!";
-}
-else
-{
-  echo (mysql_error());
-}
+  include_once 'Common.php';
 
-phpinfo();
+  if(!GLOBALS_VAR\it_is_debug_mode)
+    $rc = mysqli_connect("localhost", GLOBALS_VAR\NAME_DB, "diplom_394");
+  else
+    $rc = mysqli_connect("localhost", "root", "root");
+
+  //Удобно проверять работоспособность конфигурации
+  if($rc != null)
+  {
+    echo "<p>Hello, MySql!";
+  }
+  else
+  {
+    echo (mysql_error());
+  }
+
+  phpinfo();
 ?>

@@ -1,1 +1,1 @@
-CREATE DATABASE gabrielle_diplom CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE DATABASE IF NOT EXISTS gabrielle_diplom CHARACTER SET utf8 COLLATE utf8_general_ci;
