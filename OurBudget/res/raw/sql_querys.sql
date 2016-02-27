@@ -1,6 +1,6 @@
 -- USER_ACCOUNTS
 SELECT user_account._id, user_account.login, user_account.password, user_account.is_active
-  FROM user_account;
+  FROM user_account WHERE user_account._id != 1;
 
 -- USER_ACCOUNT_ACTIYE
 SELECT user_account._id, user_account.login, user_account.password, user_account.is_active

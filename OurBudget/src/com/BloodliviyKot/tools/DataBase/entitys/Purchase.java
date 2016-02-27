@@ -33,7 +33,7 @@ public class Purchase
   }
 
   public long _id;
-  public long _id_user_account; //0 - без учетки
+  public long _id_user_account;
   public Long id_server;
   public long date_time; //Кол-во сек с 70го года
   public STATE_PURCHASE state;
