@@ -3,7 +3,7 @@
   //Пространство имен для перечисления глобальных переменных
   namespace GLOBALS_VAR
   {
-    const it_is_debug_mode = false;
+    const it_is_debug_mode = true;
 
     const NAME_DB  = "gabrielle_diplom";
     const ID       = "_id_user";
