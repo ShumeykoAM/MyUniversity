@@ -207,7 +207,8 @@ public class WUserAccount
       return true;
     case R.id.m_user_account_invite_co_user:
     case R.id.m_user_account_become_co_user:
-      if(UserAccount.getActiveUserAccount(oh, db) != null)
+      UserAccount active_user;
+      if( (active_user=UserAccount.getActiveUserAccount(oh, db)) != null && active_user._id != 1 )
       {
         alert_connect = new AlertConnect(getApplicationContext());
         if(alert_connect.getServerAccess(true) == AlertConnect.SERVER_ACCES.ACCES)
