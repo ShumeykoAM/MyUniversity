@@ -34,7 +34,9 @@ public abstract class Answer
           break;
         case E_MESSID.NOT_IDENTIFY:
           throw new E_MESSID.MException(E_MESSID.MException.ERR.NOT_IDENTIFY);
-
+        case E_MESSID.BECOME_MEMBER:
+          answer = new AnswerBecomeMember(ID, JOBJ);
+          break;
 
 
         default:

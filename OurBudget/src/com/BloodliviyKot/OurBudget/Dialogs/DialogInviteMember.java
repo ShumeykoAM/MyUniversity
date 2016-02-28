@@ -110,10 +110,10 @@ public class DialogInviteMember
       @Override
       public void run()
       {
-        ChooseAlert choose_аlert = new ChooseAlert(v.getContext(), getString(R.string.dialog_invite_alert_title),
+        ChooseAlert choose_alert = new ChooseAlert(v.getContext(), getString(R.string.dialog_invite_alert_title),
           android.R.drawable.ic_dialog_alert, getString(R.string.dialog_invite_alert_message),
           getString(R.string.alert_button_yes), getString(R.string.alert_button_no));
-        choose_аlert.show(new ChooseAlert.I_ChooseAlertHandler(){
+        choose_alert.show(new ChooseAlert.I_ChooseAlertHandler(){
           @Override
           public void onClick(ChooseAlert.CHOOSE_BUTTON button)
           {

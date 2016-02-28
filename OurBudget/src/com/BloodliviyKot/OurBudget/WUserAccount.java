@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
 import com.BloodliviyKot.OurBudget.Dialogs.ChooseAlert;
+import com.BloodliviyKot.OurBudget.Dialogs.DialogBecomeMember;
 import com.BloodliviyKot.OurBudget.Dialogs.DialogInviteMember;
 import com.BloodliviyKot.tools.DataBase.EQ;
 import com.BloodliviyKot.tools.DataBase.I_Transaction;
@@ -216,16 +217,12 @@ public class WUserAccount
           switch(item.getItemId())
           {
           case R.id.m_user_account_invite_co_user:
-            alert_connect = new AlertConnect(getApplicationContext());
-            if(alert_connect.getServerAccess(true) == AlertConnect.SERVER_ACCES.ACCES)
-            {
-              DialogInviteMember dialog_invite_member = new DialogInviteMember();
-              dialog_invite_member.show(getFragmentManager(), null);
-            }
+            DialogInviteMember dialog_invite_member = new DialogInviteMember();
+            dialog_invite_member.show(getFragmentManager(), null);
             break;
           case R.id.m_user_account_become_co_user:
-
-
+            DialogBecomeMember dialog_become_member = new DialogBecomeMember();
+            dialog_become_member.show(getFragmentManager(), null);
             break;
           }
         }

@@ -16,6 +16,7 @@
   include_once 'handlers/HandlerTestLogin.php';
   include_once 'handlers/HandlerTestPairLoginPassword.php';
   include_once 'handlers/co_user/AHandlerCreateGroupCode.php';
+  include_once 'handlers/co_user/AHandlerBecomeMember.php';
 
   class RequestHandler
   {
@@ -34,21 +35,24 @@
         $Answer = null;
         switch ($ID) //Определим соответствующий обработчик
         {
-        case E_MESSAGEID\TEST_CONNECT_SERVER:
-          $Answer = new HandlerTestConnectServer();
-          break;
-        case E_MESSAGEID\CREATE_NEW_PROFILE:
-          $Answer = new HandlerCreateNewProfile();
-          break;
-        case E_MESSAGEID\TEST_LOGIN:
-          $Answer = new HandlerTestLogin();
-          break;
-        case E_MESSAGEID\TEST_PAIR_LOGIN_PASSWORD:
-          $Answer = new HandlerTestPairLoginPassword();
-          break;
-        case E_MESSAGEID\CREATE_GROUP_CODE:
-          $Answer = new AHandlerCreateGroupCode();
-          break;
+          case E_MESSAGEID\TEST_CONNECT_SERVER:
+            $Answer = new HandlerTestConnectServer();
+            break;
+          case E_MESSAGEID\CREATE_NEW_PROFILE:
+            $Answer = new HandlerCreateNewProfile();
+            break;
+          case E_MESSAGEID\TEST_LOGIN:
+            $Answer = new HandlerTestLogin();
+            break;
+          case E_MESSAGEID\TEST_PAIR_LOGIN_PASSWORD:
+            $Answer = new HandlerTestPairLoginPassword();
+            break;
+          case E_MESSAGEID\CREATE_GROUP_CODE:
+            $Answer = new AHandlerCreateGroupCode();
+            break;
+          case E_MESSAGEID\BECOME_MEMBER:
+            $Answer = new AHandlerBecomeMember();
+            break;
 
         }
         //Если обработчик определен то сгенерируем ответ

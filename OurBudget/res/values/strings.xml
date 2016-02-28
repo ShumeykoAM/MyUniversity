@@ -93,6 +93,10 @@
     <string name="alert_button_no">Нет</string>
     <string name="alert_button_cancel">Отмена</string>
 
+    <string name="dialog_become_member_caption">Введите код отображенный у первого пользователя</string>
+    <string name="dialog_become_member_become">Присоединиться</string>
+    <string name="dialog_become_member_м_error">Введен неверный код</string>
+    <string name="dialog_become_member_м_ок">Вы успешно присоединились к другому пользователю</string>
 
 
 

@@ -10,26 +10,29 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:gravity="center_vertical|center_horizontal">
+            android:gravity="center_vertical|center_horizontal" android:id="@+id/linearLayout3">
         <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_gravity="center_horizontal" android:singleLine="false"
-                android:text="@string/dialog_invite_member_caption" android:gravity="center"
-                android:textColor="@color/dialog_invite_member_caption" android:id="@+id/dialog_invite_member_caption"/>
-        <TextView
+                android:text="@string/dialog_become_member_caption" android:gravity="center"
+                android:textColor="@color/dialog_invite_member_caption" android:id="@+id/dialog_become_member_caption"/>
+        <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:textSize="40sp"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:id="@+id/dialog_invite_member_code"
-                android:gravity="center_horizontal" android:textSize="40sp" android:textColor="@color/dialog_invite_member_code"/>
-        <TextView
-                android:layout_width="match_parent"
+                android:id="@+id/dialog_become_member_code"
+                android:textColor="@color/dialog_invite_member_code"
+                android:gravity="center" android:singleLine="true" android:maxLength="5"/>
+        <Button
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/dialog_invite_member_status"
-                android:id="@+id/dialog_invite_member_status" android:layout_gravity="center_horizontal"
-                android:gravity="center_horizontal" android:textColor="@color/dialog_invite_member_status"/>
+                android:text="@string/dialog_become_member_become"
+                android:id="@+id/dialog_become_member_become"
+                />
     </LinearLayout>
 </RelativeLayout>
