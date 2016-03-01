@@ -8,13 +8,26 @@ import org.json.JSONObject;
 public class AnswerCreateGroupCode
   extends Answer
 {
-  public final int group_code;
+  public int group_code;
+  public boolean result_cancel;
   protected AnswerCreateGroupCode(int _ID, JSONObject JOBJ) throws E_MESSID.MException
   {
     super(_ID);
     try
     {
-      group_code = JOBJ.getInt("GROUP_CODE");
+      boolean status = false;
+      if(JOBJ.has("RESULT_CANCEL"))
+      {
+        status = true;
+        result_cancel = JOBJ.has("RESULT_CANCEL");
+      }
+      if(JOBJ.has("GROUP_CODE"))
+      {
+        status = true;
+        group_code = JOBJ.getInt("GROUP_CODE");
+      }
+      if(!status)
+        throw new E_MESSID.MException(E_MESSID.MException.ERR.UNKNOWN);
     } catch(JSONException e)
     {
       e.printStackTrace();

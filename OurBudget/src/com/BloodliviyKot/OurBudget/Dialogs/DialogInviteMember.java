@@ -49,7 +49,8 @@ public class DialogInviteMember
     final int code[] = new int[1]; code[0] = 0;
     try
     {
-      ARequestCreateGroupCode request_create_groupCode = new ARequestCreateGroupCode();
+      ARequestCreateGroupCode request_create_groupCode = new ARequestCreateGroupCode(
+        ARequestCreateGroupCode.OPERATION.GENERATE);
       AnswerCreateGroupCode answer_create_group_code;
       if(request_create_groupCode.post() &&
           (answer_create_group_code = request_create_groupCode.getAnswerFromPost()) != null )
@@ -134,14 +135,15 @@ public class DialogInviteMember
   @Override
   public void onCancel(DialogInterface dialog)
   {
-    need_while = false;
-    //Сообщим на сервер что прерываем ождание другого пользователя
-
-
-    /*
-    if(i_dialogResult != null)
-      i_dialogResult.onResult(RESULT.CANCEL, null);
-    */
+    try
+    {
+      ARequestCreateGroupCode request_create_groupCode = new ARequestCreateGroupCode(
+        ARequestCreateGroupCode.OPERATION.CANCEL);
+      request_create_groupCode.post();
+      request_create_groupCode.getAnswerFromPost();
+    }
+    catch(E_MESSID.MException mException)
+    {     }
     super.onCancel(dialog);
   }
 

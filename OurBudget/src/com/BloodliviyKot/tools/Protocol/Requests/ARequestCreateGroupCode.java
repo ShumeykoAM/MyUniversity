@@ -4,25 +4,52 @@ package com.BloodliviyKot.tools.Protocol.Requests;
 import com.BloodliviyKot.tools.Protocol.Answers.Answer;
 import com.BloodliviyKot.tools.Protocol.Answers.AnswerCreateGroupCode;
 import com.BloodliviyKot.tools.Protocol.E_MESSID;
+import org.json.JSONException;
 
 public class ARequestCreateGroupCode
   extends Request
 {
+  public enum OPERATION
+  {
+    GENERATE,  //Команда сгенерировать код
+    CANCEL,    //Команда отмена
+    CHECK;     //Команда проверить, не присоединился ли второй пользователь
+
+    public final int value;
+    private OPERATION()
+    {
+      this.value = Index_i.i++;
+    }
+    private static class Index_i
+    {
+      public static int i = 0;
+    }
+  }
+  private OPERATION operation;
   private I_HandlerCreateGroupCode i_handlerCreateProfile;
   public interface I_HandlerCreateGroupCode
   {
     void handlerAnswer(AnswerCreateGroupCode answer);
   }
 
-  public ARequestCreateGroupCode() throws E_MESSID.MException
+  public ARequestCreateGroupCode(OPERATION operation) throws E_MESSID.MException
   {
     super(E_MESSID.CREATE_GROUP_CODE);
+    this.operation = operation;
+    ConstructRequest();
   }
 
   @Override
   protected void ConstructRequest() throws E_MESSID.MException
   {
-    //Ни чего передавать не надо
+    try
+    {
+      JObj.put( "OPERATION", operation.value);
+    } catch(JSONException e)
+    {
+      e.printStackTrace();
+      throw new E_MESSID.MException(E_MESSID.MException.ERR.UNKNOWN);
+    }
   }
 
   @Override
