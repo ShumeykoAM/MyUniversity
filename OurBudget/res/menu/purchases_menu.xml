@@ -12,7 +12,8 @@
     </item>
     <item android:id="@+id/m_purchases_grouping"
           android:showAsAction="never"
-          android:title="@string/purchases_m_grouping">
+          android:title="@string/purchases_m_grouping"
+          android:checkable="true">
     </item>
     <item android:id="@+id/m_purchases_filter"
           android:showAsAction="never"
@@ -26,10 +27,6 @@
           android:showAsAction="never"
           android:icon="@drawable/ic_about"
           android:title="@string/purchases_m_about">
-    </item>
-    <item android:id="@+id/m_purchases_donate"
-          android:showAsAction="never"
-          android:title="@string/purchases_m_donate">
     </item>
 
 </menu>
