@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Наш бюджет</string>
 
-    <string name="purchases_caption">Покупки и оплаты</string>
+    <string name="purchases_caption">Покупки и платы</string>
     <string name="purchases_m_add">Добавить</string>
     <string name="purchases_m_user_account">Учетная запись</string>
     <string name="purchases_m_grouping">Группировка</string>
