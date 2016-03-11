@@ -114,6 +114,10 @@ public class WPurchases
         intent = new Intent(this, WTypes.class);
         startActivity(intent); //Запуск активности
         return true;
+      case R.id.m_purchases_about:
+        DialogAbout dialog_about = new DialogAbout();
+        dialog_about.show(getFragmentManager(), null);
+        return true;
     }
     return super.onOptionsItemSelected(item);
   }
