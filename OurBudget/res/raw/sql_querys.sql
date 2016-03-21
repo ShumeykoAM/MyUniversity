@@ -17,7 +17,7 @@ SELECT user_account._id, user_account.login, user_account.password, user_account
 
 -- PURCHASES
 SELECT purchase._id, purchase.date_time, purchase.state FROM purchase, user_account
-  WHERE ((purchase.date_time > ? AND purchase.date_time < ? AND purchase.state = ?) OR purchase.state = ?) AND
+  WHERE ((purchase.date_time >= ? AND purchase.date_time <= ? AND purchase.state = ?) OR purchase.state = ?) AND
         purchase.is_delete = 0 AND purchase._id_user_account = user_account._id AND user_account.is_active = 1
     ORDER BY purchase.state, purchase.date_time DESC;
 
@@ -66,3 +66,22 @@ SELECT detail.price,
   WHERE detail._id_type = ? AND detail._id_purchase = purchase._id
   AND NOT detail.price IS NULL AND detail.price != 0
   ORDER BY purchase.date_time DESC;
+
+-- DETAIL_FOR_GROUP
+SELECT DISTINCT detail._id_type AS _id FROM detail, purchase
+  WHERE purchase.is_delete=0
+  AND purchase.state=1
+  AND purchase.date_time >= ?
+  AND purchase.date_time <= ?
+  AND detail._id_purchase=purchase._id
+  AND detail.is_delete=0;
+
+-- ALL_DETAIL_FOR_GROUP
+SELECT detail._id FROM detail, purchase
+  WHERE purchase.is_delete=0
+  AND purchase.state=1
+  AND purchase.date_time >= ?
+  AND purchase.date_time <= ?
+  AND detail._id_type = ?
+  AND detail._id_purchase=purchase._id
+  AND detail.is_delete=0;

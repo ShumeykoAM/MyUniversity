@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:gravity="center_vertical">
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:id="@+id/purchases_group_item_content"
+            android:layout_gravity="center_vertical"
+            android:autoText="false"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/purchases_group_item_total_sum"
+            android:singleLine="true" android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Хлеб, батон, Масло, Сгущенка, Пиво" android:textColor="@color/detail_name"
+            android:gravity="left|center_vertical"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="на 1380.50руб."
+            android:id="@+id/purchases_group_item_total_sum"
+            android:singleLine="true"
+            android:textColor="@color/detail_cost"
+            android:layout_alignParentRight="true" android:gravity="center_vertical|right"/>
+</RelativeLayout>

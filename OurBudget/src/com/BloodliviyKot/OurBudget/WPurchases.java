@@ -17,6 +17,7 @@ import com.BloodliviyKot.tools.DataBase.SQLTransaction;
 import com.BloodliviyKot.tools.DataBase.entitys.Detail;
 import com.BloodliviyKot.tools.DataBase.entitys.Purchase;
 import com.BloodliviyKot.tools.DataBase.entitys.Purchase.STATE_PURCHASE;
+import com.BloodliviyKot.tools.DataBase.entitys.Type;
 import com.BloodliviyKot.tools.DataBase.entitys.UserAccount;
 
 import java.util.ArrayList;
@@ -31,7 +32,9 @@ public class WPurchases
   private SQLiteDatabase db;
   private ListView list_purchases;
   private SimpleCursorAdapter list_adapter;
+  private SimpleCursorAdapter list_group_adapter;
   private Cursor cursor;
+  boolean grouping = false;
 
   //Создание активности
   @Override
@@ -65,6 +68,10 @@ public class WPurchases
       new int[]{R.id.purchases_item_date_time, R.id.purchases_item_content,
         R.id.purchases_item_total_sum, R.id.purchases_item_state},
       db);
+    list_group_adapter = new GroupDetailsAdapter(this, R.layout.purchases_group_detail_item, cursor,
+      new String[]{},
+      new int[]{R.id.purchases_group_item_content, R.id.purchases_group_item_total_sum},
+      db);
     list_purchases.setAdapter(list_adapter);
 
     //cursor.requery(); //Обновляет Cursor делая повторный запрос. Устарела, но для наших целей подойдет
@@ -79,9 +86,12 @@ public class WPurchases
   @Override //Выбрали покупку, перейдем в ее детали
   public void onItemClick(AdapterView<?> parent, View view, int position, long id)
   {
-    Intent intent = new Intent(this, WDetails.class);
-    intent.putExtra(getString(R.string.intent_purchases_id), id);
-    startActivityForResult(intent, R.layout.details); //Запуск активности с onActivityResult
+    if(!grouping)
+    {
+      Intent intent = new Intent(this, WDetails.class);
+      intent.putExtra(getString(R.string.intent_purchases_id), id);
+      startActivityForResult(intent, R.layout.details); //Запуск активности с onActivityResult
+    }
   }
 
   //Создаем меню
@@ -118,8 +128,42 @@ public class WPurchases
         DialogAbout dialog_about = new DialogAbout();
         dialog_about.show(getFragmentManager(), null);
         return true;
+      case R.id.m_purchases_grouping:
+        item.setChecked(grouping = !item.isChecked());
+        changeGrouping(grouping);
+        return true;
     }
     return super.onOptionsItemSelected(item);
+  }
+  //Включаем выключаем режим группировки
+  private void changeGrouping(boolean grouping)
+  {
+    if(!grouping)
+    {
+      long s_date = 0, e_date = Long.MAX_VALUE;
+      STATE_PURCHASE state = STATE_PURCHASE.PLAN; //Должно зависеть от фильтра
+      //Не группируем, отображаем покупки в хронологическом порядке в диапазоне дат фильтра
+      //Cursor обязательно должен содержать _id иначе SimpleCursorAdapter не заработает
+      String q_params[] = {Long.toString(s_date), Long.toString(e_date),
+        Integer.toString(STATE_PURCHASE.EXECUTE.value), Integer.toString(state.value)};
+      cursor = db.rawQuery(oh.getQuery(EQ.PURCHASES), q_params);
+      list_adapter.changeCursor(cursor);
+      list_purchases.setAdapter(list_adapter);
+    }
+    else
+    {
+      //Можно составить запрос который вернет список видов товаров без повторений
+      //По нему строим скроллинг и подкачиваем из базы уже все записи с данным видом товаров,
+      // если ед.измер отличаются то можно не выводить количество, а вывести только общую потраченную сумму
+      //Тут написано как можно попробовать составить запрос
+      //http://www.cyberforum.ru/mysql/thread121861.html
+      long s_date = 0, e_date = Long.MAX_VALUE;
+      //Cursor обязательно должен содержать _id иначе SimpleCursorAdapter не заработает
+      String q_params[] = {Long.toString(s_date), Long.toString(e_date)};
+      cursor = db.rawQuery(oh.getQuery(EQ.DETAIL_FOR_GROUP), q_params);
+      list_group_adapter.changeCursor(cursor);
+      list_purchases.setAdapter(list_group_adapter);
+    }
   }
   @Override
   public void onClick(ChooseAlert.CHOOSE_BUTTON button)
@@ -136,20 +180,23 @@ public class WPurchases
   @Override
   public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
   {
-    super.onCreateContextMenu(menu, v, menuInfo);
-    if(v == list_purchases)
+    if(!grouping)
     {
-      MenuInflater inflater = getMenuInflater();
-      inflater.inflate(R.menu.purchases_context_list_purchases, menu);
-      AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo)menuInfo;
-      final Purchase purchase = Purchase.getPurhaseFromId(list_adapter.getItemId(acmi.position), db, oh);
-      if(purchase.state == STATE_PURCHASE.EXECUTE)
+      super.onCreateContextMenu(menu, v, menuInfo);
+      if(v == list_purchases)
       {
-        //Скроем не нужные на данный момент пункты меню
-        MenuItem shareMenuItem = menu.findItem(R.id.m_purchases_c_execute);
-        shareMenuItem.setVisible(false);
-        shareMenuItem = menu.findItem(R.id.m_purchases_c_plan);
-        shareMenuItem.setVisible(false);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.purchases_context_list_purchases, menu);
+        AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo)menuInfo;
+        final Purchase purchase = Purchase.getPurhaseFromId(list_adapter.getItemId(acmi.position), db, oh);
+        if(purchase.state == STATE_PURCHASE.EXECUTE)
+        {
+          //Скроем не нужные на данный момент пункты меню
+          MenuItem shareMenuItem = menu.findItem(R.id.m_purchases_c_execute);
+          shareMenuItem.setVisible(false);
+          shareMenuItem = menu.findItem(R.id.m_purchases_c_plan);
+          shareMenuItem.setVisible(false);
+        }
       }
     }
   }
@@ -369,6 +416,44 @@ public class WPurchases
           " " + getString(R.string.details_sub_caption_date_time_in) + " " + result_date_time[1];
 
       return new String[]{for_date_time, s_content, " на сумму " + Detail.formatMoney(sum)};
+    }
+  }
+  //Переопределим SimpleCursorAdapter что бы форматировать данные из базы нужным образом
+  private class GroupDetailsAdapter
+    extends SimpleCursorAdapter
+  {
+    public GroupDetailsAdapter(Context _context, int _layout, Cursor _c, String[] _from,
+                            int[] _to, SQLiteDatabase _db)
+    {
+      super(_context, _layout, _c, _from, _to);
+      db = _db;
+    }
+    @Override
+    public void bindView(View _view, Context _context, Cursor _cursor)
+    {
+      Long id_type = _cursor.getLong(_cursor.getColumnIndex("_id"));
+      Type type = Type.getFromId(id_type, db, oh);
+      //Найдем все детали с данным типом по всем покупкам оплаченным в соответствии c фильтром по датам
+      long s_date = 0, e_date = Long.MAX_VALUE;
+      //Cursor обязательно должен содержать _id иначе SimpleCursorAdapter не заработает
+      String q_params[] = {Long.toString(s_date), Long.toString(e_date), Long.toString(id_type)};
+      Cursor cursor = db.rawQuery(oh.getQuery(EQ.ALL_DETAIL_FOR_GROUP), q_params);
+      //
+      double total = 0.0;
+      for(boolean stat=cursor.moveToFirst(), flag=false, fl_len=true;
+          stat; flag=stat=cursor.moveToNext())
+      {
+        long id = cursor.getLong(cursor.getColumnIndex("_id"));
+        Detail detail = Detail.getDetailFromId(id, db, oh);
+        total = total + detail.cost;
+      }
+
+      //Сопоставляем
+      TextView tv_content = (TextView)_view.findViewById(R.id.purchases_group_item_content);
+      TextView tv_total   = (TextView)_view.findViewById(R.id.purchases_group_item_total_sum);
+
+      tv_content.setText(type.name);
+      tv_total.setText("на " + Detail.formatMoney(total) + "руб.");
     }
   }
 }

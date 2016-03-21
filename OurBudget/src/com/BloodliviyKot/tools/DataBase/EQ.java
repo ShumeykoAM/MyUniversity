@@ -18,6 +18,8 @@ public enum EQ
   TYPES_USER_ACC_LIKE_NAME,      //Виды товаров и услуг активной учетки c фильтром по %имени%
   TYPE_FROM_ID,                  //Вид товара или услуги по _id
   LAST_PRICE,                    //Последние цены для вида товара
+  DETAIL_FOR_GROUP,              //Список видов товаров по всем покупкам за период
+  ALL_DETAIL_FOR_GROUP,          //Список всех деталей с указанным видом товара по всем покупкам за период
 
   EQ_COUNT;
   public final int value;
