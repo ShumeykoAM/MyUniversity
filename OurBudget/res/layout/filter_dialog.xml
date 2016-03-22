@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:gravity="center_vertical|center_horizontal">
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" android:id="@+id/purchase_date_time_ll_"
+            android:gravity="center_vertical|center_horizontal" android:weightSum="1">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/filter_caption"
+                android:id="@+id/filter_title"
+                android:layout_gravity="center_horizontal"/>
+        <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/filter_term" android:layout_gravity="center_horizontal" android:gravity="center_vertical|center"/>
+        <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" android:id="@+id/filter_container_dates">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/filtr_from"
+                    android:id="@+id/filter_from"
+                    android:layout_centerVertical="true" android:layout_alignParentLeft="true"/>
+            <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:layout_toRightOf="@+id/filter_from"
+                    android:layout_alignParentTop="false" android:layout_alignParentBottom="false"
+                    android:layout_alignParentLeft="false" android:layout_alignWithParentIfMissing="false"
+                    android:layout_alignParentRight="false">
+                <EditText
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="date"
+                        android:ems="10"
+                        android:id="@+id/filter_from_date"
+                        android:singleLine="true"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:layout_alignParentLeft="true"
+                        android:layout_toLeftOf="@+id/filter_to" android:layout_alignParentTop="false"
+                        android:layout_alignParentBottom="false"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="@string/filter_to"
+                        android:id="@+id/filter_to"
+                        android:layout_alignWithParentIfMissing="false"
+                        android:layout_centerVertical="true" android:layout_centerHorizontal="true"/>
+                <EditText
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="time"
+                        android:ems="10"
+                        android:id="@+id/filter_to_date"
+                        android:singleLine="true"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:layout_alignParentRight="true"
+                        android:layout_toRightOf="@+id/filter_to" android:layout_alignParentTop="false"
+                        android:layout_alignParentBottom="false"/>
+            </RelativeLayout>
+        </RelativeLayout>
+        <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:id="@+id/filter_line1"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/ic_g_line"/>
+        <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/purchase_date_time_ok"
+                android:id="@+id/filter_save"
+                android:layout_marginTop="12dp"/>
+    </LinearLayout>
+</RelativeLayout>

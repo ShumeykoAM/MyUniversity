@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.*;
 import android.widget.*;
 import com.BloodliviyKot.OurBudget.Dialogs.*;
+import com.BloodliviyKot.OurBudget.Dialogs.Filter;
 import com.BloodliviyKot.synchronization.ServiceSynchronization;
 import com.BloodliviyKot.tools.DataBase.EQ;
 import com.BloodliviyKot.tools.DataBase.I_Transaction;
@@ -21,10 +22,11 @@ import com.BloodliviyKot.tools.DataBase.entitys.Type;
 import com.BloodliviyKot.tools.DataBase.entitys.UserAccount;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class WPurchases
   extends Activity
-  implements AdapterView.OnItemClickListener, ChooseAlert.I_ChooseAlertHandler
+  implements AdapterView.OnItemClickListener, ChooseAlert.I_ChooseAlertHandler, I_DialogResult
 {
   public static Context application_context = null;
 
@@ -35,6 +37,8 @@ public class WPurchases
   private SimpleCursorAdapter list_group_adapter;
   private Cursor cursor;
   boolean grouping = false;
+  long s_date = 0, e_date = Long.MAX_VALUE;
+  Filter.TERM term = Filter.TERM.ALL;
 
   //Создание активности
   @Override
@@ -55,15 +59,7 @@ public class WPurchases
 //Создаем помощник управления БД
     oh = new MySQLiteOpenHelper();
     db = oh.getWritableDatabase();
-
-    long s_date = 0, e_date = Long.MAX_VALUE;
-    STATE_PURCHASE state = STATE_PURCHASE.PLAN; //Должно зависеть от фильтра
-    //Не группируем, отображаем покупки в хронологическом порядке в диапазоне дат фильтра
-    //Cursor обязательно должен содержать _id иначе SimpleCursorAdapter не заработает
-    String q_params[] ={ Long.toString(s_date), Long.toString(e_date),
-      Integer.toString(STATE_PURCHASE.EXECUTE.value), Integer.toString(state.value) };
-    cursor = db.rawQuery(oh.getQuery(EQ.PURCHASES), q_params);
-    list_adapter = new PurchasesAdapter(this, R.layout.purchases_item, cursor,
+    list_adapter = new PurchasesAdapter(this, R.layout.purchases_item, null,
       new String[]{},
       new int[]{R.id.purchases_item_date_time, R.id.purchases_item_content,
         R.id.purchases_item_total_sum, R.id.purchases_item_state},
@@ -72,14 +68,8 @@ public class WPurchases
       new String[]{},
       new int[]{R.id.purchases_group_item_content, R.id.purchases_group_item_total_sum},
       db);
-    list_purchases.setAdapter(list_adapter);
-
-    //cursor.requery(); //Обновляет Cursor делая повторный запрос. Устарела, но для наших целей подойдет
-    //  актуально если в БД изменились данные. Нужно переходить на LoaderManager CursorLoader
-    //  позволяющие работать асинхронно.
-
+    updateSourceData(grouping);
     registerForContextMenu(list_purchases);
-
     startService(new Intent(this, ServiceSynchronization.class));
   }
 
@@ -130,22 +120,23 @@ public class WPurchases
         return true;
       case R.id.m_purchases_grouping:
         item.setChecked(grouping = !item.isChecked());
-        changeGrouping(grouping);
+        updateSourceData(grouping);
+        return true;
+      case R.id.m_purchases_filter:
+        Filter filter = new Filter(this, term, s_date, e_date);
+        filter.show(getFragmentManager(), null);
         return true;
     }
     return super.onOptionsItemSelected(item);
   }
   //Включаем выключаем режим группировки
-  private void changeGrouping(boolean grouping)
+  private void updateSourceData(boolean grouping)
   {
     if(!grouping)
     {
-      long s_date = 0, e_date = Long.MAX_VALUE;
-      STATE_PURCHASE state = STATE_PURCHASE.PLAN; //Должно зависеть от фильтра
       //Не группируем, отображаем покупки в хронологическом порядке в диапазоне дат фильтра
       //Cursor обязательно должен содержать _id иначе SimpleCursorAdapter не заработает
-      String q_params[] = {Long.toString(s_date), Long.toString(e_date),
-        Integer.toString(STATE_PURCHASE.EXECUTE.value), Integer.toString(state.value)};
+      String q_params[] = {Long.toString(s_date), Long.toString(e_date)};
       cursor = db.rawQuery(oh.getQuery(EQ.PURCHASES), q_params);
       list_adapter.changeCursor(cursor);
       list_purchases.setAdapter(list_adapter);
@@ -157,7 +148,6 @@ public class WPurchases
       // если ед.измер отличаются то можно не выводить количество, а вывести только общую потраченную сумму
       //Тут написано как можно попробовать составить запрос
       //http://www.cyberforum.ru/mysql/thread121861.html
-      long s_date = 0, e_date = Long.MAX_VALUE;
       //Cursor обязательно должен содержать _id иначе SimpleCursorAdapter не заработает
       String q_params[] = {Long.toString(s_date), Long.toString(e_date)};
       cursor = db.rawQuery(oh.getQuery(EQ.DETAIL_FOR_GROUP), q_params);
@@ -333,6 +323,24 @@ public class WPurchases
           list_adapter.notifyDataSetChanged();
         }
         break;
+    }
+  }
+
+  @Override
+  public void onResult(RESULT code, Intent data)
+  {
+    if(code == RESULT.OK)
+    {
+      //Меняем фильтрацию по датам
+      Bundle bundle = data.getExtras();
+      term = (Filter.TERM)bundle.get("term");
+      s_date = bundle.getLong("start_date");
+      e_date = bundle.getLong("end_date");
+
+      Date sd = new Date(s_date);
+      Date ed = new Date(e_date);
+
+      updateSourceData(grouping);
     }
   }
 

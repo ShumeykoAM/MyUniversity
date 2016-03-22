@@ -135,11 +135,11 @@ public class PurchaseDateTimeDialog
     result_handler.onResult(RESULT.CANCEL, data);
   }
 
+  public static final long SECONDS_IN_DAY = 86400000L;
   //Строковое представление даты и времени
   public static void getStringDateTime(long date_time, String result_date_time[], Context context,
                                        boolean string_format)
   {
-    final long SECONDS_IN_DAY = 86400000L;
     SimpleDateFormat date_format = new SimpleDateFormat("dd.MM.yyyy");
     SimpleDateFormat time_format = new SimpleDateFormat("HH:mm"); //HH 0-23  hh 0-12am-pm
     result_date_time[0] = date_format.format(date_time);

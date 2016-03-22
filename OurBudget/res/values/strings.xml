@@ -101,5 +101,16 @@
     <string name="about_developer">Разработчик Шумейко А. М.</string>
     <string name="about_developer_mail">shumeyko.a.m@gmail.com</string>
 
+    <string name="filter_caption">Фильтр</string>
+    <string name="filtr_from">с</string>
+    <string name="filter_to">по</string>
+    <string-array name="filter_terms">
+        <item>за сегодня</item>
+        <item>за последнюю неделю</item>
+        <item>за последний месяц</item>
+        <item>отображать всё</item>
+        <item>за период</item>
+    </string-array>
+
 
 </resources>

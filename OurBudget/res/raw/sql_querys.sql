@@ -17,7 +17,7 @@ SELECT user_account._id, user_account.login, user_account.password, user_account
 
 -- PURCHASES
 SELECT purchase._id, purchase.date_time, purchase.state FROM purchase, user_account
-  WHERE ((purchase.date_time >= ? AND purchase.date_time <= ? AND purchase.state = ?) OR purchase.state = ?) AND
+  WHERE ((purchase.date_time >= ? AND purchase.date_time <= ? AND purchase.state = 1) OR purchase.state = 0) AND
         purchase.is_delete = 0 AND purchase._id_user_account = user_account._id AND user_account.is_active = 1
     ORDER BY purchase.state, purchase.date_time DESC;
 
