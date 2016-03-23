@@ -206,14 +206,21 @@ public class Filter
     {
       long l_date = t_date == DATE.START ? start_date : end_date;
       l_date = l_date/PurchaseDateTimeDialog.SECONDS_IN_DAY*PurchaseDateTimeDialog.SECONDS_IN_DAY;
-      Date date = new Date(l_date);
+      java.sql.Date date = new java.sql.Date(l_date);
       date.setYear(year - PurchaseDateTimeDialog.YEAR_CORRECTOR);
       date.setMonth(monthOfYear);
       date.setDate(dayOfMonth);
+//!!! Есть косяк с временными зонами, надо будет заняться потом
       if(t_date == DATE.START)
+      {
         start_date = date.getTime();
+        start_date -= PurchaseDateTimeDialog.calendar.getTimeZone().getOffset(start_date);
+      }
       else
+      {
         end_date = date.getTime() + PurchaseDateTimeDialog.SECONDS_IN_DAY - 1;
+        end_date -= PurchaseDateTimeDialog.calendar.getTimeZone().getOffset(end_date);
+      }
       if(end_date < start_date)
         end_date = start_date;
       updateView();

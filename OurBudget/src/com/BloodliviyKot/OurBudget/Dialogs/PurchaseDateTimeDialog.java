@@ -18,6 +18,7 @@ import com.BloodliviyKot.OurBudget.R;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 @SuppressLint("ValidFragment")
@@ -26,6 +27,9 @@ public class PurchaseDateTimeDialog
   implements View.OnClickListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener
 {
   public static final int YEAR_CORRECTOR = 1900;
+  public static final long SECONDS_IN_DAY = 86400000L;
+  public static Calendar calendar = Calendar.getInstance();
+
   private MySQLiteOpenHelper oh;
   private SQLiteDatabase db;
 
@@ -134,8 +138,6 @@ public class PurchaseDateTimeDialog
     data.putExtra("date_time", date_time);
     result_handler.onResult(RESULT.CANCEL, data);
   }
-
-  public static final long SECONDS_IN_DAY = 86400000L;
   //Строковое представление даты и времени
   public static void getStringDateTime(long date_time, String result_date_time[], Context context,
                                        boolean string_format)

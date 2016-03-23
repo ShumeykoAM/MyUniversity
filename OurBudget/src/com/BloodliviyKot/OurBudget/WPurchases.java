@@ -10,7 +10,6 @@ import android.view.*;
 import android.widget.*;
 import com.BloodliviyKot.OurBudget.Dialogs.*;
 import com.BloodliviyKot.OurBudget.Dialogs.Filter;
-import com.BloodliviyKot.synchronization.ServiceSynchronization;
 import com.BloodliviyKot.tools.DataBase.EQ;
 import com.BloodliviyKot.tools.DataBase.I_Transaction;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
@@ -70,7 +69,7 @@ public class WPurchases
       db);
     updateSourceData(grouping);
     registerForContextMenu(list_purchases);
-    startService(new Intent(this, ServiceSynchronization.class));
+//    startService(new Intent(this, ServiceSynchronization.class));
   }
 
   @Override //Выбрали покупку, перейдем в ее детали
