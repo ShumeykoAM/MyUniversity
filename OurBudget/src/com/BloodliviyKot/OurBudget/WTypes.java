@@ -31,6 +31,7 @@ public class WTypes
   private Cursor cursor[];
   private SimpleCursorAdapter list_adapter;
   private TypesCursorTuning types_cursor_tuning;
+  private boolean type_change = false;
   //Создание активности
   @Override
   public void onCreate(Bundle savedInstanceState)
@@ -72,7 +73,7 @@ public class WTypes
     {
       case R.id.m_types_add:
         Type type = new Type(UserAccount.getIDActiveUserAccount(oh, db),
-          search.getQuery().toString(), null, 1, 0);
+          search.getQuery().toString(), null, 1, false);
         TypeDialog type_dialog = new TypeDialog(this, type, TypeDialog.REGIME.NEW);
         type_dialog.show(getFragmentManager(), null);
         return true;
@@ -86,6 +87,7 @@ public class WTypes
     {
       cursor[0].requery();
       list_adapter.notifyDataSetChanged();
+      type_change = true;
     }
   }
   @Override
@@ -96,6 +98,13 @@ public class WTypes
     type_dialog.show(getFragmentManager(), null);
   }
 
+  @Override
+  public void finish()
+  {
+    Intent ires = new Intent();  //Вернем
+    setResult(type_change ? RESULT_OK : RESULT_CANCELED); //Возвращаемый в родительскую активность результат
+    super.finish();
+  }
 
   private class TypesAdapter
     extends SimpleCursorAdapter

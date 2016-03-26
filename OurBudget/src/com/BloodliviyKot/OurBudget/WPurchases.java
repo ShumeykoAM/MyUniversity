@@ -111,7 +111,7 @@ public class WPurchases
         return true;
       case R.id.m_purchases_type:
         intent = new Intent(this, WTypes.class);
-        startActivity(intent); //Запуск активности
+        startActivityForResult(intent, R.id.m_purchases_type); //Запуск активности
         return true;
       case R.id.m_purchases_about:
         DialogAbout dialog_about = new DialogAbout();
@@ -316,6 +316,13 @@ public class WPurchases
           list_adapter.notifyDataSetInvalidated();
         break;
       case R.id.m_purchases_user_account:
+        if(resultCode == RESULT_OK)
+        {
+          cursor.requery();
+          list_adapter.notifyDataSetChanged();
+        }
+        break;
+      case R.id.m_purchases_type:
         if(resultCode == RESULT_OK)
         {
           cursor.requery();

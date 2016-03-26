@@ -100,7 +100,7 @@ public class WMarkTypes
     {
       case R.id.m_mark_details_add_type:
         Type type = new Type(UserAccount.getIDActiveUserAccount(oh, db),
-          search.getQuery().toString(), null, 1, 0);
+          search.getQuery().toString(), null, 1, false);
         TypeDialog type_dialog = new TypeDialog(this, type, TypeDialog.REGIME.NEW);
         type_dialog.show(getFragmentManager(), null);
         return true;

@@ -2,7 +2,6 @@ package com.BloodliviyKot.OurBudget.Dialogs;
 
 import android.annotation.SuppressLint;
 import android.app.DialogFragment;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -104,7 +103,7 @@ public class TypeDialog
       UserAccount active_user_account = UserAccount.getActiveUserAccount(oh, db);
       Long id_active_user_account = active_user_account != null ? active_user_account._id : UserAccount.NON;
       Type entered_type = new Type(id_active_user_account, et_name.getText().toString(), null,
-        unit_adapter.getItemId(unit_adapter.getCursor().getPosition()), 0);
+        unit_adapter.getItemId(unit_adapter.getCursor().getPosition()), false);
       if(entered_type.name.compareTo(new String("")) != 0)
       {
         long _id = 0;
@@ -121,11 +120,10 @@ public class TypeDialog
                   (type.name.compareTo(entered_type.name) != 0 || type.id_unit != entered_type.id_unit) )
           {
             _id = type._id;
-            ContentValues values = new ContentValues();
-            values.put("name", entered_type.name);
-            values.put("name_lower", entered_type.name_lower);
-            values.put("id_unit", entered_type.id_unit);
-            if(db.update(Type.table_name, values, "_id = ?", new String[]{new Long(type._id).toString()}) == 0)
+            Type new_type = type.clone();
+            new_type.name = entered_type.name;
+            new_type.id_unit = entered_type.id_unit;
+            if(!type.update(new_type, db))
               result = RESULT.ERROR;
             else
               result = RESULT.OK;
