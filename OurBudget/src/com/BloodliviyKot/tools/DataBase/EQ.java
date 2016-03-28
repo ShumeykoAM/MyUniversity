@@ -21,6 +21,7 @@ public enum EQ
   DETAIL_FOR_GROUP,              //Список видов товаров по всем покупкам за период
   ALL_DETAIL_FOR_GROUP,          //Список всех деталей с указанным видом товара по всем покупкам за период
   CHRONOLOGICAL_INDEX1,          //Хронология конкретной записи
+  CHRONOLOGICAL_TIMESTAMP,       //Вся хронология после указанного времени
 
   EQ_COUNT;
   public final int value;
