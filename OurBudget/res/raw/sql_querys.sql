@@ -1,18 +1,18 @@
 -- USER_ACCOUNTS
-SELECT user_account._id, user_account.login, user_account.password, user_account.is_active
+SELECT user_account._id, user_account.login, user_account.password, user_account.is_active, user_account.timestamp
   FROM user_account WHERE user_account._id != 1;
 
 -- USER_ACCOUNT_ACTIYE
-SELECT user_account._id, user_account.login, user_account.password, user_account.is_active
+SELECT user_account._id, user_account.login, user_account.password, user_account.is_active, user_account.timestamp
   FROM user_account
   WHERE user_account.is_active = ?;
 
 -- USER_ACCOUNT_ID
-SELECT user_account._id, user_account.login, user_account.password, user_account.is_active
+SELECT user_account._id, user_account.login, user_account.password, user_account.is_active, user_account.timestamp
   FROM user_account WHERE user_account._id = ?;
 
 -- USER_ACCOUNT_LOGIN
-SELECT user_account._id, user_account.login, user_account.password, user_account.is_active
+SELECT user_account._id, user_account.login, user_account.password, user_account.is_active, user_account.timestamp
   FROM user_account WHERE user_account.login = ?;
 
 -- PURCHASES
@@ -87,3 +87,10 @@ SELECT detail._id FROM detail, purchase, user_account
   AND detail._id_purchase=purchase._id
   AND detail.is_delete=0
   AND purchase._id_user_account = user_account._id AND user_account.is_active = 1;;
+
+-- CHRONOLOGICAL_INDEX1
+SELECT chronological._id, chronological._id_record, chronological._id_user_account,
+  chronological.operation, chronological.table_db, chronological.timestamp FROM chronological
+  WHERE chronological._id_user_account = ?
+  AND chronological.table_db = ?
+  AND chronological._id_record = ?;

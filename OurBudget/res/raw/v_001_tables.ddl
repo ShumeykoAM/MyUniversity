@@ -3,7 +3,8 @@ CREATE TABLE user_account
   _id                  INTEGER PRIMARY KEY,
   login                TEXT NOT NULL,
   password             TEXT NOT NULL,
-  is_active            INTEGER NOT NULL
+  is_active            INTEGER NOT NULL,
+  timestamp            INTEGER NOT NULL
 );
 
 CREATE UNIQUE INDEX unique_login ON user_account

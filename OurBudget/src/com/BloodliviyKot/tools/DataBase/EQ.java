@@ -20,6 +20,7 @@ public enum EQ
   LAST_PRICE,                    //Последние цены для вида товара
   DETAIL_FOR_GROUP,              //Список видов товаров по всем покупкам за период
   ALL_DETAIL_FOR_GROUP,          //Список всех деталей с указанным видом товара по всем покупкам за период
+  CHRONOLOGICAL_INDEX1,          //Хронология конкретной записи
 
   EQ_COUNT;
   public final int value;

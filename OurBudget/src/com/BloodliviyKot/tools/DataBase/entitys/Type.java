@@ -5,7 +5,11 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import com.BloodliviyKot.tools.DataBase.EQ;
+import com.BloodliviyKot.tools.DataBase.I_Transaction;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
+import com.BloodliviyKot.tools.DataBase.SQLTransaction;
+
+import java.util.Date;
 
 public class Type
 {
@@ -55,9 +59,9 @@ public class Type
     return result;
   }
 
-  public long insertDateBase(SQLiteDatabase db)
+  public long insertDateBase(final SQLiteDatabase db)
   {
-    ContentValues values = new ContentValues();
+    final ContentValues values = new ContentValues();
     //values.put("_id", _id);
     values.put("_id_user_account"  , _id_user_account);
     values.put("name"              , name );
@@ -66,15 +70,31 @@ public class Type
       values.put("id_unit"         , id_server);
     values.put("id_unit"           , id_unit);
     values.put("is_delete"         , is_delete ? 1 : 0);
-    return db.insert(table_name, null, values);
+    final long[] res_id = new long[1];
+    SQLTransaction sql_transaction = new SQLTransaction(db, new I_Transaction()
+    {
+      @Override
+      public boolean trnFunc()
+      {
+        boolean result = (res_id[0] = db.insert(table_name, null, values)) != -1;
+        if(result)
+        {
+          Chronological chronological = new Chronological(_id_user_account, Chronological.TABLE.TYPE, res_id[0],
+            new Date().getTime(), Chronological.OPERATION.INSERT);
+          result = chronological.insertDateBase(db) != -1;
+        }
+        return result;
+      }
+    });
+    return sql_transaction.runTransaction() ? res_id[0] : -1;
   }
 
   //Обновляет запись если есть что обновлять
-  public boolean update(Type new_type, SQLiteDatabase db)
+  public boolean update(Type new_type, final SQLiteDatabase db, final MySQLiteOpenHelper oh)
   {
     if(_id == null || new_type._id == null || !_id.equals(new_type._id))
       throw new Error();
-    ContentValues values = new ContentValues();
+    final ContentValues values = new ContentValues();
     if(_id_user_account != new_type._id_user_account)
       values.put("_id_user_account", new Long(new_type._id_user_account).toString());
     if(name != null && new_type.name == null)
@@ -103,7 +123,26 @@ public class Type
     if(is_delete != new_type.is_delete)
       values.put("is_delete", new Long(new_type.is_delete ? 1 : 0).toString());
     if(values.size() > 0)
-      return db.update(table_name, values, "_id=?", new String[]{new Long(_id).toString()}) == 1;
+    {
+      SQLTransaction sql_transaction = new SQLTransaction(db, new I_Transaction()
+      {
+        @Override
+        public boolean trnFunc()
+        {
+          boolean result = db.update(table_name, values, "_id=?", new String[]{new Long(_id).toString()}) == 1;
+          if(result)
+          {
+            Chronological chronological = Chronological.getFromIndex1(_id_user_account, Chronological.TABLE.TYPE,
+                                                                      _id, db, oh);
+            chronological.timestamp = new Date().getTime();
+            chronological.operation = Chronological.OPERATION.UPDATE;
+            result = chronological.update(db, oh);
+          }
+          return result;
+        }
+      });
+      return sql_transaction.runTransaction();
+    }
     else
       return false;
   }

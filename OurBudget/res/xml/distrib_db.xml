@@ -3,7 +3,7 @@
          title2="Если нужно использовать _id родителя для вложенного елемента"
          title3="  то вместо значения поля пишем ИД_родителя">
     <!-- Учетка r нужна для ссылочной целостности -->
-    <user_account login="r" password="r" is_active="1"></user_account>
+    <user_account login="r" password="r" is_active="1" timestamp="0"></user_account>
 
 
     <!-- пример древовидной иерархии

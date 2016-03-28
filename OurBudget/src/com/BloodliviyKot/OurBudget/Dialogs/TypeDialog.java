@@ -123,7 +123,7 @@ public class TypeDialog
             Type new_type = type.clone();
             new_type.name = entered_type.name;
             new_type.id_unit = entered_type.id_unit;
-            if(!type.update(new_type, db))
+            if(!type.update(new_type, db, oh))
               result = RESULT.ERROR;
             else
               result = RESULT.OK;

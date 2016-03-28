@@ -14,6 +14,7 @@ public class UserAccount
   public String login;
   public String password;
   public int is_active;
+  public long timestamp;
 
   public UserAccount(Cursor cursor)
   {
@@ -21,6 +22,7 @@ public class UserAccount
     login     = cursor.getString(cursor.getColumnIndex("login"));
     password  = cursor.getString(cursor.getColumnIndex("password"));
     is_active = cursor.getInt   (cursor.getColumnIndex("is_active"));
+    timestamp = cursor.getLong  (cursor.getColumnIndex("timestamp"));
   }
 
   public static UserAccount getActiveUserAccount(MySQLiteOpenHelper oh, SQLiteDatabase db)
