@@ -127,16 +127,54 @@ public abstract class Request
     Answer answer = null;
     if(uri != "")
     {
-      List<NameValuePair> POST_Parm = new ArrayList<NameValuePair>(2);
-      POST_Parm.add(new BasicNameValuePair("Request", JObj.toString()));
-      PHP_Poster PP = new PHP_Poster();
-      try
+      int count_try = 1;
+      while(count_try >= 0)
       {
-        answer = Answer.AnswerFromString(PP.Post(uri, POST_Parm));
-      } catch(IOException e)
-      {
-        e.printStackTrace();
-        throw new E_MESSID.MException(E_MESSID.MException.ERR.PROBLEM_WITH_SERVER);
+        count_try--;
+        List<NameValuePair> POST_Parm = new ArrayList<NameValuePair>(2);
+        POST_Parm.add(new BasicNameValuePair("Request", JObj.toString()));
+        PHP_Poster PP = new PHP_Poster();
+        try
+        {
+          answer = Answer.AnswerFromString(PP.Post(uri, POST_Parm));
+        }
+        catch(IOException e)
+        {
+          e.printStackTrace();
+          throw new E_MESSID.MException(E_MESSID.MException.ERR.PROBLEM_WITH_SERVER);
+        }
+        catch(E_MESSID.MException _mException)
+        {
+          if(_mException.getError() == E_MESSID.MException.ERR.NOT_IDENTIFY)
+          {
+            //Пытаемся приконнектиться и на второй круг
+            MySQLiteOpenHelper oh = new MySQLiteOpenHelper();
+            SQLiteDatabase db = oh.getWritableDatabase();
+            UserAccount user_account = UserAccount.getActiveUserAccount(oh, db);
+            if(user_account != null)
+            {
+              RequestTestPairLoginPassword rtplp = null;
+              try
+              {
+                rtplp = new RequestTestPairLoginPassword(user_account.login, user_account.password, true);
+                if(rtplp.post())
+                {
+                  AnswerTestPairLoginPassword atplp = rtplp.getAnswerFromPost();
+                  if(atplp == null)
+                    throw new E_MESSID.MException(E_MESSID.MException.ERR.PROBLEM_WITH_SERVER);
+                  if(atplp.isCorrect)
+                    continue;
+                }
+              }
+              catch(E_MESSID.MException e)
+              {
+                e.printStackTrace();
+              }
+            }
+          }
+          else
+            throw _mException;
+        }
       }
     }
     return answer;

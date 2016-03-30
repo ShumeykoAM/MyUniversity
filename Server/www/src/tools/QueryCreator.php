@@ -16,7 +16,7 @@
         if($key_value["value"] == null)
           $set .= "null";
         else
-          $set .= $link->real_escape_string($key_value["value"]);
+          $set .= "'".$link->real_escape_string($key_value["value"])."'";
         $separator = ", ";
       }
       return $set;
@@ -73,7 +73,7 @@
           $index = strpos($query_value, "?");
           if ($index === 0 || $index > 0)
           {
-            $value = $link->real_escape_string($value);
+            $value = "'".$link->real_escape_string($value)."'";
             //Заменим первый попавшийся ? на очередное значение из мессива
             $query_value = preg_replace('~' . preg_quote("?") . '~', $value, $query_value, 1);
           }

@@ -8,10 +8,13 @@ import com.BloodliviyKot.tools.DataBase.EQ;
 import com.BloodliviyKot.tools.DataBase.I_Transaction;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
 import com.BloodliviyKot.tools.DataBase.SQLTransaction;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Date;
 
 public class Type
+  implements I_Entity
 {
   public static final String table_name = "type";
 
@@ -92,6 +95,11 @@ public class Type
   //Обновляет запись если есть что обновлять
   public boolean update(Type new_type, final SQLiteDatabase db, final MySQLiteOpenHelper oh)
   {
+    return update(new_type, db, oh, true);
+  }
+  private boolean update(Type new_type, final SQLiteDatabase db, final MySQLiteOpenHelper oh,
+                         final boolean need_chronological)
+  {
     if(_id == null || new_type._id == null || !_id.equals(new_type._id))
       throw new Error();
     final ContentValues values = new ContentValues();
@@ -130,7 +138,7 @@ public class Type
         public boolean trnFunc()
         {
           boolean result = db.update(table_name, values, "_id=?", new String[]{new Long(_id).toString()}) == 1;
-          if(result)
+          if(result && need_chronological)
           {
             Chronological chronological = Chronological.getFromIndex1(_id_user_account, Chronological.TABLE.TYPE,
                                                                       _id, db, oh);
@@ -145,6 +153,35 @@ public class Type
     }
     else
       return false;
+  }
+
+  @Override
+  public Chronological.TABLE get_table()
+  {
+    return Chronological.TABLE.TYPE;
+  }
+  @Override
+  public JSONObject get_JObj() throws JSONException
+  {
+    JSONObject JObj = new JSONObject();
+    JObj.put("id_server", id_server);
+    JObj.put("name", name);
+    JObj.put("id_unit", id_unit);
+    JObj.put("is_delete", is_delete);
+    return JObj;
+  }
+
+  @Override
+  public boolean set_idServerIfUnset(long _id_server, SQLiteDatabase db, MySQLiteOpenHelper oh)
+  {
+    if(this.id_server == null)
+    {
+      Type new_type = clone();
+      new_type.id_server = _id_server;
+      return update(new_type, db, oh, false);
+    }
+    else
+      return true;
   }
 
 }

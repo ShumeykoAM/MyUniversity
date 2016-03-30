@@ -19,6 +19,7 @@ import com.BloodliviyKot.tools.DataBase.entitys.*;
 import com.BloodliviyKot.tools.Protocol.Answers.AnswerCreateProfile;
 import com.BloodliviyKot.tools.Protocol.Answers.AnswerTestLogin;
 import com.BloodliviyKot.tools.Protocol.E_MESSID;
+import com.BloodliviyKot.tools.Protocol.PHP_Poster;
 import com.BloodliviyKot.tools.Protocol.Requests.RequestCreateProfile;
 import com.BloodliviyKot.tools.Protocol.Requests.RequestTestLogin;
 
@@ -129,6 +130,7 @@ public class WRegistration
                 Intent ires = new Intent();  //Вернем
                 ires.putExtra("_id", _id[0]);   //_id добавленной записи
                 setResult(RESULT_OK, ires);  //Возвращаемый в родительскую активность результат
+                PHP_Poster.dropCookie();
                 finish();
               }
             }

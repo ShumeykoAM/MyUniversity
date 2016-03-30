@@ -12,6 +12,7 @@ public interface E_MESSID
   public static final int CREATE_GROUP_CODE        = 6; //Создать код длягруппы для присоединения пользователей
   public static final int NOT_IDENTIFY             = 7; //Ответ о том что нет идентификации на сервере
   public static final int BECOME_MEMBER            = 8; //Запрос на присоединение пользователя к группе
+  public static final int SEND_ENTITY              = 9; //Отправить запись таблицы на сервак для синхронизации
 
 
 

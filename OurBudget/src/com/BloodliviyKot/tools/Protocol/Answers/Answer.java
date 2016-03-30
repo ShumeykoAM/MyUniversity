@@ -37,7 +37,9 @@ public abstract class Answer
         case E_MESSID.BECOME_MEMBER:
           answer = new AnswerBecomeMember(ID, JOBJ);
           break;
-
+        case E_MESSID.SEND_ENTITY:
+          answer = new AnswerSendEntity(ID, JOBJ);
+          break;
 
         default:
           answer = null;

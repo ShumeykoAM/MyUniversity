@@ -10,7 +10,7 @@ public class ARequestBecomeMember
   extends Request
 {
   private int group_code;
-  private I_HandlerBecomeMember i_handlerCreateProfile;
+  private I_HandlerBecomeMember i_handler;
   public interface I_HandlerBecomeMember
   {
     void handlerAnswer(AnswerBecomeMember answer);
@@ -47,12 +47,12 @@ public class ARequestBecomeMember
   @Override
   protected void postAnswerHandler(Answer answer)
   {
-    if(i_handlerCreateProfile != null)
-      i_handlerCreateProfile.handlerAnswer((AnswerBecomeMember)answer);
+    if(i_handler != null)
+      i_handler.handlerAnswer((AnswerBecomeMember)answer);
   }
   public boolean postHandler(I_HandlerBecomeMember i_handler) throws E_MESSID.MException
   {
-    i_handlerCreateProfile = i_handler;
+    this.i_handler = i_handler;
     return post();
   }
 }

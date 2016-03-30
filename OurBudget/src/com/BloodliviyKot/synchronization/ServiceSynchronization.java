@@ -10,12 +10,20 @@ import android.database.sqlite.SQLiteDatabase;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.IBinder;
+import com.BloodliviyKot.OurBudget.AlertConnect;
 import com.BloodliviyKot.OurBudget.R;
 import com.BloodliviyKot.OurBudget.WPurchases;
 import com.BloodliviyKot.tools.DataBase.EQ;
+import com.BloodliviyKot.tools.DataBase.I_Transaction;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
+import com.BloodliviyKot.tools.DataBase.SQLTransaction;
 import com.BloodliviyKot.tools.DataBase.entitys.Chronological;
+import com.BloodliviyKot.tools.DataBase.entitys.I_Entity;
+import com.BloodliviyKot.tools.DataBase.entitys.Type;
 import com.BloodliviyKot.tools.DataBase.entitys.UserAccount;
+import com.BloodliviyKot.tools.Protocol.Answers.AnswerSendEntity;
+import com.BloodliviyKot.tools.Protocol.E_MESSID;
+import com.BloodliviyKot.tools.Protocol.Requests.ARequestSendEntity;
 
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -62,33 +70,68 @@ public class ServiceSynchronization
     new Thread(new Runnable() {
       public void run()
       {
-        int loop = 6;//количество секунд между циклами проверки
+        int loop = 4;//количество секунд между циклами проверки
         while(true)
         {
-          //Проверяем наличие записей в хронологии, которые еще не синхронизировались
-          //Перебираем все учетки пользователя, кроме учетки по умолчанию
-          Cursor cursor_ua = db.rawQuery(oh.getQuery(EQ.USER_ACCOUNTS), null);
-          for(boolean ua = cursor_ua.moveToFirst(); ua; ua = cursor_ua.moveToNext())
+          if(new AlertConnect(getApplicationContext()).getServerAccess(false) == AlertConnect.SERVER_ACCES.ACCES)
           {
-            UserAccount next_user_account = new UserAccount(cursor_ua);
+            //Проверяем наличие записей в хронологии, которые еще не синхронизировались
+            final UserAccount user_account = UserAccount.getActiveUserAccount(oh, db);
             //Перебираем все записи в хронологии, timestamp которых > timestamp в user_account
             Cursor cursor_ch = db.rawQuery(oh.getQuery(EQ.CHRONOLOGICAL_TIMESTAMP),
-              new String[]{new Long(next_user_account._id).toString(), new Long(next_user_account.timestamp).toString()});
+              new String[]{new Long(user_account._id).toString(), new Long(user_account.timestamp).toString()});
             for(boolean ch = cursor_ch.moveToFirst(); ch; ch = cursor_ch.moveToNext())
             {
-              Chronological chronological = new Chronological(cursor_ch);
+              final Chronological chronological = new Chronological(cursor_ch);
               //Отправляем запись на сервак, и если их timestamp > чем timestamp на серваке, то они там сохранятся
-
-
-
+              final I_Entity i_entity[] = new I_Entity[1];
+              switch(chronological.table)
+              {
+                case TYPE:
+                  i_entity[0] = Type.getFromId(chronological._id_rec, db, oh);
+                  break;
+                default:
+                  i_entity[0] = null;
+              }
+              try
+              {
+                ARequestSendEntity send_entity = new ARequestSendEntity(i_entity[0], chronological.timestamp);
+                final AnswerSendEntity answer = send_entity.send();
+                if(answer != null)
+                {
+                  //Сохраним id записи на сервере и изменим timestamp учетки на timestamp текущей записи
+                  SQLTransaction sql_transaction = new SQLTransaction(db, new I_Transaction()
+                  {
+                    @Override
+                    public boolean trnFunc()
+                    {
+                      boolean result = i_entity[0].set_idServerIfUnset(answer._id_server, db, oh);
+                      if(result)
+                      {
+                        UserAccount new_rec = user_account.clone();
+                        new_rec.timestamp = chronological.timestamp;
+                        result = user_account.update(new_rec, db, oh);
+                      }
+                      return result;
+                    }
+                  });
+                  sql_transaction.runTransaction();
+                }
+              }
+              catch(E_MESSID.MException e)
+              {
+                e.printStackTrace();
+              }
             }
             //Запрашиваем все записи на сервере которые еще не синхронизированы
+            //  и если timestamp на серваке больше то используем запись сервака
 
           }
           try
           {
             TimeUnit.SECONDS.sleep(loop);
-          } catch(InterruptedException e)
+          }
+          catch(InterruptedException e)
           {
             e.printStackTrace();
           }

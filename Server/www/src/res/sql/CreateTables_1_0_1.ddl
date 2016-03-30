@@ -82,7 +82,7 @@ CREATE UNIQUE INDEX unique_detail ON detail
 
 CREATE TABLE chronological
 (
-  timestamp            INT(8) NULL,
+  timestamp            BIGINT NULL,
   table_db             INT(8) NOT NULL,
   _id_record           INT(8) NOT NULL,
   operation            INT(8) NOT NULL,

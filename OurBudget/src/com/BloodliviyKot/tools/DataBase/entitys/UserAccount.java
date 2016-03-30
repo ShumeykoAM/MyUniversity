@@ -1,5 +1,6 @@
 package com.BloodliviyKot.tools.DataBase.entitys;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import com.BloodliviyKot.tools.DataBase.EQ;
@@ -24,6 +25,13 @@ public class UserAccount
     is_active = cursor.getInt   (cursor.getColumnIndex("is_active"));
     timestamp = cursor.getLong  (cursor.getColumnIndex("timestamp"));
   }
+  public UserAccount(String login, String password, int is_active, long timestamp)
+  {
+    this.login     = login;
+    this.password  = password;
+    this.is_active = is_active;
+    this.timestamp = timestamp;
+  }
 
   public static UserAccount getActiveUserAccount(MySQLiteOpenHelper oh, SQLiteDatabase db)
   {
@@ -39,5 +47,33 @@ public class UserAccount
     return active_user_account != null ? active_user_account._id : UserAccount.NON;
   }
 
+  public UserAccount clone()
+  {
+    UserAccount result = new UserAccount(login, password, is_active, timestamp);
+    result._id = _id;
+    return result;
+  }
+
+  //Обновляет запись если есть что обновлять
+  public boolean update(UserAccount new_rec, final SQLiteDatabase db, final MySQLiteOpenHelper oh)
+  {
+    if(_id != new_rec._id || new_rec.login == null || new_rec.password == null)
+      throw new Error();
+    final ContentValues values = new ContentValues();
+    if(!login.equals(new_rec.login))
+      values.put("login", new_rec.login);
+    if(!password.equals(new_rec.password))
+      values.put("password", new_rec.password);
+    if(is_active != new_rec.is_active)
+      values.put("is_active", new_rec.is_active);
+    if(timestamp != new_rec.timestamp)
+      values.put("timestamp", new_rec.timestamp);
+    if(values.size() > 0)
+    {
+      return db.update(table_name, values, "_id=?", new String[]{new Long(_id).toString()}) == 1;
+    }
+    else
+      return true;
+  }
 
 }

@@ -61,7 +61,7 @@
 
     public function copy() //:UserAccount
     {
-      $result = new UserAccount(UserGroup::$ENUM_CONSTRUCT_FIELD, $this->_id_group, $this->login, $this->hash_password);
+      $result = new UserAccount(UserAccount::$ENUM_CONSTRUCT_FIELD, $this->_id_group, $this->login, $this->hash_password);
       $result->_id = $this->_id;
       return $result;
     }

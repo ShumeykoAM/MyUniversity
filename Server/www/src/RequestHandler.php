@@ -17,6 +17,7 @@
   include_once 'handlers/HandlerTestPairLoginPassword.php';
   include_once 'handlers/co_user/AHandlerCreateGroupCode.php';
   include_once 'handlers/co_user/AHandlerBecomeMember.php';
+  include_once 'handlers/AHandlerSendEntity.php';
 
   class RequestHandler
   {
@@ -52,6 +53,9 @@
             break;
           case E_MESSAGEID\BECOME_MEMBER:
             $Answer = new AHandlerBecomeMember();
+            break;
+          case E_MESSAGEID\SEND_ENTITY:
+            $Answer = new AHandlerSendEntity();
             break;
 
         }

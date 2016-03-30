@@ -22,8 +22,16 @@
     const CREATE_GROUP_CODE           = 6; //Сгенерируем код для присоединения со-пользователя
     const NOT_IDENTIFY                = 7; //Для ответа об отсутствии идентификации
     const BECOME_MEMBER               = 8; //Запрос на присоединение пользователя к группе
+    const SEND_ENTITY                 = 9; //Отправить запись таблицы на сервак для синхронизации
+
 
   }
 
+  namespace E_TABLE
+  {
+    const TYPE     = 0; //Таблица Type виды товаров и услуг
+    const DETAIL   = 1; //
+    const PURCHASE = 2; //
+  }
 
 ?>
