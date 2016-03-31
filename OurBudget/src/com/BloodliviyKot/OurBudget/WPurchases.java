@@ -299,6 +299,7 @@ public class WPurchases
               @Override
               public void run()
               {
+                list_purchases.setSelection(pos);
                 list_purchases.smoothScrollToPosition(pos);
               }
             });

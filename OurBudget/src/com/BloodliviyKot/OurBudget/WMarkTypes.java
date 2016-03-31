@@ -129,6 +129,7 @@ public class WMarkTypes
         @Override
         public void run()
         {
+          list_types.setSelection(pos);
           list_types.smoothScrollToPosition(pos);
         }
       });
@@ -240,10 +241,10 @@ public class WMarkTypes
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
-      View linear_layout = super.getView(position, convertView, parent);
-      linear_layout.setOnClickListener(WMarkTypes.this); //передаем ссылку на Outer класс
-      linear_layout.setOnLongClickListener(WMarkTypes.this);
-      CheckedTextView tv_amount = (CheckedTextView)linear_layout.findViewById(R.id.mark_type_item_amount);
+      View layout = super.getView(position, convertView, parent);
+      layout.setOnClickListener(WMarkTypes.this); //передаем ссылку на Outer класс
+      layout.setOnLongClickListener(WMarkTypes.this);
+      CheckedTextView tv_amount = (CheckedTextView)layout.findViewById(R.id.mark_type_item_amount);
       long id = list_types.getItemIdAtPosition(position);
       if(selected_ids.contains(new DialogParamsSelectedType(id, true, null, null)))
       {
@@ -252,7 +253,12 @@ public class WMarkTypes
         tv_amount.setChecked(true);
         tv_amount.setText(DetailParamsDialog.FORMAT_MONEY.double_format(selected.amount) + " " + unit.name);
       }
-      return linear_layout;
+      else
+      {
+        tv_amount.setChecked(false);
+        tv_amount.setText("");
+      }
+      return layout;
     }
   }
   private class DialogParamsResultListener
@@ -261,7 +267,7 @@ public class WMarkTypes
     @Override
     public void onResult(RESULT code, Intent data)
     {
-      list_adapter.notifyDataSetInvalidated();
+      list_adapter.notifyDataSetChanged();
     }
   }
 }
