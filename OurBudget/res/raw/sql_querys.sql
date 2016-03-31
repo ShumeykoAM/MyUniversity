@@ -59,6 +59,11 @@ SELECT type._id, type._id_user_account, type.name, type.name_lower,
   type.id_server, type.id_unit, type.is_delete
   FROM type WHERE type._id = ?;
 
+-- TYPE_FROM_ID_SERVER
+SELECT type._id, type._id_user_account, type.name, type.name_lower,
+  type.id_server, type.id_unit, type.is_delete
+FROM type WHERE type._id_user_account = ? AND type.id_server = ?;
+
 -- LAST_PRICE
 SELECT detail.price,
   detail.for_amount_unit, detail.for_id_unit

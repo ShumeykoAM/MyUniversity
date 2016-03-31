@@ -55,6 +55,21 @@ class Chronological
     }
     return $result;
   }
+  //Первая хронология после указанной временной метки
+  public static function getAfterTimeStamp($_id_group, $timestamp, $link) /*out Chronological*/
+  {
+    $result = null;
+    $values = array($_id_group, $timestamp); //Параметры для запроса
+    $request = QueryCreator::getQuery( $link, EQ\CHRONO_AFTER_TIMESTAMP, $values );
+    $q_result = $link->query($request);
+    if($q_result && $q_result->num_rows != 0)
+    {
+      $q_result->data_seek(0);
+      $row = $q_result->fetch_assoc();
+      $result = new Chronological(Chronological::$ENUM_CONSTRUCT_ROW, $row);
+    }
+    return $result;
+  }
   public function copy()
   {
     $result = new Chronological(Chronological::$ENUM_CONSTRUCT_FIELD, $this->_id_group, $this->table_db,

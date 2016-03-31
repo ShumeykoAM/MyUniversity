@@ -136,6 +136,13 @@ class Type
     return $result;
   }
 
+  public function getJObj()
+  {
+    $arr = array('_id'=>$this->_id, 'name'=>$this->name,
+      'id_unit'=>$this->id_unit, 'is_delete'=>$this->is_delete);
+    $result = json_decode(json_encode($arr));
+    return $result;
+  }
 }
 
 ?>

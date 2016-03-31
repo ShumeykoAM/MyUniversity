@@ -21,9 +21,12 @@ import com.BloodliviyKot.tools.DataBase.entitys.Chronological;
 import com.BloodliviyKot.tools.DataBase.entitys.I_Entity;
 import com.BloodliviyKot.tools.DataBase.entitys.Type;
 import com.BloodliviyKot.tools.DataBase.entitys.UserAccount;
+import com.BloodliviyKot.tools.Protocol.Answers.AnswerGetEntity;
 import com.BloodliviyKot.tools.Protocol.Answers.AnswerSendEntity;
 import com.BloodliviyKot.tools.Protocol.E_MESSID;
+import com.BloodliviyKot.tools.Protocol.Requests.ARequestGetEntity;
 import com.BloodliviyKot.tools.Protocol.Requests.ARequestSendEntity;
+import org.json.JSONException;
 
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -73,10 +76,53 @@ public class ServiceSynchronization
         int loop = 4;//количество секунд между циклами проверки
         while(true)
         {
-          if(new AlertConnect(getApplicationContext()).getServerAccess(false) == AlertConnect.SERVER_ACCES.ACCES)
+          final UserAccount user_account = UserAccount.getActiveUserAccount(oh, db);
+          if(!user_account.login.equals("r") &&
+            new AlertConnect(getApplicationContext()).getServerAccess(false) == AlertConnect.SERVER_ACCES.ACCES)
           {
+            //Запрашиваем все записи на сервере которые еще не синхронизированы
+            //  и если timestamp на серваке больше то используем запись сервака
+            //Перебираем все записи в хронологии, timestamp которых > timestamp в user_account
+            try
+            {
+              long timestamp = user_account.timestamp;
+              do
+              {
+                ARequestGetEntity get_entity = new ARequestGetEntity(timestamp);
+                AnswerGetEntity answer = get_entity.send();
+                switch(answer.table)
+                {
+                  case TYPE:
+                    Type type = Type.getFromIdServer(answer.entity.getLong("_id"), user_account._id, db, oh);
+                    if(type != null)
+                    {
+                      Type new_type = type.clone();
+                      new_type.name = answer.entity.getString("name");
+                      new_type.is_delete = answer.entity.getInt("is_delete") == 1;
+                      new_type.id_unit = answer.entity.getInt("id_unit");
+                      type.update(new_type, db, oh);
+                    }
+                    else
+                    {
+                      type = new Type(user_account._id, answer.entity.getString("name"), answer.entity.getLong("_id"),
+                        answer.entity.getInt("id_unit"), answer.entity.getInt("is_delete") == 1);
+                      type.insertDateBase(db);
+                    }
+                    break;
+                }
+                timestamp = answer.timestamp;
+              }while(true);
+            }
+            catch(E_MESSID.MException e)
+            {
+              e.printStackTrace();
+            }
+            catch(JSONException e)
+            {
+              e.printStackTrace();
+            }
+
             //Проверяем наличие записей в хронологии, которые еще не синхронизировались
-            final UserAccount user_account = UserAccount.getActiveUserAccount(oh, db);
             //Перебираем все записи в хронологии, timestamp которых > timestamp в user_account
             Cursor cursor_ch = db.rawQuery(oh.getQuery(EQ.CHRONOLOGICAL_TIMESTAMP),
               new String[]{new Long(user_account._id).toString(), new Long(user_account.timestamp).toString()});
@@ -123,9 +169,6 @@ public class ServiceSynchronization
                 e.printStackTrace();
               }
             }
-            //Запрашиваем все записи на сервере которые еще не синхронизированы
-            //  и если timestamp на серваке больше то используем запись сервака
-
           }
           try
           {
@@ -134,6 +177,10 @@ public class ServiceSynchronization
           catch(InterruptedException e)
           {
             e.printStackTrace();
+          }
+          catch(Exception e)
+          {
+
           }
         }
       }

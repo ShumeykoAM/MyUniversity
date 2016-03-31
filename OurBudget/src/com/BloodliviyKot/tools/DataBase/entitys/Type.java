@@ -55,6 +55,17 @@ public class Type
       return null;
   }
 
+  public static Type getFromIdServer(long _id_server, long _id_user_account, SQLiteDatabase db, MySQLiteOpenHelper oh)
+  {
+
+    Cursor cursor = db.rawQuery(oh.getQuery(EQ.TYPE_FROM_ID_SERVER),
+      new String[]{new Long(_id_user_account).toString(), new Long(_id_server).toString()});
+    if(cursor.moveToFirst())
+      return new Type(cursor);
+    else
+      return null;
+  }
+
   public Type clone()
   {
     Type result = new Type(_id_user_account, name, id_server, id_unit, is_delete);

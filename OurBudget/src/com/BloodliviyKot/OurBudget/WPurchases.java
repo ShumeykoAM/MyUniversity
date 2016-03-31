@@ -126,6 +126,13 @@ public class WPurchases
         Filter filter = new Filter(this, term, s_date, e_date);
         filter.show(getFragmentManager(), null);
         return true;
+      case R.id.m_purchases_delete_db:
+        //Для отладки удалим базу
+        MySQLiteOpenHelper.debugDeleteDB(getApplicationContext());
+        oh = new MySQLiteOpenHelper();
+        db = oh.getWritableDatabase();
+        list_adapter.notifyDataSetInvalidated();
+        return true;
     }
     return super.onOptionsItemSelected(item);
   }

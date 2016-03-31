@@ -18,6 +18,7 @@
   include_once 'handlers/co_user/AHandlerCreateGroupCode.php';
   include_once 'handlers/co_user/AHandlerBecomeMember.php';
   include_once 'handlers/AHandlerSendEntity.php';
+  include_once 'handlers/AHandlerGetEntity.php';
 
   class RequestHandler
   {
@@ -56,6 +57,9 @@
             break;
           case E_MESSAGEID\SEND_ENTITY:
             $Answer = new AHandlerSendEntity();
+            break;
+          case E_MESSAGEID\GET_ENTITY:
+            $Answer = new AHandlerGetEntity();
             break;
 
         }

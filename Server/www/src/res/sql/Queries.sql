@@ -24,3 +24,10 @@ SELECT type._id, type.name, type.id_unit, type._id_group, type.is_delete FROM ty
 SELECT chronological._id_group, chronological.table_db, chronological._id_record,
   chronological.timestamp, chronological.operation FROM chronological
 WHERE chronological._id_group = ? AND chronological.table_db = ? AND chronological._id_record = ?;
+
+-- CHRONO_AFTER_TIMESTAMP
+SELECT chronological._id_group, chronological.table_db, chronological._id_record,
+  chronological.timestamp, chronological.operation FROM chronological
+  WHERE chronological._id_group = ? AND chronological.timestamp > ?
+  ORDER BY chronological.timestamp
+  LIMIT 1;

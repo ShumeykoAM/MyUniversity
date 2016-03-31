@@ -29,4 +29,9 @@
           android:title="@string/purchases_m_about">
     </item>
 
+    <item android:id="@+id/m_purchases_delete_db"
+          android:showAsAction="never"
+          android:title="Стереть базу данных">
+    </item>
+
 </menu>
