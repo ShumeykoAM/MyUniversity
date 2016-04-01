@@ -43,6 +43,9 @@ public abstract class Answer
         case E_MESSID.GET_ENTITY_T:
           answer = new AnswerGetEntity(ID, JOBJ);
           break;
+        case E_MESSID.GET_SERVER_TIME:
+          answer = new AnswerTimeServer(ID, JOBJ);
+          break;
 
         default:
           answer = null;

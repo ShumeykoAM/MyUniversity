@@ -175,6 +175,7 @@ public abstract class Request
           else
             throw _mException;
         }
+        break;
       }
     }
     return answer;

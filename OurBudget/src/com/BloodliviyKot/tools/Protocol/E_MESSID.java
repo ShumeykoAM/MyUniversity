@@ -15,7 +15,7 @@ public interface E_MESSID
   public static final int SEND_ENTITY              = 9;  //Отправить запись таблицы на сервак для синхронизации
   public static final int GET_ENTITY_T             = 10; //Запросить запись с timestamp > указанного
   public static final int GET_ENTITY_N             = 11; //Запросить запись с id большим чем указан
-
+  public static final int GET_SERVER_TIME          = 12; //Запросить время на сервере
 
   //Адреса
   public static final String URL_GOOGLE = "https://www.google.ru";
