@@ -70,6 +70,21 @@ class Chronological
     }
     return $result;
   }
+  //Запись в хронологии со следующим id записи
+  public static function getNextIdRecord($_id_group, $table_db, $_id_record, $link) /*out Chronological*/
+  {
+    $result = null;
+    $values = array($_id_group, $table_db, $_id_record); //Параметры для запроса
+    $request = QueryCreator::getQuery( $link, EQ\CHRONO_NEXT_ID, $values );
+    $q_result = $link->query($request);
+    if($q_result && $q_result->num_rows != 0)
+    {
+      $q_result->data_seek(0);
+      $row = $q_result->fetch_assoc();
+      $result = new Chronological(Chronological::$ENUM_CONSTRUCT_ROW, $row);
+    }
+    return $result;
+  }
   public function copy()
   {
     $result = new Chronological(Chronological::$ENUM_CONSTRUCT_FIELD, $this->_id_group, $this->table_db,

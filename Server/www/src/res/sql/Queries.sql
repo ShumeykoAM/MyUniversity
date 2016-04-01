@@ -31,3 +31,9 @@ SELECT chronological._id_group, chronological.table_db, chronological._id_record
   WHERE chronological._id_group = ? AND chronological.timestamp > ?
   ORDER BY chronological.timestamp
   LIMIT 1;
+
+-- CHRONO_NEXT_ID
+SELECT chronological._id_group, chronological.table_db, chronological._id_record,
+  chronological.timestamp, chronological.operation FROM chronological
+WHERE chronological._id_group = ? AND chronological.table_db = ? AND chronological._id_record > ?
+LIMIT 1;

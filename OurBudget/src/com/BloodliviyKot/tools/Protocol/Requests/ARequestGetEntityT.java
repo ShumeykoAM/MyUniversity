@@ -6,7 +6,7 @@ import com.BloodliviyKot.tools.Protocol.Answers.AnswerGetEntity;
 import com.BloodliviyKot.tools.Protocol.E_MESSID;
 import org.json.JSONException;
 
-public class ARequestGetEntity
+public class ARequestGetEntityT
   extends Request
 {
   long timestamp;
@@ -16,9 +16,9 @@ public class ARequestGetEntity
   {
     void handlerAnswer(AnswerGetEntity answer);
   }
-  public ARequestGetEntity(long timestamp) throws E_MESSID.MException
+  public ARequestGetEntityT(long timestamp) throws E_MESSID.MException
   {
-    super(E_MESSID.GET_ENTITY);
+    super(E_MESSID.GET_ENTITY_T);
     this.timestamp = timestamp;
     ConstructRequest();
   }

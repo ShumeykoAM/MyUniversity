@@ -13,7 +13,8 @@ public interface E_MESSID
   public static final int NOT_IDENTIFY             = 7;  //Ответ о том что нет идентификации на сервере
   public static final int BECOME_MEMBER            = 8;  //Запрос на присоединение пользователя к группе
   public static final int SEND_ENTITY              = 9;  //Отправить запись таблицы на сервак для синхронизации
-  public static final int GET_ENTITY               = 10; //Отправить запись таблицы на сервак для синхронизации
+  public static final int GET_ENTITY_T             = 10; //Запросить запись с timestamp > указанного
+  public static final int GET_ENTITY_N             = 11; //Запросить запись с id большим чем указан
 
 
   //Адреса

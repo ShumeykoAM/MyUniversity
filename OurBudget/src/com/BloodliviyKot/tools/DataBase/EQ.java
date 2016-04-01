@@ -23,6 +23,7 @@ public enum EQ
   ALL_DETAIL_FOR_GROUP,          //Список всех деталей с указанным видом товара по всем покупкам за период
   CHRONOLOGICAL_INDEX1,          //Хронология конкретной записи
   CHRONOLOGICAL_TIMESTAMP,       //Вся хронология после указанного времени
+  MAX_SERVER_ID_TYPE,            //Максимальный idшник сервера в таблице видов товаров и услуг
 
   EQ_COUNT;
   public final int value;

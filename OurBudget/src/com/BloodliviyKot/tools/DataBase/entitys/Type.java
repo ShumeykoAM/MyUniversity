@@ -55,6 +55,15 @@ public class Type
       return null;
   }
 
+  public static long getMaxServerID(SQLiteDatabase db, MySQLiteOpenHelper oh)
+  {
+    Cursor cursor = db.rawQuery(oh.getQuery(EQ.MAX_SERVER_ID_TYPE), null);
+    if( cursor.moveToFirst() && !cursor.isNull(cursor.getColumnIndex("id_server")) )
+      return cursor.getLong(cursor.getColumnIndex("id_server"));
+    else
+      return 0;
+  }
+
   public static Type getFromIdServer(long _id_server, long _id_user_account, SQLiteDatabase db, MySQLiteOpenHelper oh)
   {
 
@@ -75,6 +84,10 @@ public class Type
 
   public long insertDateBase(final SQLiteDatabase db)
   {
+    return insertDateBase(db, new Date().getTime());
+  }
+  public long insertDateBase(final SQLiteDatabase db, final long timestamp)
+  {
     final ContentValues values = new ContentValues();
     //values.put("_id", _id);
     values.put("_id_user_account"  , _id_user_account);
@@ -94,7 +107,7 @@ public class Type
         if(result)
         {
           Chronological chronological = new Chronological(_id_user_account, Chronological.TABLE.TYPE, res_id[0],
-            new Date().getTime(), Chronological.OPERATION.INSERT);
+            timestamp, Chronological.OPERATION.INSERT);
           result = chronological.insertDateBase(db) != -1;
         }
         return result;
