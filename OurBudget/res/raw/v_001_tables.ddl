@@ -4,7 +4,8 @@ CREATE TABLE user_account
   login                TEXT NOT NULL,
   password             TEXT NOT NULL,
   is_active            INTEGER NOT NULL,
-  timestamp            INTEGER NOT NULL
+  timestamp            INTEGER NOT NULL,
+  current_rev          INTEGER NOT NULL
 );
 
 CREATE UNIQUE INDEX unique_login ON user_account
@@ -74,7 +75,7 @@ CREATE TABLE chronological
   table_db             INTEGER NOT NULL,
   _id_record           INTEGER NOT NULL,
   timestamp            INTEGER NOT NULL,  -- as Unix Time the number of seconds since 1970-01-01 00:00:00 UTC.
-  operation            INTEGER NOT NULL,
+  is_sync              INTEGER NOT NULL,
   FOREIGN KEY (_id_user_account) REFERENCES user_account (_id)
 );
 

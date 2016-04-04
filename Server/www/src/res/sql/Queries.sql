@@ -21,20 +21,6 @@ SELECT type._id, type.name, type.id_unit, type._id_group, type.is_delete FROM ty
   WHERE type._id_group = ? AND type._id = ?;
 
 -- CHRONOLOGICAL_FROM_F_KEY
-SELECT chronological._id_group, chronological.table_db, chronological._id_record,
-  chronological.timestamp, chronological.operation FROM chronological
-WHERE chronological._id_group = ? AND chronological.table_db = ? AND chronological._id_record = ?;
-
--- CHRONO_AFTER_TIMESTAMP
-SELECT chronological._id_group, chronological.table_db, chronological._id_record,
-  chronological.timestamp, chronological.operation FROM chronological
-  WHERE chronological._id_group = ? AND chronological.timestamp > ?
-  ORDER BY chronological.timestamp
-  LIMIT 1;
-
--- CHRONO_NEXT_ID
-SELECT chronological._id_group, chronological.table_db, chronological._id_record,
-  chronological.timestamp, chronological.operation FROM chronological
-WHERE chronological._id_group = ? AND chronological.table_db = ? AND chronological._id_record > ?
-ORDER BY chronological._id_record ASC
-LIMIT 1;
+SELECT chronological._id_group, chronological.revision, chronological.table_db, chronological._id_record,
+  chronological.timestamp FROM chronological
+WHERE chronological._id_group = ? AND chronological.revision = ?;

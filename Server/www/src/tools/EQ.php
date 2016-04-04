@@ -10,8 +10,6 @@
     const TYPE_FROM_NAME           = 4;         //Вид по имени
     const TYPE_FROM_ID             = 5;         //Вид по id
     const CHRONOLOGICAL_FROM_F_KEY = 6;         //Хронология по первичному ключу
-    const CHRONO_AFTER_TIMESTAMP   = 7;         //Хронология после указанной временной метки
-    const CHRONO_NEXT_ID           = 8;         //Запись в хронологии со следующим id записи
 
   }
 ?>

@@ -6,20 +6,20 @@ import com.BloodliviyKot.tools.Protocol.Answers.AnswerGetEntity;
 import com.BloodliviyKot.tools.Protocol.E_MESSID;
 import org.json.JSONException;
 
-public class ARequestGetEntityT
+public class ARequestGetEntity
   extends Request
 {
-  long timestamp;
+  long revision;
   private I_HandlerGetEntity i_handler;
 
   public interface I_HandlerGetEntity
   {
     void handlerAnswer(AnswerGetEntity answer);
   }
-  public ARequestGetEntityT(long timestamp) throws E_MESSID.MException
+  public ARequestGetEntity(long revision) throws E_MESSID.MException
   {
-    super(E_MESSID.GET_ENTITY_T);
-    this.timestamp = timestamp;
+    super(E_MESSID.GET_ENTITY);
+    this.revision = revision;
     ConstructRequest();
   }
   @Override
@@ -27,7 +27,7 @@ public class ARequestGetEntityT
   {
     try
     {
-      JObj.put("TIMESTAMP", timestamp);
+      JObj.put("REVISION", revision);
     } catch(JSONException e)
     {
       e.printStackTrace();

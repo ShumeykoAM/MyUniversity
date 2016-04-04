@@ -111,7 +111,7 @@ public class TypeDialog
         {
           if(regime == REGIME.NEW)
           {
-            if( (_id = entered_type.insertDateBase(db)) == -1)
+            if( (_id = entered_type.insertDateBase(db, false)) == -1)
               result = RESULT.ERROR;
             else
               result = RESULT.OK;
@@ -123,7 +123,7 @@ public class TypeDialog
             Type new_type = type.clone();
             new_type.name = entered_type.name;
             new_type.id_unit = entered_type.id_unit;
-            if(!type.update(new_type, db, oh))
+            if(!type.update(new_type, db, oh, false))
               result = RESULT.ERROR;
             else
               result = RESULT.OK;

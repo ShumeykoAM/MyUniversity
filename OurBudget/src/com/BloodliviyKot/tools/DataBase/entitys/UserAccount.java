@@ -16,21 +16,24 @@ public class UserAccount
   public String password;
   public int is_active;
   public long timestamp;
+  public long current_rev;
 
   public UserAccount(Cursor cursor)
   {
-    _id       = cursor.getLong  (cursor.getColumnIndex("_id"));
-    login     = cursor.getString(cursor.getColumnIndex("login"));
-    password  = cursor.getString(cursor.getColumnIndex("password"));
-    is_active = cursor.getInt   (cursor.getColumnIndex("is_active"));
-    timestamp = cursor.getLong  (cursor.getColumnIndex("timestamp"));
+    _id         = cursor.getLong  (cursor.getColumnIndex("_id"));
+    login       = cursor.getString(cursor.getColumnIndex("login"));
+    password    = cursor.getString(cursor.getColumnIndex("password"));
+    is_active   = cursor.getInt   (cursor.getColumnIndex("is_active"));
+    timestamp   = cursor.getLong  (cursor.getColumnIndex("timestamp"));
+    current_rev = cursor.getLong(cursor.getColumnIndex("current_rev"));
   }
-  public UserAccount(String login, String password, int is_active, long timestamp)
+  public UserAccount(String login, String password, int is_active, long timestamp, long current_rev)
   {
-    this.login     = login;
-    this.password  = password;
-    this.is_active = is_active;
-    this.timestamp = timestamp;
+    this.login       = login;
+    this.password    = password;
+    this.is_active   = is_active;
+    this.timestamp   = timestamp;
+    this.current_rev = current_rev;
   }
 
   public static UserAccount getActiveUserAccount(MySQLiteOpenHelper oh, SQLiteDatabase db)
@@ -49,7 +52,7 @@ public class UserAccount
 
   public UserAccount clone()
   {
-    UserAccount result = new UserAccount(login, password, is_active, timestamp);
+    UserAccount result = new UserAccount(login, password, is_active, timestamp, current_rev);
     result._id = _id;
     return result;
   }
@@ -68,6 +71,8 @@ public class UserAccount
       values.put("is_active", new_rec.is_active);
     if(timestamp != new_rec.timestamp)
       values.put("timestamp", new_rec.timestamp);
+    if(current_rev != new_rec.current_rev)
+      values.put("current_rev", current_rev);
     if(values.size() > 0)
     {
       return db.update(table_name, values, "_id=?", new String[]{new Long(_id).toString()}) == 1;

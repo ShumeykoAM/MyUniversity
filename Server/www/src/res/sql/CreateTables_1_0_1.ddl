@@ -82,12 +82,12 @@ CREATE UNIQUE INDEX unique_detail ON detail
 
 CREATE TABLE chronological
 (
-  timestamp            BIGINT NULL,
+  timestamp            BIGINT NOT NULL,
   table_db             INT(8) NOT NULL,
   _id_record           INT(8) NOT NULL,
-  operation            INT(8) NOT NULL,
+  revision             INT(8) NOT NULL,
   _id_group            INT(8) NOT NULL,
-  PRIMARY KEY (_id_group,table_db,_id_record),
+  PRIMARY KEY (_id_group,revision),
   FOREIGN KEY (_id_group) REFERENCES user_group (_id)
 ) ENGINE=InnoDB;
 

@@ -40,7 +40,7 @@ public abstract class Answer
         case E_MESSID.SEND_ENTITY:
           answer = new AnswerSendEntity(ID, JOBJ);
           break;
-        case E_MESSID.GET_ENTITY_T:
+        case E_MESSID.GET_ENTITY:
           answer = new AnswerGetEntity(ID, JOBJ);
           break;
         case E_MESSID.GET_SERVER_TIME:

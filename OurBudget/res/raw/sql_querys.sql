@@ -1,19 +1,19 @@
 -- USER_ACCOUNTS
-SELECT user_account._id, user_account.login, user_account.password, user_account.is_active, user_account.timestamp
-  FROM user_account WHERE user_account._id != 1;
+SELECT user_account._id, user_account.login, user_account.password, user_account.is_active, user_account.timestamp,
+  user_account.current_rev FROM user_account WHERE user_account._id != 1;
 
 -- USER_ACCOUNT_ACTIYE
-SELECT user_account._id, user_account.login, user_account.password, user_account.is_active, user_account.timestamp
-  FROM user_account
+SELECT user_account._id, user_account.login, user_account.password, user_account.is_active, user_account.timestamp,
+  user_account.current_rev FROM user_account
   WHERE user_account.is_active = ?;
 
 -- USER_ACCOUNT_ID
-SELECT user_account._id, user_account.login, user_account.password, user_account.is_active, user_account.timestamp
-  FROM user_account WHERE user_account._id = ?;
+SELECT user_account._id, user_account.login, user_account.password, user_account.is_active, user_account.timestamp,
+  user_account.current_rev FROM user_account WHERE user_account._id = ?;
 
 -- USER_ACCOUNT_LOGIN
-SELECT user_account._id, user_account.login, user_account.password, user_account.is_active, user_account.timestamp
-  FROM user_account WHERE user_account.login = ?;
+SELECT user_account._id, user_account.login, user_account.password, user_account.is_active, user_account.timestamp,
+  user_account.current_rev FROM user_account WHERE user_account.login = ?;
 
 -- PURCHASES
 SELECT purchase._id, purchase.date_time, purchase.state FROM purchase, user_account
@@ -95,14 +95,14 @@ SELECT detail._id FROM detail, purchase, user_account
 
 -- CHRONOLOGICAL_INDEX1
 SELECT chronological._id, chronological._id_record, chronological._id_user_account,
-  chronological.operation, chronological.table_db, chronological.timestamp FROM chronological
+  chronological.is_sync, chronological.table_db, chronological.timestamp FROM chronological
   WHERE chronological._id_user_account = ?
   AND chronological.table_db = ?
   AND chronological._id_record = ?;
 
 -- CHRONOLOGICAL_TIMESTAMP
 SELECT chronological._id, chronological._id_record, chronological._id_user_account,
-  chronological.operation, chronological.table_db, chronological.timestamp FROM chronological
+  chronological.is_sync, chronological.table_db, chronological.timestamp FROM chronological
   WHERE chronological._id_user_account = ? AND chronological.timestamp > ?
   ORDER BY chronological.timestamp ASC;
 

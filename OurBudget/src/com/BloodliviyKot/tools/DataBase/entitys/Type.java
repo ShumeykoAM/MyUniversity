@@ -82,11 +82,11 @@ public class Type
     return result;
   }
 
-  public long insertDateBase(final SQLiteDatabase db)
+  public long insertDateBase(final SQLiteDatabase db, boolean is_sync)
   {
-    return insertDateBase(db, new Date().getTime());
+    return insertDateBase(db, new Date().getTime(), is_sync);
   }
-  public long insertDateBase(final SQLiteDatabase db, final long timestamp)
+  public long insertDateBase(final SQLiteDatabase db, final long timestamp, final boolean is_sync)
   {
     final ContentValues values = new ContentValues();
     //values.put("_id", _id);
@@ -107,7 +107,7 @@ public class Type
         if(result)
         {
           Chronological chronological = new Chronological(_id_user_account, Chronological.TABLE.TYPE, res_id[0],
-            timestamp, Chronological.OPERATION.INSERT);
+            timestamp, is_sync);
           result = chronological.insertDateBase(db) != -1;
         }
         return result;
@@ -117,12 +117,12 @@ public class Type
   }
 
   //Обновляет запись если есть что обновлять
-  public boolean update(Type new_type, final SQLiteDatabase db, final MySQLiteOpenHelper oh)
+  public boolean update(Type new_type, final SQLiteDatabase db, final MySQLiteOpenHelper oh, boolean is_sync)
   {
-    return update(new_type, db, oh, true);
+    return update(new_type, db, oh, true, is_sync);
   }
   private boolean update(Type new_type, final SQLiteDatabase db, final MySQLiteOpenHelper oh,
-                         final boolean need_chronological)
+                         final boolean need_chronological, final boolean is_sync)
   {
     if(_id == null || new_type._id == null || !_id.equals(new_type._id))
       throw new Error();
@@ -167,7 +167,7 @@ public class Type
             Chronological chronological = Chronological.getFromIndex1(_id_user_account, Chronological.TABLE.TYPE,
                                                                       _id, db, oh);
             chronological.timestamp = new Date().getTime();
-            chronological.operation = Chronological.OPERATION.UPDATE;
+            chronological.is_sync   = is_sync;
             result = chronological.update(db, oh);
           }
           return result;

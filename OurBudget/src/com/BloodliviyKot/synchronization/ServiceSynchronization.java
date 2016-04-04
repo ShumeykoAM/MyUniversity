@@ -5,7 +5,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -13,16 +12,12 @@ import android.os.IBinder;
 import com.BloodliviyKot.OurBudget.AlertConnect;
 import com.BloodliviyKot.OurBudget.R;
 import com.BloodliviyKot.OurBudget.WPurchases;
-import com.BloodliviyKot.tools.DataBase.EQ;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
-import com.BloodliviyKot.tools.DataBase.entitys.Chronological;
-import com.BloodliviyKot.tools.DataBase.entitys.I_Entity;
-import com.BloodliviyKot.tools.DataBase.entitys.Type;
 import com.BloodliviyKot.tools.DataBase.entitys.UserAccount;
-import com.BloodliviyKot.tools.Protocol.Answers.AnswerSendEntity;
+import com.BloodliviyKot.tools.Protocol.Answers.AnswerGetEntity;
 import com.BloodliviyKot.tools.Protocol.Answers.AnswerTimeServer;
 import com.BloodliviyKot.tools.Protocol.E_MESSID;
-import com.BloodliviyKot.tools.Protocol.Requests.ARequestSendEntity;
+import com.BloodliviyKot.tools.Protocol.Requests.ARequestGetEntity;
 import com.BloodliviyKot.tools.Protocol.Requests.RequestTimeServer;
 
 import java.util.Date;
@@ -73,47 +68,62 @@ public class ServiceSynchronization
         int loop = 4;//количество секунд между циклами проверки
         while(true)
         {
-          final UserAccount user_account = UserAccount.getActiveUserAccount(oh, db);
-          if(!user_account.login.equals("r") &&
-            new AlertConnect(getApplicationContext()).getServerAccess(false) == AlertConnect.SERVER_ACCES.ACCES)
+          try
           {
-            long new_timestamp = user_account.timestamp;
-            long timestamp_correction = 0;
-            try
+            final UserAccount user_account = UserAccount.getActiveUserAccount(oh, db);
+            if(!user_account.login.equals("r") && new AlertConnect(getApplicationContext()).getServerAccess(false) == AlertConnect.SERVER_ACCES.ACCES)
             {
-              RequestTimeServer request_time_server = new RequestTimeServer();
-              AnswerTimeServer answer_ts = request_time_server.send();
-              timestamp_correction = answer_ts.server_time - new Date().getTime();
-
-
-              //Проверяем наличие записей в хронологии, которые еще не синхронизировались
-              //Перебираем все записи в хронологии, timestamp которых > timestamp в user_account
-              Cursor cursor_ch = db.rawQuery(oh.getQuery(EQ.CHRONOLOGICAL_TIMESTAMP), new String[]{new Long(user_account._id).toString(), new Long(user_account.timestamp).toString()});
-              for(boolean ch = cursor_ch.moveToFirst(); ch; ch = cursor_ch.moveToNext())
+              long new_timestamp = user_account.timestamp;
+              long timestamp_correction = 0;
+              try
               {
-                final Chronological chronological = new Chronological(cursor_ch);
-                //Отправляем запись на сервак
-                final I_Entity i_entity[] = new I_Entity[1];
-                switch(chronological.table)
+                RequestTimeServer request_time_server = new RequestTimeServer();
+                AnswerTimeServer answer_ts = request_time_server.send();
+                timestamp_correction = answer_ts.server_time - new Date().getTime();
+
+
+                ARequestGetEntity get_entity = new ARequestGetEntity(user_account.current_rev + 1);
+                AnswerGetEntity answer_ge = get_entity.send();
+                if(answer_ge.exist)
                 {
-                  case TYPE:
-                    i_entity[0] = Type.getFromId(chronological._id_rec, db, oh);
-                    break;
-                  default:
-                    i_entity[0] = null;
+
+
+
                 }
 
-                ARequestSendEntity send_entity = new ARequestSendEntity(i_entity[0], chronological.timestamp + timestamp_correction);
-                AnswerSendEntity answer = send_entity.send();
-                if(answer != null && answer.result != AnswerSendEntity.RESULT.USE_SERVER_REC)
-                {
-                  //Сохраним id_server записи и изменим timestamp учетки на timestamp текущей записи
-                  i_entity[0].set_idServerIfUnset(answer._id_server, db, oh);
-                  if(chronological.timestamp > new_timestamp)
-                    new_timestamp = chronological.timestamp;
-                }
-              }
 
+
+
+
+                /*
+                //Проверяем наличие записей в хронологии, которые еще не синхронизировались
+                //Перебираем все записи в хронологии, timestamp которых > timestamp в user_account
+                Cursor cursor_ch = db.rawQuery(oh.getQuery(EQ.CHRONOLOGICAL_TIMESTAMP), new String[]{new Long(user_account._id).toString(), new Long(user_account.timestamp).toString()});
+                for(boolean ch = cursor_ch.moveToFirst(); ch; ch = cursor_ch.moveToNext())
+                {
+                  final Chronological chronological = new Chronological(cursor_ch);
+                  //Отправляем запись на сервак
+                  final I_Entity i_entity[] = new I_Entity[1];
+                  switch(chronological.table)
+                  {
+                    case TYPE:
+                      i_entity[0] = Type.getFromId(chronological._id_rec, db, oh);
+                      break;
+                    default:
+                      i_entity[0] = null;
+                  }
+
+                  ARequestSendEntity send_entity = new ARequestSendEntity(i_entity[0], chronological.timestamp + timestamp_correction);
+                  AnswerSendEntity answer = send_entity.send();
+                  if(answer != null && answer.result != AnswerSendEntity.RESULT.USE_SERVER_REC)
+                  {
+                    //Сохраним id_server записи и изменим timestamp учетки на timestamp текущей записи
+                    i_entity[0].set_idServerIfUnset(answer._id_server, db, oh);
+                    if(chronological.timestamp > new_timestamp)
+                      new_timestamp = chronological.timestamp;
+                  }
+                }
+                */
 
 
 
@@ -126,7 +136,7 @@ public class ServiceSynchronization
                 long timestamp = user_account.timestamp;
                 do
                 {
-                  ARequestGetEntityT get_entity = new ARequestGetEntityT(timestamp);
+                  ARequestGetEntity get_entity = new ARequestGetEntity(timestamp);
                   AnswerGetEntity answer = get_entity.send();
                   switch(answer.table)
                   {
@@ -182,25 +192,30 @@ public class ServiceSynchronization
               //Скидываем на сервак все записи ориентируясь на хронологию
               */
 
-              if(user_account.timestamp != new_timestamp)
+                if(user_account.timestamp != new_timestamp)
+                {
+                  UserAccount new_rec = user_account.clone();
+                  new_rec.timestamp = new_timestamp;
+                  user_account.update(new_rec, db, oh);
+                }
+              }
+              catch(E_MESSID.MException e)
               {
-                UserAccount new_rec = user_account.clone();
-                new_rec.timestamp = new_timestamp;
-                user_account.update(new_rec, db, oh);
+                e.printStackTrace();
+              }
+              try
+              {
+                TimeUnit.SECONDS.sleep(loop);
+              }
+              catch(InterruptedException e)
+              {
+                e.printStackTrace();
               }
             }
-            catch(E_MESSID.MException e)
-            {
-              e.printStackTrace();
-            }
-            try
-            {
-              TimeUnit.SECONDS.sleep(loop);
-            }
-            catch(InterruptedException e)
-            {
-              e.printStackTrace();
-            }
+          }
+          catch(Exception e)
+          {
+
           }
         }
       }

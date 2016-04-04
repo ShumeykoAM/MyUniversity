@@ -108,6 +108,7 @@ public class WRegistration
                   values.put("password", password);
                   values.put("is_active", "1");
                   values.put("timestamp", (long)0);
+                  values.put("current_rev", (long)0);
                   _id[0] = db.insert(UserAccount.table_name, null, values);
                   if(_id[0] == -1) //Проверим на всяк случай, хотя такого быть не должно что бы
                     return false;  //   локально была такая учетка а на серваке ее не было

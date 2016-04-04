@@ -17,29 +17,23 @@ public class Chronological
     DETAIL,   //
     PURCHASE  //
   }
-  public enum OPERATION
-  {
-    INSERT,
-    UPDATE,
-    DELETE
-  }
 
   public long _id;
   public long _id_user_account;
   public TABLE table;
   public long _id_rec;
   public long timestamp;
-  public OPERATION operation;
+  public boolean is_sync;
 
   private Chronological old_rec;
-  public Chronological(long _id_user_account, TABLE table, long _id_rec, long timestamp, OPERATION operation)
+  public Chronological(long _id_user_account, TABLE table, long _id_rec, long timestamp, boolean is_sync)
   {
     this._id = 0;
     this._id_user_account = _id_user_account;
     this.table = table;
     this._id_rec = _id_rec;
     this.timestamp = timestamp;
-    this.operation = operation;
+    this.is_sync = is_sync;
     old_rec = null;
   }
 
@@ -63,13 +57,13 @@ public class Chronological
     table = TABLE.values()[((int)cursor.getLong(cursor.getColumnIndex("table_db")))];
     _id_rec = cursor.getLong(cursor.getColumnIndex("_id_record"));
     timestamp = cursor.getLong(cursor.getColumnIndex("timestamp"));
-    operation = OPERATION.values()[((int)cursor.getLong(cursor.getColumnIndex("operation")))];
+    is_sync = cursor.getLong(cursor.getColumnIndex("is_sync")) == 1;
     old_rec = clone();
   }
 
   public Chronological clone()
   {
-    Chronological result = new Chronological(_id_user_account, table, _id_rec, timestamp, operation);
+    Chronological result = new Chronological(_id_user_account, table, _id_rec, timestamp, is_sync);
     result._id = _id;
     return result;
   }
@@ -82,7 +76,7 @@ public class Chronological
     values.put("table_db"        , new Long(table.ordinal()));
     values.put("_id_record"      , _id_rec);
     values.put("timestamp"       , timestamp);
-    values.put("operation"       , new Long(operation.ordinal()));
+    values.put("is_sync"         , is_sync ? 1 : 0);
     _id = db.insert(table_name, null, values);
     if(_id != -1)
       old_rec = clone();
@@ -104,8 +98,8 @@ public class Chronological
       values.put("_id_record", _id_rec);
     if(timestamp != old_rec.timestamp)
       values.put("timestamp", timestamp);
-    if(operation != old_rec.operation)
-      values.put("operation", new Long(operation.ordinal()));
+    if(is_sync != old_rec.is_sync)
+      values.put("is_sync", is_sync ? 1 : 0);
     if(values.size() > 0)
     {
       return db.update(table_name, values, "_id=?", new String[]{new Long(_id).toString()}) == 1;

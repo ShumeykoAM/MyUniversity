@@ -125,6 +125,7 @@ public class WUserAccount
               values.put("password", password);
               values.put("is_active", "0");
               values.put("timestamp", (long)0);
+              values.put("current_rev", (long)0);
               _id[0] = db.insert(UserAccount.table_name, null, values);
               if(_id[0] != -1)
                 result = true;

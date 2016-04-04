@@ -18,8 +18,7 @@
   include_once 'handlers/co_user/AHandlerCreateGroupCode.php';
   include_once 'handlers/co_user/AHandlerBecomeMember.php';
   include_once 'handlers/AHandlerSendEntity.php';
-  include_once 'handlers/AHandlerGetEntityT.php';
-  include_once 'handlers/AHandlerGetEntityN.php';
+  include_once 'handlers/AHandlerGetEntity.php';
   include_once 'handlers/HandlerGetServerTime.php';
 
   class RequestHandler
@@ -60,11 +59,8 @@
           case E_MESSAGEID\SEND_ENTITY:
             $Answer = new AHandlerSendEntity();
             break;
-          case E_MESSAGEID\GET_ENTITY_T:
-            $Answer = new AHandlerGetEntityT();
-            break;
-          case E_MESSAGEID\GET_ENTITY_N:
-            $Answer = new AHandlerGetEntityN();
+          case E_MESSAGEID\GET_ENTITY:
+            $Answer = new AHandlerGetEntity();
             break;
           case E_MESSAGEID\GET_SERVER_TIME:
             $Answer = new HandlerGetServerTime();
