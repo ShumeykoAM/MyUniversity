@@ -1,5 +1,5 @@
 Локально дома
-в tools\MySQLOpenHelper.php раскоментить код создания самой DB
+переменную it_is_debug_mode выставить true
 затем
 http://127.0.0.1//Administration.php          или
 http://mybudgetserver.ru/Administration.php   или
