@@ -36,4 +36,5 @@ SELECT chronological._id_group, chronological.table_db, chronological._id_record
 SELECT chronological._id_group, chronological.table_db, chronological._id_record,
   chronological.timestamp, chronological.operation FROM chronological
 WHERE chronological._id_group = ? AND chronological.table_db = ? AND chronological._id_record > ?
+ORDER BY chronological._id_record ASC
 LIMIT 1;

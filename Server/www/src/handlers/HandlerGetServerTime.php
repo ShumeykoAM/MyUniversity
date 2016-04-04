@@ -2,7 +2,7 @@
 
   include_once 'Common.php';
 
-  //Ответ на запрос теста соединения с сервером
+  //Возвращаем время сервера без корректировки на временную зону
   class HandlerGetServerTime
     implements I_Handler
   {

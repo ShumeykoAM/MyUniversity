@@ -103,7 +103,8 @@ SELECT chronological._id, chronological._id_record, chronological._id_user_accou
 -- CHRONOLOGICAL_TIMESTAMP
 SELECT chronological._id, chronological._id_record, chronological._id_user_account,
   chronological.operation, chronological.table_db, chronological.timestamp FROM chronological
-  WHERE chronological._id_user_account = ? AND chronological.timestamp > ?;
+  WHERE chronological._id_user_account = ? AND chronological.timestamp > ?
+  ORDER BY chronological.timestamp ASC;
 
 -- MAX_SERVER_ID_TYPE
 SELECT MAX(type.id_server) as id_server FROM type;

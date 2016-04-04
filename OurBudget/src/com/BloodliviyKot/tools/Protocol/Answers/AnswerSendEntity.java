@@ -7,13 +7,23 @@ import org.json.JSONObject;
 public class AnswerSendEntity
   extends Answer
 {
+  public enum RESULT
+  {
+    INSERTED,
+    UPDATED,
+    USE_SERVER_REC
+  }
   public long _id_server;
+  public RESULT result;
+
   protected AnswerSendEntity(int _ID, JSONObject JOBJ) throws E_MESSID.MException
   {
     super(_ID);
     try
     {
-      _id_server = JOBJ.getLong("_id_server");
+      result = RESULT.values()[JOBJ.getInt("RESULT")];
+      if(result == RESULT.INSERTED || result == RESULT.UPDATED)
+        _id_server = JOBJ.getLong("_id_server");
     } catch(JSONException e)
     {
       e.printStackTrace();

@@ -112,7 +112,7 @@ class Type
     $values = array($_id_group, $name); //Параметры для запроса
     $request = QueryCreator::getQuery( $link, EQ\TYPE_FROM_NAME, $values );
     $q_result = $link->query($request);
-    if($q_result)
+    if($q_result && $q_result->num_rows != null && $q_result->num_rows != 0)
     {
       $q_result->data_seek(0);
       $row = $q_result->fetch_assoc();
