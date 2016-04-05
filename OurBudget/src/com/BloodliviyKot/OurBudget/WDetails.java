@@ -171,7 +171,7 @@ public class WDetails
             if(code == RESULT.OK)
             {
               change_purchase.date_time = data.getExtras().getLong("date_time");
-              if( purchase.update(change_purchase, db) )
+              if( purchase.update(change_purchase, db, oh, false) )
               {
                 calcCaptionStatus();
                 if(item_id == R.id.m_details_execute)
@@ -342,7 +342,7 @@ public class WDetails
                     Purchase purchase = Purchase.getPurhaseFromId(_id_purchase, db, oh);
                     Purchase new_purchase = purchase.clone();
                     new_purchase.is_delete = true;
-                    purchase.update(new_purchase, db);
+                    purchase.update(new_purchase, db, oh, false);
                     purchase_is_deleted = true;
                     return true;
                   }

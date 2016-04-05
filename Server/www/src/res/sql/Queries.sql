@@ -28,3 +28,10 @@ SELECT chronological._id_group, chronological.revision, chronological.table_db, 
 -- CHRONO_LAST_REVISION
 SELECT MAX(chronological.revision) AS last_revision FROM chronological
   WHERE chronological._id_group = ?;
+
+-- PURCHASE_LAST_ID
+SELECT MAX(purchase._id) AS last_id FROM purchase WHERE purchase._id_group = ?;
+
+--TYPE_FROM_ID
+SELECT purchase._id_group, purchase._id, purchase.date_time, purchase.state, purchase.is_delete FROM purchase
+WHERE purchase._id_group = ? AND purchase._id = ?;

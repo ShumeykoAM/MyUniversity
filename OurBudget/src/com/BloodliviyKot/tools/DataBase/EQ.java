@@ -25,6 +25,7 @@ public enum EQ
   CHRONOLOGICAL_INDEX1,          //Хронология конкретной записи
   CHRONOLOGICAL_NOT_SYNC,        //Первая по time_stamp несинхронизированная запись
   MAX_SERVER_ID_TYPE,            //Максимальный idшник сервера в таблице видов товаров и услуг
+  PURCHASE_FROM_ID_SERVER,       //Покупка по _id_server и учетки
 
   EQ_COUNT;
   public final int value;

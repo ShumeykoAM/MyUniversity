@@ -39,6 +39,7 @@ public class WPurchases
   boolean grouping = false;
   long s_date = 0, e_date = Long.MAX_VALUE;
   Filter.TERM term = Filter.TERM.ALL;
+  public static WPurchases w_purchases = null;
 
   //Создание активности
   @Override
@@ -71,6 +72,25 @@ public class WPurchases
     updateSourceData(grouping);
     registerForContextMenu(list_purchases);
     startService(new Intent(this, ServiceSynchronization.class));
+    w_purchases = this;
+  }
+  @Override
+  public void onDestroy()
+  {
+    w_purchases = null;
+    super.onDestroy();
+  }
+  public static void postUpdate()
+  {
+    if(w_purchases != null)
+      w_purchases.list_purchases.post(new Runnable()
+      {
+        @Override
+        public void run()
+        {
+          w_purchases.updateSourceData(w_purchases.grouping);
+        }
+      });
   }
 
   @Override //Выбрали покупку, перейдем в ее детали
@@ -217,7 +237,7 @@ public class WPurchases
             if(code == RESULT.OK)
             {
               change_purchase.date_time = data.getExtras().getLong("date_time");
-              if( purchase.update(change_purchase, db) )
+              if( purchase.update(change_purchase, db, oh, false) )
               {
                 cursor.requery();
                 list_adapter.notifyDataSetInvalidated();
@@ -248,7 +268,7 @@ public class WPurchases
             }
             //Удалим пукупку
             change_purchase.is_delete = true;
-            result = result && purchase.update(change_purchase, db);
+            result = result && purchase.update(change_purchase, db, oh, false);
             return result;
           }
         }).runTransaction();
@@ -278,7 +298,7 @@ public class WPurchases
             @Override
             public boolean trnFunc()
             {
-              id_purchase[0] = purchase.insertDateBase(db);
+              id_purchase[0] = purchase.insertDateBase(db, false);
               for(DialogParamsSelectedType selected_type : selected)
               {
                 Detail detail = new Detail(UserAccount.getIDActiveUserAccount(oh, db), id_purchase[0],

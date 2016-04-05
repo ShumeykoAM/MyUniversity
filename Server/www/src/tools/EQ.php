@@ -11,6 +11,8 @@
     const TYPE_FROM_ID             = 5;         //Вид по id
     const CHRONOLOGICAL_FROM_F_KEY = 6;         //Хронология по первичному ключу
     const CHRONO_LAST_REVISION     = 7;         //Последняя существующая ревизия
+    const PURCHASE_LAST_ID         = 8;         //Последний id покупки указанной группы
+    const PURCHASE_FROM_ID         = 9;         //Покупка по id
 
   }
 ?>

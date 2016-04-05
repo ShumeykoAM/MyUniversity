@@ -29,7 +29,14 @@ class AHandlerGetEntity
         case E_TABLE\TYPE:
           $type = Type::getTypeFrom_id($user_account->_id_group, $chrono->_id_record, $this->link);
           $entity_jobj = $type->getJObj();
-          $arr = array('MESSAGE' => E_MESSAGEID\GET_ENTITY, 'EXIST' => true, 'TABLE' => E_TABLE\TYPE,
+          $arr = array('MESSAGE' => E_MESSAGEID\GET_ENTITY, 'EXIST' => true, 'TABLE' => $chrono->table_db,
+            'ENTITY' => $entity_jobj, 'TIMESTAMP' => $chrono->timestamp);
+          $answer = json_encode($arr);
+          break;
+        case E_TABLE\PURCHASE:
+          $purchase = Purchase::getPurchaseFrom_id($user_account->_id_group, $chrono->_id_record, $this->link);
+          $entity_jobj = $purchase->getJObj();
+          $arr = array('MESSAGE' => E_MESSAGEID\GET_ENTITY, 'EXIST' => true, 'TABLE' => $chrono->table_db,
             'ENTITY' => $entity_jobj, 'TIMESTAMP' => $chrono->timestamp);
           $answer = json_encode($arr);
           break;

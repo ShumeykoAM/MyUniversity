@@ -114,3 +114,8 @@ SELECT chronological._id, chronological._id_record, chronological._id_user_accou
 
 -- MAX_SERVER_ID_TYPE
 SELECT MAX(type.id_server) as id_server FROM type;
+
+-- PURCHASE_FROM_ID_SERVER
+SELECT purchase._id, purchase._id_user_account, purchase.id_server, purchase.date_time,
+  purchase.state, purchase.is_delete FROM purchase
+  WHERE purchase._id_user_account = ? AND purchase.id_server = ?;

@@ -29,7 +29,7 @@ CREATE UNIQUE INDEX unique_login ON user_account
 CREATE TABLE purchase
 (
   _id                  INT(8) NOT NULL,
-  date_time            INT(8) NOT NULL,
+  date_time            BIGINT NOT NULL,
   state                INT(8) NOT NULL,
   _id_group            INT(8) NOT NULL,
   is_delete            INT(8) NOT NULL,

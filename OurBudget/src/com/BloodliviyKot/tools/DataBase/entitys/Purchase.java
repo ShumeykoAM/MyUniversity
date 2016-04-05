@@ -5,9 +5,16 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import com.BloodliviyKot.tools.DataBase.EQ;
+import com.BloodliviyKot.tools.DataBase.I_Transaction;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
+import com.BloodliviyKot.tools.DataBase.SQLTransaction;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Date;
 
 public class Purchase
+  implements I_Entity
 {
   public static final String table_name = "purchase";
 
@@ -56,11 +63,25 @@ public class Purchase
     this.date_time        = cursor.getLong(cursor.getColumnIndex("date_time"));
     this.state            = STATE_PURCHASE.getSTATE_PURCHASE(cursor.getInt(cursor.getColumnIndex("state")));
     this.is_delete        = cursor.getInt(cursor.getColumnIndex("is_delete")) == 1;
-
   }
-  public long insertDateBase(SQLiteDatabase db)
+
+  public static Purchase getFromIdServer(long _id_server, long _id_user_account, SQLiteDatabase db, MySQLiteOpenHelper oh)
   {
-    ContentValues values = new ContentValues();
+    Cursor cursor = db.rawQuery(oh.getQuery(EQ.PURCHASE_FROM_ID_SERVER),
+      new String[]{new Long(_id_user_account).toString(), new Long(_id_server).toString()});
+    if(cursor.moveToFirst())
+      return new Purchase(cursor);
+    else
+      return null;
+  }
+
+  public long insertDateBase(final SQLiteDatabase db, boolean is_sync)
+  {
+    return insertDateBase(db, new Date().getTime(), is_sync);
+  }
+  public long insertDateBase(final SQLiteDatabase db, final long timestamp, final boolean is_sync)
+  {
+    final ContentValues values = new ContentValues();
     //values.put("_id", _id);
     values.put("_id_user_account", _id_user_account);
     if(id_server != null)
@@ -68,15 +89,36 @@ public class Purchase
     values.put("date_time"       , date_time       );
     values.put("state"           , state.value     );
     values.put("is_delete"       , is_delete       );
-    return db.insert(table_name, null, values      );
+    final long[] res_id = new long[1];
+    SQLTransaction sql_transaction = new SQLTransaction(db, new I_Transaction()
+    {
+      @Override
+      public boolean trnFunc()
+      {
+        boolean result = (res_id[0] = db.insert(table_name, null, values)) != -1;
+        if(result)
+        {
+          Chronological chronological = new Chronological(_id_user_account, Chronological.TABLE.PURCHASE, res_id[0],
+            timestamp, is_sync);
+          result = chronological.insertDateBase(db) != -1;
+        }
+        return result;
+      }
+    });
+    return sql_transaction.runTransaction() ? res_id[0] : -1;
   }
-
   //Обновляет запись если есть что обновлять
-  public boolean update(Purchase new_purchase, SQLiteDatabase db)
+  public boolean update(Purchase new_type, final SQLiteDatabase db, final MySQLiteOpenHelper oh, boolean is_sync)
+  {
+    return update(new_type, db, oh, true, is_sync);
+  }
+  //Обновляет запись если есть что обновлять
+  public boolean update(Purchase new_purchase, final SQLiteDatabase db, final MySQLiteOpenHelper oh,
+                        final boolean need_chronological, final boolean is_sync)
   {
     if(_id != new_purchase._id)
       throw new Error();
-    ContentValues values = new ContentValues();
+    final ContentValues values = new ContentValues();
     if(_id_user_account != new_purchase._id_user_account)
       values.put("_id_user_account", new Long(new_purchase._id_user_account).toString());
     if(id_server != null && new_purchase.id_server == null)
@@ -93,8 +135,38 @@ public class Purchase
       values.put("state", new Double(new_purchase.state.value).toString());
     if(is_delete != new_purchase.is_delete)
       values.put("is_delete", new Long(new_purchase.is_delete ? 1 : 0).toString());
-    if(values.size() > 0)
-      return db.update(table_name, values, "_id=?", new String[]{new Long(_id).toString()}) == 1;
+    if(values.size() > 0 || is_sync)
+    {
+      SQLTransaction sql_transaction = new SQLTransaction(db, new I_Transaction()
+      {
+        @Override
+        public boolean trnFunc()
+        {
+          boolean result = true;
+          if(values.size() > 0)
+            result = db.update(table_name, values, "_id=?", new String[]{new Long(_id).toString()}) == 1;
+          if(result && need_chronological)
+          {
+            Chronological chronological = Chronological.getFromIndex1(_id_user_account, Chronological.TABLE.PURCHASE,
+              _id, db, oh);
+            if(chronological != null)
+            {
+              chronological.timestamp = new Date().getTime();
+              chronological.is_sync = is_sync;
+              result = chronological.update(db, oh);
+            }
+            else
+            {
+              chronological = new Chronological(_id_user_account, Chronological.TABLE.PURCHASE, _id,
+                new Date().getTime(), is_sync);
+              result = chronological.insertDateBase(db) != -1;
+            }
+          }
+          return result;
+        }
+      });
+      return sql_transaction.runTransaction();
+    }
     else
       return false;
   }
@@ -114,5 +186,32 @@ public class Purchase
       return new Purchase(cursor);
     else
       return null;
+  }
+
+  @Override
+  public Chronological.TABLE get_table()
+  {
+    return Chronological.TABLE.PURCHASE;
+  }
+
+  @Override
+  public JSONObject get_JObj() throws JSONException
+  {
+    long _id;
+    JSONObject JObj = new JSONObject();
+    JObj.put("id_server", id_server);
+    JObj.put("date_time", date_time);
+    JObj.put("state", state.ordinal());
+    JObj.put("is_delete", is_delete);
+    return JObj;
+  }
+
+  @Override
+  public boolean set_idServerIfUnset(long _id_server, SQLiteDatabase db, MySQLiteOpenHelper oh)
+  {
+    Purchase new_rec = clone();
+    if(new_rec.id_server == null || new_rec.id_server != _id_server)
+      new_rec.id_server = _id_server;
+    return update(new_rec, db, oh, true);
   }
 }

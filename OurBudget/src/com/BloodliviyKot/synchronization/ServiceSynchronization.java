@@ -16,10 +16,7 @@ import com.BloodliviyKot.OurBudget.WPurchases;
 import com.BloodliviyKot.OurBudget.WTypes;
 import com.BloodliviyKot.tools.DataBase.EQ;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
-import com.BloodliviyKot.tools.DataBase.entitys.Chronological;
-import com.BloodliviyKot.tools.DataBase.entitys.I_Entity;
-import com.BloodliviyKot.tools.DataBase.entitys.Type;
-import com.BloodliviyKot.tools.DataBase.entitys.UserAccount;
+import com.BloodliviyKot.tools.DataBase.entitys.*;
 import com.BloodliviyKot.tools.Protocol.Answers.AnswerGetEntity;
 import com.BloodliviyKot.tools.Protocol.Answers.AnswerSendEntity;
 import com.BloodliviyKot.tools.Protocol.Answers.AnswerTimeServer;
@@ -131,12 +128,49 @@ main_loop:
                           chronological.update(db, oh);
                         }
                       }
-                      if(need_update && WTypes.w_types != null)
+                      if(need_update)
                         WTypes.postUpdate();
                       break;
                     case DETAIL:
+
+
+
+
+
+
+
                       break;
                     case PURCHASE:
+                      need_update = false;
+                      //Пытаемся найти запись по id_server
+                      Purchase purchase = Purchase.getFromIdServer(answer_ge.entity.getLong("_id"), user_account._id, db, oh);
+                      if(purchase == null) //Если такой покупки еще нет, то добавим ее
+                      {
+                        purchase = new Purchase(user_account._id, answer_ge.entity.getLong("_id"),
+                          answer_ge.entity.getLong("date_time"),
+                          Purchase.STATE_PURCHASE.values()[answer_ge.entity.getInt("state")],
+                          answer_ge.entity.getInt("is_delete") == 1);
+                        purchase.insertDateBase(db, answer_ge.server_timestamp, true);
+                        need_update = true;
+                      }
+                      else //Такая покупка уже есть
+                      {
+                        Chronological chronological = Chronological.getFromIndex1(user_account._id,
+                          Chronological.TABLE.PURCHASE, purchase._id, db, oh);
+                        if(chronological == null || answer_ge.server_timestamp >= chronological.timestamp)
+                        {
+                          Purchase new_rec = purchase.clone();
+                          new_rec.date_time = answer_ge.entity.getLong("date_time");
+                          new_rec.state = Purchase.STATE_PURCHASE.values()[answer_ge.entity.getInt("state")];
+                          new_rec.is_delete = answer_ge.entity.getLong("is_delete") == 1;
+                          purchase.update(new_rec, db, oh, true);
+                          need_update = true;
+                          chronological.timestamp = answer_ge.server_timestamp;
+                          chronological.update(db, oh);
+                        }
+                      }
+                      if(need_update)
+                        WPurchases.postUpdate();
                       break;
                   }
                   UserAccount new_rec = user_account.clone();
@@ -158,6 +192,12 @@ main_loop:
                     {
                       case TYPE:
                         i_entity = Type.getFromId(chronological._id_rec, db, oh);
+                        break;
+                      case PURCHASE:
+                        i_entity = Purchase.getPurhaseFromId(chronological._id_rec, db, oh);
+                        break;
+                      case DETAIL:
+                        i_entity = null;
                         break;
                       default:
                         i_entity = null;
