@@ -12,17 +12,19 @@ public class ARequestSendEntity
 {
   private I_Entity i_entity;
   long timestamp;
+  long client_rev;
   private I_HandlerSendEntity i_handler;
 
   public interface I_HandlerSendEntity
   {
     void handlerAnswer(AnswerSendEntity answer);
   }
-  public ARequestSendEntity(I_Entity i_entity, long timestamp) throws E_MESSID.MException
+  public ARequestSendEntity(I_Entity i_entity, long timestamp, long client_rev) throws E_MESSID.MException
   {
     super(E_MESSID.SEND_ENTITY);
     this.i_entity = i_entity;
     this.timestamp = timestamp;
+    this.client_rev = client_rev;
     ConstructRequest();
   }
   @Override
@@ -32,6 +34,7 @@ public class ARequestSendEntity
     {
       JObj.put("TIMESTAMP", timestamp);
       JObj.put("TABLE", i_entity.get_table().ordinal());
+      JObj.put("REVISION", client_rev);
       JObj.put("ENTITY", i_entity.get_JObj());
     } catch(JSONException e)
     {

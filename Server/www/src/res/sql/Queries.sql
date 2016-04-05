@@ -23,4 +23,8 @@ SELECT type._id, type.name, type.id_unit, type._id_group, type.is_delete FROM ty
 -- CHRONOLOGICAL_FROM_F_KEY
 SELECT chronological._id_group, chronological.revision, chronological.table_db, chronological._id_record,
   chronological.timestamp FROM chronological
-WHERE chronological._id_group = ? AND chronological.revision = ?;
+  WHERE chronological._id_group = ? AND chronological.revision = ?;
+
+-- CHRONO_LAST_REVISION
+SELECT MAX(chronological.revision) AS last_revision FROM chronological
+  WHERE chronological._id_group = ?;

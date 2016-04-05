@@ -62,7 +62,12 @@ SELECT type._id, type._id_user_account, type.name, type.name_lower,
 -- TYPE_FROM_ID_SERVER
 SELECT type._id, type._id_user_account, type.name, type.name_lower,
   type.id_server, type.id_unit, type.is_delete
-FROM type WHERE type._id_user_account = ? AND type.id_server = ?;
+  FROM type WHERE type._id_user_account = ? AND type.id_server = ?;
+
+-- TYPE_FROM_NAME
+SELECT type._id, type._id_user_account, type.name, type.name_lower,
+  type.id_server, type.id_unit, type.is_delete
+  FROM type WHERE type._id_user_account = ? AND type.name_lower = ?;
 
 -- LAST_PRICE
 SELECT detail.price,
@@ -100,11 +105,12 @@ SELECT chronological._id, chronological._id_record, chronological._id_user_accou
   AND chronological.table_db = ?
   AND chronological._id_record = ?;
 
--- CHRONOLOGICAL_TIMESTAMP
+-- CHRONOLOGICAL_NOT_SYNC
 SELECT chronological._id, chronological._id_record, chronological._id_user_account,
   chronological.is_sync, chronological.table_db, chronological.timestamp FROM chronological
-  WHERE chronological._id_user_account = ? AND chronological.timestamp > ?
-  ORDER BY chronological.timestamp ASC;
+  WHERE chronological._id_user_account = ? AND chronological.is_sync = 0
+  ORDER BY chronological.timestamp ASC
+  LIMIT 1;
 
 -- MAX_SERVER_ID_TYPE
 SELECT MAX(type.id_server) as id_server FROM type;

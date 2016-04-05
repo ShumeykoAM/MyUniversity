@@ -75,6 +75,16 @@ public class Type
       return null;
   }
 
+  public static Type getFromName(String name, long _id_user_account, SQLiteDatabase db, MySQLiteOpenHelper oh)
+  {
+    Cursor cursor = db.rawQuery(oh.getQuery(EQ.TYPE_FROM_NAME),
+      new String[]{new Long(_id_user_account).toString(), name.toLowerCase()});
+    if(cursor.moveToFirst())
+      return new Type(cursor);
+    else
+      return null;
+  }
+
   public Type clone()
   {
     Type result = new Type(_id_user_account, name, id_server, id_unit, is_delete);
@@ -94,7 +104,7 @@ public class Type
     values.put("name"              , name );
     values.put("name_lower"        , name_lower);
     if(id_server != null)
-      values.put("id_unit"         , id_server);
+      values.put("id_server"         , id_server);
     values.put("id_unit"           , id_unit);
     values.put("is_delete"         , is_delete ? 1 : 0);
     final long[] res_id = new long[1];
@@ -154,21 +164,32 @@ public class Type
       values.put("id_unit", new Long(new_type.id_unit).toString());
     if(is_delete != new_type.is_delete)
       values.put("is_delete", new Long(new_type.is_delete ? 1 : 0).toString());
-    if(values.size() > 0)
+    if(values.size() > 0 || is_sync)
     {
       SQLTransaction sql_transaction = new SQLTransaction(db, new I_Transaction()
       {
         @Override
         public boolean trnFunc()
         {
-          boolean result = db.update(table_name, values, "_id=?", new String[]{new Long(_id).toString()}) == 1;
+          boolean result = true;
+          if(values.size() > 0)
+            result = db.update(table_name, values, "_id=?", new String[]{new Long(_id).toString()}) == 1;
           if(result && need_chronological)
           {
             Chronological chronological = Chronological.getFromIndex1(_id_user_account, Chronological.TABLE.TYPE,
                                                                       _id, db, oh);
-            chronological.timestamp = new Date().getTime();
-            chronological.is_sync   = is_sync;
-            result = chronological.update(db, oh);
+            if(chronological != null)
+            {
+              chronological.timestamp = new Date().getTime();
+              chronological.is_sync = is_sync;
+              result = chronological.update(db, oh);
+            }
+            else
+            {
+              chronological = new Chronological(_id_user_account, Chronological.TABLE.TYPE, _id,
+                new Date().getTime(), is_sync);
+              result = chronological.insertDateBase(db) != -1;
+            }
           }
           return result;
         }
@@ -198,14 +219,10 @@ public class Type
   @Override
   public boolean set_idServerIfUnset(long _id_server, SQLiteDatabase db, MySQLiteOpenHelper oh)
   {
-    if(this.id_server == null)
-    {
-      Type new_type = clone();
+    Type new_type = clone();
+    if(new_type.id_server == null || new_type.id_server != _id_server)
       new_type.id_server = _id_server;
-      return update(new_type, db, oh, false);
-    }
-    else
-      return true;
+    return update(new_type, db, oh, true);
   }
 
 }

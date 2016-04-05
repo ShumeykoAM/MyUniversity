@@ -15,7 +15,7 @@ public class UserAccount
   public String login;
   public String password;
   public int is_active;
-  public long timestamp;
+  public long timestamp; //Удалить потом как нибудь
   public long current_rev;
 
   public UserAccount(Cursor cursor)
@@ -72,9 +72,14 @@ public class UserAccount
     if(timestamp != new_rec.timestamp)
       values.put("timestamp", new_rec.timestamp);
     if(current_rev != new_rec.current_rev)
-      values.put("current_rev", current_rev);
+      values.put("current_rev", new_rec.current_rev);
     if(values.size() > 0)
     {
+      this.login       = new_rec.login;
+      this.password    = new_rec.password;
+      this.is_active   = new_rec.is_active;
+      this.timestamp   = new_rec.timestamp;
+      this.current_rev = new_rec.current_rev;
       return db.update(table_name, values, "_id=?", new String[]{new Long(_id).toString()}) == 1;
     }
     else

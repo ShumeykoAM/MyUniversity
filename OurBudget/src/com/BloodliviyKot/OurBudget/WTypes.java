@@ -32,6 +32,7 @@ public class WTypes
   private SimpleCursorAdapter list_adapter;
   private TypesCursorTuning types_cursor_tuning;
   private boolean type_change = false;
+  public static WTypes w_types= null;
   //Создание активности
   @Override
   public void onCreate(Bundle savedInstanceState)
@@ -54,8 +55,14 @@ public class WTypes
     types_cursor_tuning = new TypesCursorTuning(oh, db, cursor, list_adapter);
     list_adapter.setFilterQueryProvider(types_cursor_tuning);
     search.setOnQueryTextListener(types_cursor_tuning);
+    w_types = this;
   }
-
+  @Override
+  public void onDestroy()
+  {
+    w_types= null;
+    super.onDestroy();
+  }
   //Создаем меню
   @Override
   public boolean onCreateOptionsMenu(Menu menu)
@@ -89,6 +96,18 @@ public class WTypes
       list_adapter.notifyDataSetChanged();
       type_change = true;
     }
+  }
+  public static void postUpdate()
+  {
+    if(w_types != null)
+      w_types.list_types.post(new Runnable()
+      {
+        @Override
+        public void run()
+        {
+          w_types.onResult(RESULT.OK, null);
+        }
+      });
   }
   @Override
   public void onItemClick(AdapterView<?> parent, View view, int position, long id)

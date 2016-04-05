@@ -11,7 +11,7 @@ public class AnswerSendEntity
   {
     INSERTED,
     UPDATED,
-    USE_SERVER_REC
+    NOT_LAST_REV
   }
   public long _id_server;
   public RESULT result;

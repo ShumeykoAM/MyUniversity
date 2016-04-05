@@ -55,6 +55,22 @@ class Chronological
     }
     return $result;
   }
+
+  public static function getLastRevision($_id_group, $link) /*out revision*/
+  {
+    $result = 0;
+    $values = array($_id_group); //Параметры для запроса
+    $request = QueryCreator::getQuery( $link, EQ\CHRONO_LAST_REVISION, $values );
+    $q_result = $link->query($request);
+    if($q_result && $q_result != null && $q_result->num_rows != 0)
+    {
+      $q_result->data_seek(0);
+      $row = $q_result->fetch_assoc();
+      $result = $row['last_revision'];
+    }
+    return $result;
+  }
+
   public function copy()
   {
     $result = new Chronological(Chronological::$ENUM_CONSTRUCT_FIELD, $this->_id_group, $this->revision,
@@ -63,19 +79,24 @@ class Chronological
   }
   public function insert($link)
   {
-    $command = "INSERT INTO chronological ".
-               "(_id_group, revision, table_db, _id_record, timestamp) ".
+    $command = "INSERT INTO chronological (_id_group, table_db, _id_record, timestamp, revision) ".
                "SELECT ".
-               "'".$this->_id_group."', MAX(revision)+1 FROM chronological WHERE _id_group='\".
-               $this->_id_group.\"'; '".$this->table_db."', '".$this->_id_record."', '".$this->timestamp."';";
-
+               "'".$this->_id_group."', '".$this->table_db."', '".$this->_id_record."', '".$this->timestamp.
+               "', MAX(revision)+1 FROM chronological WHERE _id_group='".$this->_id_group."';";
     $result = $link->query($command);
+    if($result)
+    {
+      $this->revision = Chronological::getLastRevision($this->_id_group, $link);
+    }
     if(!$result)//Возможно это самая первая запись вот и не отработал MAX
     {
-      $command = "INSERT INTO chronological((_id_group, revision, table_db, _id_record, timestamp) ".
-        "VALUES('".$this->_id_group."', '".$this->revision."', '".$this->table_db."', '".$this->_id_record."', '".
-        $this->timestamp."';";
+      $command = "INSERT INTO chronological (_id_group, table_db, _id_record, timestamp, revision) ".
+                 "VALUES (".
+                 "'".$this->_id_group."', '".$this->table_db."', '".$this->_id_record."', '".$this->timestamp.
+                 "', '1');";
       $result = $link->query($command);
+      if($result)
+        $this->revision = 1;
     }
     return $result;
   }
