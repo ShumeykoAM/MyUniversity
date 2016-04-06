@@ -10,10 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.IBinder;
-import com.BloodliviyKot.OurBudget.AlertConnect;
-import com.BloodliviyKot.OurBudget.R;
-import com.BloodliviyKot.OurBudget.WPurchases;
-import com.BloodliviyKot.OurBudget.WTypes;
+import com.BloodliviyKot.OurBudget.*;
 import com.BloodliviyKot.tools.DataBase.EQ;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
 import com.BloodliviyKot.tools.DataBase.entitys.*;
@@ -129,16 +126,57 @@ main_loop:
                         }
                       }
                       if(need_update)
+                      {
                         WTypes.postUpdate();
+                        WPurchases.postUpdate();
+                        WDetails.postUpdate();
+                      }
                       break;
                     case DETAIL:
-
-
-
-
-
-
-
+                      need_update = false;
+                      //Пытаемся найти запись по id_server
+                      Detail detail = Detail.getFromIdServer(answer_ge.entity.getLong("_id"), user_account._id, db, oh);
+                      if(detail == null) //Если такой покупки еще нет, то добавим ее
+                      {
+                        detail = new Detail(user_account._id,
+                          Purchase.getFromIdServer(answer_ge.entity.getLong("_id_purchase"), user_account._id, db, oh)._id,
+                          Type.getFromIdServer(answer_ge.entity.getLong("_id_type"), user_account._id, db, oh)._id,
+                          answer_ge.entity.getLong("_id"),
+                          answer_ge.entity.has("price") ? answer_ge.entity.getDouble("price") : null,
+                          answer_ge.entity.getDouble("for_amount_unit"),
+                          answer_ge.entity.getLong("for_id_unit"),
+                          answer_ge.entity.getDouble("amount"),
+                          answer_ge.entity.getLong("id_unit"),
+                          answer_ge.entity.has("price") ? answer_ge.entity.getDouble("cost") : null,
+                          answer_ge.entity.getInt("is_delete") == 1);
+                        detail.insertDateBase(db, answer_ge.server_timestamp, true);
+                        need_update = true;
+                      }
+                      else //Такая покупка уже есть
+                      {
+                        Chronological chronological = Chronological.getFromIndex1(user_account._id,
+                          Chronological.TABLE.DETAIL, detail._id, db, oh);
+                        if(chronological == null || answer_ge.server_timestamp >= chronological.timestamp)
+                        {
+                          Detail new_rec = detail.clone();
+                          new_rec.price = answer_ge.entity.has("price") ? answer_ge.entity.getDouble("price") : null;
+                          new_rec.for_amount_unit = answer_ge.entity.getDouble("for_amount_unit");
+                          new_rec.for_id_unit = answer_ge.entity.getLong("for_id_unit");
+                          new_rec.amount = answer_ge.entity.getDouble("amount");
+                          new_rec.id_unit = answer_ge.entity.getLong("id_unit");
+                          new_rec.cost = answer_ge.entity.has("price") ? answer_ge.entity.getDouble("cost") : null;
+                          new_rec.is_delete = answer_ge.entity.getInt("is_delete") == 1;
+                          detail.update(new_rec, db, oh, true);
+                          need_update = true;
+                          chronological.timestamp = answer_ge.server_timestamp;
+                          chronological.update(db, oh);
+                        }
+                      }
+                      if(need_update)
+                      {
+                        WPurchases.postUpdate();
+                        WDetails.postUpdate();
+                      }
                       break;
                     case PURCHASE:
                       need_update = false;
@@ -197,7 +235,7 @@ main_loop:
                         i_entity = Purchase.getPurhaseFromId(chronological._id_rec, db, oh);
                         break;
                       case DETAIL:
-                        i_entity = null;
+                        i_entity = Detail.getDetailFromId(chronological._id_rec, db, oh);
                         break;
                       default:
                         i_entity = null;
@@ -208,9 +246,12 @@ main_loop:
                     if(answer != null && answer.result != AnswerSendEntity.RESULT.NOT_LAST_REV)
                     {
                       i_entity.set_idServerIfUnset(answer._id_server, db, oh);
-                      UserAccount new_rec = user_account.clone();
-                      new_rec.current_rev += 1;
-                      user_account.update(new_rec, db, oh);
+                      if(answer.s_revision > user_account.current_rev)
+                      {
+                        UserAccount new_rec = user_account.clone();
+                        new_rec.current_rev += 1;
+                        user_account.update(new_rec, db, oh);
+                      }
                     }
                     else
                       continue main_loop;

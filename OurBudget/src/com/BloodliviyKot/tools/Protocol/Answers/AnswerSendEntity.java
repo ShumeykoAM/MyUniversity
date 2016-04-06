@@ -15,6 +15,7 @@ public class AnswerSendEntity
   }
   public long _id_server;
   public RESULT result;
+  public long s_revision;
 
   protected AnswerSendEntity(int _ID, JSONObject JOBJ) throws E_MESSID.MException
   {
@@ -23,7 +24,10 @@ public class AnswerSendEntity
     {
       result = RESULT.values()[JOBJ.getInt("RESULT")];
       if(result == RESULT.INSERTED || result == RESULT.UPDATED)
+      {
         _id_server = JOBJ.getLong("_id_server");
+        s_revision = JOBJ.getLong("REVISION");
+      }
     } catch(JSONException e)
     {
       e.printStackTrace();

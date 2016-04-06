@@ -13,6 +13,9 @@
     const CHRONO_LAST_REVISION     = 7;         //Последняя существующая ревизия
     const PURCHASE_LAST_ID         = 8;         //Последний id покупки указанной группы
     const PURCHASE_FROM_ID         = 9;         //Покупка по id
+    const DETAIL_LAST_ID           = 10;        //Последний id детали
+    const DETAIL_FROM_ID           = 11;        //Деталь по id
+    const DETAIL_FROM_ID_P_T       = 12;        //Деталь по id_purchase и id_type
 
   }
 ?>

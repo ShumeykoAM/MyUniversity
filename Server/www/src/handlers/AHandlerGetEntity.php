@@ -2,6 +2,8 @@
 
 include_once 'common.php';
 include_once 'entities/Type.php';
+include_once 'entities/Purchase.php';
+include_once 'entities/Detail.php';
 
 class AHandlerGetEntity
   extends ABaseHandler
@@ -29,6 +31,13 @@ class AHandlerGetEntity
         case E_TABLE\TYPE:
           $type = Type::getTypeFrom_id($user_account->_id_group, $chrono->_id_record, $this->link);
           $entity_jobj = $type->getJObj();
+          $arr = array('MESSAGE' => E_MESSAGEID\GET_ENTITY, 'EXIST' => true, 'TABLE' => $chrono->table_db,
+            'ENTITY' => $entity_jobj, 'TIMESTAMP' => $chrono->timestamp);
+          $answer = json_encode($arr);
+          break;
+        case E_TABLE\DETAIL:
+          $detail = Detail::getDetailFrom_id($user_account->_id_group, $chrono->_id_record, $this->link);
+          $entity_jobj = $detail->getJObj();
           $arr = array('MESSAGE' => E_MESSAGEID\GET_ENTITY, 'EXIST' => true, 'TABLE' => $chrono->table_db,
             'ENTITY' => $entity_jobj, 'TIMESTAMP' => $chrono->timestamp);
           $answer = json_encode($arr);

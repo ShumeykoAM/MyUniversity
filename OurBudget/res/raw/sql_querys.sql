@@ -44,6 +44,12 @@ SELECT detail._id, detail._id_user_account, detail._id_purchase, detail._id_type
   detail.id_unit, detail.cost, detail.is_delete FROM detail
   WHERE detail._id = ?;
 
+-- DETAIL_FROM_ID_SERVER
+SELECT detail._id, detail._id_user_account, detail._id_purchase, detail._id_type, detail.id_server,
+  detail.price, detail.for_amount_unit, detail.for_id_unit, detail.amount,
+  detail.id_unit, detail.cost, detail.is_delete FROM detail
+  WHERE detail._id_user_account = ? AND detail.id_server = ?;
+
 -- TYPES_USER_ACC
 SELECT type._id, type._id_user_account, type.name, type.name_lower,
   type.id_server, type.id_unit, type.is_delete

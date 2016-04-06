@@ -4,13 +4,19 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import com.BloodliviyKot.tools.DataBase.EQ;
+import com.BloodliviyKot.tools.DataBase.I_Transaction;
 import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
+import com.BloodliviyKot.tools.DataBase.SQLTransaction;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
+import java.util.Date;
 
 public class Detail
+  implements I_Entity
 {
   public static final String table_name = "detail";
   public Long _id;
@@ -61,10 +67,13 @@ public class Detail
     cost             = _cost;
     is_delete        = _is_delete;
   }
-
-  public long insertDateBase(SQLiteDatabase db)
+  public long insertDateBase(final SQLiteDatabase db, boolean is_sync)
   {
-    ContentValues values = new ContentValues();
+    return insertDateBase(db, new Date().getTime(), is_sync);
+  }
+  public long insertDateBase(final SQLiteDatabase db, final long timestamp, final boolean is_sync)
+  {
+    final ContentValues values = new ContentValues();
     //values.put("_id", _id);
     values.put("_id_user_account", _id_user_account );
     values.put("_id_purchase"    , _id_purchase     );
@@ -80,7 +89,23 @@ public class Detail
     if(cost != null)
       values.put("cost"          , cost             );
     values.put("is_delete"       , is_delete ? 1 : 0);
-    return db.insert(table_name, null, values);
+    final long[] res_id = new long[1];
+    SQLTransaction sql_transaction = new SQLTransaction(db, new I_Transaction()
+    {
+      @Override
+      public boolean trnFunc()
+      {
+        boolean result = (res_id[0] = db.insert(table_name, null, values)) != -1;
+        if(result)
+        {
+          Chronological chronological = new Chronological(_id_user_account, Chronological.TABLE.DETAIL, res_id[0],
+            timestamp, is_sync);
+          result = chronological.insertDateBase(db) != -1;
+        }
+        return result;
+      }
+    });
+    return sql_transaction.runTransaction() ? res_id[0] : -1;
   }
 
   public boolean calcCost(boolean fl_recalc)
@@ -196,13 +221,18 @@ public class Detail
     }
     return result;
   }
-
   //Обновляет запись если есть что обновлять
-  public boolean update(Detail new_detail, SQLiteDatabase db)
+  public boolean update(Detail new_rec, final SQLiteDatabase db, final MySQLiteOpenHelper oh, boolean is_sync)
+  {
+    return update(new_rec, db, oh, true, is_sync);
+  }
+  //Обновляет запись если есть что обновлять
+  public boolean update(Detail new_detail, final SQLiteDatabase db, final MySQLiteOpenHelper oh,
+                        final boolean need_chronological, final boolean is_sync)
   {
     if(_id == null || new_detail._id == null || !_id.equals(new_detail._id))
       throw new Error();
-    ContentValues values = new ContentValues();
+    final ContentValues values = new ContentValues();
     if(_id_user_account != new_detail._id_user_account)
       values.put("_id_user_account", new Long(new_detail._id_user_account).toString());
     if(_id_purchase != new_detail._id_purchase)
@@ -234,8 +264,38 @@ public class Detail
       values.put("cost", new Double(new_detail.cost).toString());
     if(is_delete != new_detail.is_delete)
       values.put("is_delete", new Long(new_detail.is_delete ? 1 : 0).toString());
-    if(values.size() > 0)
-      return db.update(table_name, values, "_id=?", new String[]{new Long(_id).toString()}) == 1;
+    if(values.size() > 0 || is_sync)
+    {
+      SQLTransaction sql_transaction = new SQLTransaction(db, new I_Transaction()
+      {
+        @Override
+        public boolean trnFunc()
+        {
+          boolean result = true;
+          if(values.size() > 0)
+            result = db.update(table_name, values, "_id=?", new String[]{new Long(_id).toString()}) == 1;
+          if(result && need_chronological)
+          {
+            Chronological chronological = Chronological.getFromIndex1(_id_user_account, Chronological.TABLE.DETAIL,
+              _id, db, oh);
+            if(chronological != null)
+            {
+              chronological.timestamp = new Date().getTime();
+              chronological.is_sync = is_sync;
+              result = chronological.update(db, oh);
+            }
+            else
+            {
+              chronological = new Chronological(_id_user_account, Chronological.TABLE.DETAIL, _id,
+                new Date().getTime(), is_sync);
+              result = chronological.insertDateBase(db) != -1;
+            }
+          }
+          return result;
+        }
+      });
+      return sql_transaction.runTransaction();
+    }
     else
       return false;
   }
@@ -253,5 +313,48 @@ public class Detail
       return new Detail(cursor);
     else
       return null;
+  }
+
+  public static Detail getFromIdServer(long _id_server, long _id_user_account, SQLiteDatabase db, MySQLiteOpenHelper oh)
+  {
+    Cursor cursor = db.rawQuery(oh.getQuery(EQ.DETAIL_FROM_ID_SERVER),
+      new String[]{new Long(_id_user_account).toString(), new Long(_id_server).toString()});
+    if(cursor.moveToFirst())
+      return new Detail(cursor);
+    else
+      return null;
+  }
+
+  @Override
+  public Chronological.TABLE get_table()
+  {
+    return Chronological.TABLE.DETAIL;
+  }
+
+  @Override
+  public JSONObject get_JObj(SQLiteDatabase db, MySQLiteOpenHelper oh) throws JSONException
+  {
+    long _id;
+    JSONObject JObj = new JSONObject();
+    JObj.put("id_server", id_server);
+    JObj.put("_id_purchase", Purchase.getPurhaseFromId(_id_purchase, db, oh).id_server); //id_server покупки
+    JObj.put("_id_type", Type.getFromId(_id_type, db, oh).id_server);  //id_server вида товара
+    JObj.put("price", price);
+    JObj.put("for_amount_unit", for_amount_unit);
+    JObj.put("for_id_unit", for_id_unit);
+    JObj.put("amount", amount);
+    JObj.put("id_unit", id_unit);
+    JObj.put("cost", cost);
+    JObj.put("is_delete", is_delete ? 1 : 0);
+    return JObj;
+  }
+
+  @Override
+  public boolean set_idServerIfUnset(long _id_server, SQLiteDatabase db, MySQLiteOpenHelper oh)
+  {
+    Detail new_rec = clone();
+    if(new_rec.id_server == null || new_rec.id_server != _id_server)
+      new_rec.id_server = _id_server;
+    return update(new_rec, db, oh, true);
   }
 }

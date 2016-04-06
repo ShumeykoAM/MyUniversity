@@ -264,7 +264,7 @@ public class WPurchases
               Detail detail = new Detail(cursor_details);
               Detail detail_change = detail.clone();
               detail_change.is_delete = true;
-              result = result && detail.update(detail_change, db);
+              result = result && detail.update(detail_change, db, oh, false);
             }
             //Удалим пукупку
             change_purchase.is_delete = true;
@@ -306,7 +306,7 @@ public class WPurchases
                   selected_type.id_unit, null, false);
                 detail.find_and_fill_last_price_and_unit_for(db, oh);
                 detail.calcCost(true);
-                detail.insertDateBase(db);
+                detail.insertDateBase(db, false);
               }
               return true;
             }

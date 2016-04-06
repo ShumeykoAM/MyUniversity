@@ -9,6 +9,6 @@ import org.json.JSONObject;
 public interface I_Entity
 {
   Chronological.TABLE get_table();
-  JSONObject get_JObj() throws JSONException;
+  JSONObject get_JObj(SQLiteDatabase db, MySQLiteOpenHelper oh) throws JSONException;
   boolean set_idServerIfUnset(long _id_server, SQLiteDatabase db, MySQLiteOpenHelper oh);
 }

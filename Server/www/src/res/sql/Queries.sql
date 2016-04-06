@@ -32,6 +32,19 @@ SELECT MAX(chronological.revision) AS last_revision FROM chronological
 -- PURCHASE_LAST_ID
 SELECT MAX(purchase._id) AS last_id FROM purchase WHERE purchase._id_group = ?;
 
---TYPE_FROM_ID
+--PURCHASE_FROM_ID
 SELECT purchase._id_group, purchase._id, purchase.date_time, purchase.state, purchase.is_delete FROM purchase
-WHERE purchase._id_group = ? AND purchase._id = ?;
+  WHERE purchase._id_group = ? AND purchase._id = ?;
+
+-- DETAIL_LAST_ID
+SELECT MAX(detail._id) AS last_id FROM detail WHERE detail._id_group_ = ?;
+
+--DETAIL_FROM_ID
+SELECT detail._id_group_, detail._id, detail._id_purchase, detail._id_type, detail.price, detail.for_amount_unit,
+  detail.for_id_unit, detail.amount, detail.id_unit, detail.cost, detail.is_delete FROM detail
+  WHERE detail._id_group_ = ? AND detail._id = ?;
+
+-- DETAIL_FROM_ID_P_T
+SELECT detail._id_group_, detail._id, detail._id_purchase, detail._id_type, detail.price, detail.for_amount_unit,
+  detail.for_id_unit, detail.amount, detail.id_unit, detail.cost, detail.is_delete FROM detail
+WHERE detail._id_group_ = ? AND detail._id_purchase = ? AND detail._id_type = ?;

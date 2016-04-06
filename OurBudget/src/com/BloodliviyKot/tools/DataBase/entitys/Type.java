@@ -205,7 +205,7 @@ public class Type
     return Chronological.TABLE.TYPE;
   }
   @Override
-  public JSONObject get_JObj() throws JSONException
+  public JSONObject get_JObj(SQLiteDatabase db, MySQLiteOpenHelper oh) throws JSONException
   {
     JSONObject JObj = new JSONObject();
     JObj.put("id_server", id_server);

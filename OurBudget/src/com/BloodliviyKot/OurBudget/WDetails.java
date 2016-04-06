@@ -42,6 +42,7 @@ public class WDetails
   private Detail detail_for_dialog;
   private boolean purchase_is_deleted = false;
   private Menu menu;
+  public static WDetails w_detail = null;
   //Создание активности
   @Override
   public void onCreate(Bundle savedInstanceState)
@@ -69,6 +70,27 @@ public class WDetails
     calcCaptionStatus();
 
     registerForContextMenu(list_details);
+    w_detail = this;
+  }
+  @Override
+  public void onDestroy()
+  {
+    w_detail = null;
+    super.onDestroy();
+  }
+  public static void postUpdate()
+  {
+    if(w_detail != null)
+      w_detail.list_details.post(new Runnable()
+      {
+        @Override
+        public void run()
+        {
+          w_detail.cursor.requery();
+          w_detail.list_adapter.notifyDataSetInvalidated();
+          w_detail.calcCaptionStatus();
+        }
+      });
   }
   private void calcCaptionStatus()
   {
@@ -110,7 +132,7 @@ public class WDetails
   {
     if(code == RESULT.OK)
     {
-      if(detail_for_dialog.update(detailDialog.detail, db))
+      if(detail_for_dialog.update(detailDialog.detail, db, oh, false))
       {
         cursor.requery();
         list_adapter.notifyDataSetInvalidated();
@@ -256,7 +278,7 @@ public class WDetails
                     }
                     if(need_udate)
                     {
-                      exist_detail.update(detail, db);
+                      exist_detail.update(detail, db, oh, false);
                     }
                     continue label_exist;
                   }
@@ -266,7 +288,7 @@ public class WDetails
                   //Пометим как удаленная
                   Detail detail = exist_detail.clone();
                   detail.is_delete = true;
-                  exist_detail.update(detail, db);
+                  exist_detail.update(detail, db, oh, false);
                 }
               }
               //Добавим новые детали (которые есть в selected и нет среди неудаленных или удаленных)
@@ -285,7 +307,7 @@ public class WDetails
                   selected_type.id_unit, null, false);
                 detail.find_and_fill_last_price_and_unit_for(db, oh);
                 detail.calcCost(true);
-                detail.insertDateBase(db);
+                detail.insertDateBase(db, false);
               }
               return true;
             }
@@ -366,7 +388,7 @@ public class WDetails
     Detail exist_detail = Detail.getDetailFromId(id_detail, db, oh);
     Detail deleted_detail = exist_detail.clone();
     deleted_detail.is_delete = true;
-    if(exist_detail.update(deleted_detail, db))
+    if(exist_detail.update(deleted_detail, db, oh, false))
     {
       cursor.requery();
       list_adapter.notifyDataSetChanged();

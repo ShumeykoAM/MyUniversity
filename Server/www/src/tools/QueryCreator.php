@@ -22,6 +22,34 @@
       return $set;
     }
 
+    //Формирует строку полей и значений для операции вставки
+    public static function construct_fields_values($link, $values) //$values это array ключ-поле, значение(null)-значение поля
+    {
+      $set1 = "(";
+      $separator1 = "";
+      $set2 = "VALUES(";
+      $separator2 = "";
+      while($key_val = each($values)) //http://php.net/manual/ru/function.next.php
+      {
+        $set1 .= $separator1;
+        $set1 .= $key_val["key"];
+
+        $set2 .= $separator2;
+        if(!isset($key_val["value"]))
+          $set2 .= "null";
+        else
+          $set2 .= "'".$link->real_escape_string($key_val["value"])."'";
+
+        $separator1 = ", ";
+        $separator2 = ", ";
+      }
+      $set1 .= ") ";
+      $set2 .= ")";
+
+      $set = $set1.$set2;
+      return $set;
+    }
+
     public static function getQuery($link, $eq /*:EQ*/, $values)
     {
       $query_value = null;

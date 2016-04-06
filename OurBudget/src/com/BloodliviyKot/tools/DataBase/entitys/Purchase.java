@@ -195,7 +195,7 @@ public class Purchase
   }
 
   @Override
-  public JSONObject get_JObj() throws JSONException
+  public JSONObject get_JObj(SQLiteDatabase db, MySQLiteOpenHelper oh) throws JSONException
   {
     long _id;
     JSONObject JObj = new JSONObject();

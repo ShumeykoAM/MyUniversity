@@ -1,5 +1,7 @@
 package com.BloodliviyKot.tools.Protocol.Requests;
 
+import android.database.sqlite.SQLiteDatabase;
+import com.BloodliviyKot.tools.DataBase.MySQLiteOpenHelper;
 import com.BloodliviyKot.tools.DataBase.entitys.I_Entity;
 import com.BloodliviyKot.tools.Protocol.Answers.Answer;
 import com.BloodliviyKot.tools.Protocol.Answers.AnswerSendEntity;
@@ -30,12 +32,14 @@ public class ARequestSendEntity
   @Override
   protected void ConstructRequest() throws E_MESSID.MException
   {
+    MySQLiteOpenHelper oh = new MySQLiteOpenHelper();;
+    SQLiteDatabase db = oh.getWritableDatabase();
     try
     {
       JObj.put("TIMESTAMP", timestamp);
       JObj.put("TABLE", i_entity.get_table().ordinal());
       JObj.put("REVISION", client_rev);
-      JObj.put("ENTITY", i_entity.get_JObj());
+      JObj.put("ENTITY", i_entity.get_JObj(db, oh));
     } catch(JSONException e)
     {
       e.printStackTrace();
