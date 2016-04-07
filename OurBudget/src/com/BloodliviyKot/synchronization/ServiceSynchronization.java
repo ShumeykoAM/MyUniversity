@@ -217,10 +217,11 @@ main_loop:
                 }
 
                 //Проверяем наличие записей в хронологии, которые еще не синхронизировались
+                Chronological.TABLE table = Chronological.TABLE.TYPE;
                 while(true)
                 {
                   Cursor cursor_ch = db.rawQuery(oh.getQuery(EQ.CHRONOLOGICAL_NOT_SYNC),
-                    new String[]{new Long(user_account._id).toString()});
+                    new String[]{new Long(user_account._id).toString(), new Integer(table.ordinal()).toString()});
                   if(cursor_ch.moveToFirst())
                   {
                     final Chronological chronological = new Chronological(cursor_ch);
@@ -257,7 +258,14 @@ main_loop:
                       continue main_loop;
                   }
                   else
-                    break;
+                  {
+                    if(table == Chronological.TABLE.TYPE)
+                      table = Chronological.TABLE.PURCHASE;
+                    else if(table == Chronological.TABLE.PURCHASE)
+                      table = Chronological.TABLE.DETAIL;
+                    else
+                     break;
+                  }
                 }
               }
               catch(E_MESSID.MException e)

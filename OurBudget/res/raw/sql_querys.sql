@@ -114,7 +114,7 @@ SELECT chronological._id, chronological._id_record, chronological._id_user_accou
 -- CHRONOLOGICAL_NOT_SYNC
 SELECT chronological._id, chronological._id_record, chronological._id_user_account,
   chronological.is_sync, chronological.table_db, chronological.timestamp FROM chronological
-  WHERE chronological._id_user_account = ? AND chronological.is_sync = 0
+  WHERE chronological._id_user_account = ? AND chronological.table_db = ? AND chronological.is_sync = 0
   ORDER BY chronological.timestamp ASC
   LIMIT 1;
 
