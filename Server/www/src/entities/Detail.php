@@ -192,14 +192,16 @@ class Detail
       '_id'            =>$this->_id            ,
       '_id_purchase'   =>$this->_id_purchase   ,
       '_id_type'       =>$this->_id_type       ,
-      'price'          =>$this->price          ,
       'for_amount_unit'=>$this->for_amount_unit,
       'for_id_unit'    =>$this->for_id_unit    ,
       'amount'         =>$this->amount         ,
       'id_unit'        =>$this->id_unit        ,
-      'cost'           =>$this->cost           ,
       'is_delete'      =>$this->is_delete      ,
       );
+    if(isset($this->price))
+      $arr['price'] = $this->price;
+    if(isset($this->cost))
+      $arr['cost' ] = $this->cost;
     $result = json_decode(json_encode($arr));
     return $result;
   }

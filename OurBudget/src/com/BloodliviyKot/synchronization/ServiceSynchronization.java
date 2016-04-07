@@ -147,7 +147,7 @@ main_loop:
                           answer_ge.entity.getLong("for_id_unit"),
                           answer_ge.entity.getDouble("amount"),
                           answer_ge.entity.getLong("id_unit"),
-                          answer_ge.entity.has("price") ? answer_ge.entity.getDouble("cost") : null,
+                          answer_ge.entity.has("cost") ? answer_ge.entity.getDouble("cost") : null,
                           answer_ge.entity.getInt("is_delete") == 1);
                         detail.insertDateBase(db, answer_ge.server_timestamp, true);
                         need_update = true;
@@ -164,7 +164,7 @@ main_loop:
                           new_rec.for_id_unit = answer_ge.entity.getLong("for_id_unit");
                           new_rec.amount = answer_ge.entity.getDouble("amount");
                           new_rec.id_unit = answer_ge.entity.getLong("id_unit");
-                          new_rec.cost = answer_ge.entity.has("price") ? answer_ge.entity.getDouble("cost") : null;
+                          new_rec.cost = answer_ge.entity.has("cost") ? answer_ge.entity.getDouble("cost") : null;
                           new_rec.is_delete = answer_ge.entity.getInt("is_delete") == 1;
                           detail.update(new_rec, db, oh, true);
                           need_update = true;
