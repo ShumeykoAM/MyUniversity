@@ -130,7 +130,7 @@ public class Type
   {
     return update(new_type, db, oh, true, is_sync);
   }
-  private boolean update(Type new_type, final SQLiteDatabase db, final MySQLiteOpenHelper oh,
+  public boolean update(Type new_type, final SQLiteDatabase db, final MySQLiteOpenHelper oh,
                          final boolean need_chronological, final boolean is_sync)
   {
     if(_id == null || new_type._id == null || !_id.equals(new_type._id))

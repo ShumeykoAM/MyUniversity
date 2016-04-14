@@ -28,6 +28,10 @@ public enum EQ
   MAX_SERVER_ID_TYPE,            //Максимальный idшник сервера в таблице видов товаров и услуг
   PURCHASE_FROM_ID_SERVER,       //Покупка по _id_server и учетки
   PURCHASE_UNTIL_DATE,           //Запланированные покупки с датой меньшей чем указана
+  ALL_PURCHASES,                 //
+  ALL_DETAILS,                   //
+  ALL_TYPE,                      //
+  ALL_CHRONOLOGICAL,             //
 
   EQ_COUNT;
   public final int value;

@@ -68,6 +68,7 @@ public class ServiceSynchronization
       public void run()
       {
         int loop = 4;//количество секунд между циклами проверки
+        //dropSynchronization();
 main_loop:
         while(true)
         {
@@ -190,7 +191,8 @@ main_loop:
                           answer_ge.entity.getInt("is_delete") == 1);
                         purchase.insertDateBase(db, answer_ge.server_timestamp, true);
                         need_update = true;
-                        sendNotif(getString(R.string.notify_purchase_planned), purchase._id);
+                        if(!purchase.is_delete)
+                          sendNotif(getString(R.string.notify_purchase_planned), purchase._id);
                       }
                       else //Такая покупка уже есть
                       {
@@ -345,6 +347,50 @@ main_loop:
     notif.flags |= Notification.FLAG_AUTO_CANCEL;
     // отправляем
     notification_manager.notify(1, notif);
+  }
+
+  private void dropSynchronization()
+  {
+    Cursor csr = db.rawQuery(oh.getQuery(EQ.ALL_PURCHASES), new String[]{});
+    for(boolean status = csr.moveToFirst(); status; status = csr.moveToNext())
+    {
+      Purchase p = new Purchase(csr);
+      Purchase n = p.clone();
+      n.id_server = null;
+      p.update(n , db, oh, false, false);
+    }
+    csr = db.rawQuery(oh.getQuery(EQ.ALL_DETAILS), new String[]{});
+    for(boolean status = csr.moveToFirst(); status; status = csr.moveToNext())
+    {
+      Detail d = new Detail(csr);
+      Detail n = d.clone();
+      n.id_server = null;
+      d.update(n, db, oh, false, false);
+    }
+    csr = db.rawQuery(oh.getQuery(EQ.ALL_TYPE), new String[]{});
+    for(boolean status = csr.moveToFirst(); status; status = csr.moveToNext())
+    {
+      Type t = new Type(csr);
+      Type n = t.clone();
+      n.id_server = null;
+      t.update(n, db, oh, false, false);
+    }
+    csr = db.rawQuery(oh.getQuery(EQ.ALL_CHRONOLOGICAL), new String[]{});
+    for(boolean status = csr.moveToFirst(); status; status = csr.moveToNext())
+    {
+      Chronological c = new Chronological(csr);
+      c.is_sync = false;
+      c.update(db, oh);
+    }
+    csr = db.rawQuery(oh.getQuery(EQ.USER_ACCOUNTS), new String[]{});
+    for(boolean status = csr.moveToFirst(); status; status = csr.moveToNext())
+    {
+      UserAccount ua = new UserAccount(csr);
+      UserAccount n = ua.clone();
+      n.current_rev = 0;
+      ua.update(n, db, oh);
+    }
+
   }
 
 }

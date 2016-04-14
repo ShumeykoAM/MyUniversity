@@ -188,7 +188,7 @@ public abstract class Request
     uri_s[1] = "http://192.168.10.105/RequestHandler.php"; //Комп
     uri_s[2] = "http://192.168.10.101/RequestHandler.php"; //Ноут
     uri_s[3] = "http://192.168.121.188/RequestHandler.php"; //Рабочий комп
-    uri = uri_s[1];
+    uri = uri_s[0];
   }
   protected Request(int _ID) throws E_MESSID.MException
   {

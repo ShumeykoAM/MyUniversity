@@ -79,24 +79,15 @@ class Chronological
   }
   public function insert($link)
   {
+    $revision = Chronological::getLastRevision($this->_id_group, $link) + 1;
     $command = "INSERT INTO chronological (_id_group, table_db, _id_record, timestamp, revision) ".
-               "SELECT ".
+               "VALUES (".
                "'".$this->_id_group."', '".$this->table_db."', '".$this->_id_record."', '".$this->timestamp.
-               "', MAX(revision)+1 FROM chronological WHERE _id_group='".$this->_id_group."';";
+               "', '" .$revision. "');";
     $result = $link->query($command);
     if($result)
     {
-      $this->revision = Chronological::getLastRevision($this->_id_group, $link);
-    }
-    if(!$result)//Возможно это самая первая запись вот и не отработал MAX
-    {
-      $command = "INSERT INTO chronological (_id_group, table_db, _id_record, timestamp, revision) ".
-                 "VALUES (".
-                 "'".$this->_id_group."', '".$this->table_db."', '".$this->_id_record."', '".$this->timestamp.
-                 "', '1');";
-      $result = $link->query($command);
-      if($result)
-        $this->revision = 1;
+      $this->revision = $revision;
     }
     return $result;
   }

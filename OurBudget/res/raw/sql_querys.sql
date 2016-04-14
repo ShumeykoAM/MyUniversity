@@ -131,3 +131,20 @@ SELECT purchase._id, purchase._id_user_account, purchase.id_server, purchase.dat
   purchase.state, purchase.is_delete FROM purchase
   WHERE purchase._id_user_account = ? AND purchase.state = 0 AND purchase.is_delete = 0
   AND purchase.date_time <= ?;
+
+-- ALL_PURCHASES
+SELECT purchase._id, purchase._id_user_account, purchase.id_server, purchase.date_time,
+  purchase.state, purchase.is_delete FROM purchase;
+
+-- ALL_DETAILS
+SELECT detail._id, detail._id_user_account, detail._id_purchase, detail._id_type, detail.id_server,
+  detail.price, detail.for_amount_unit, detail.for_id_unit, detail.amount,
+  detail.id_unit, detail.cost, detail.is_delete FROM detail;
+
+-- ALL_TYPE
+SELECT type._id, type._id_user_account, type.name, type.name_lower,
+  type.id_server, type.id_unit, type.is_delete FROM type;
+
+-- ALL_CHRONOLOGICAL
+SELECT chronological._id, chronological._id_record, chronological._id_user_account,
+  chronological.is_sync, chronological.table_db, chronological.timestamp FROM chronological;

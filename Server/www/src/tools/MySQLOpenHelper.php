@@ -47,8 +47,7 @@
       $result = ($link_for_create != null);
       if (!$result)
         echo("Ошибка соединения с СУБД.<br/>");
-      
-      if ($result)
+      if ($result && GLOBALS_VAR\it_is_debug_mode)
       {
       //Создаем БД
         $command = file_get_contents("res\\sql\\CreateDataBase.ddl");
