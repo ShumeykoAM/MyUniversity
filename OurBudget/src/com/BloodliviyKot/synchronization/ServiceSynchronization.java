@@ -190,6 +190,7 @@ main_loop:
                           answer_ge.entity.getInt("is_delete") == 1);
                         purchase.insertDateBase(db, answer_ge.server_timestamp, true);
                         need_update = true;
+                        sendNotif(getString(R.string.notify_purchase_planned), purchase._id);
                       }
                       else //Такая покупка уже есть
                       {
@@ -305,10 +306,19 @@ main_loop:
             {
               last_minutes = date.getMinutes();
               //Найдем все запланированные на данную минуту пукупки и платы
-
-
-
-
+              UserAccount user_account = UserAccount.getActiveUserAccount(oh, db);
+              long n_datetime = date.getTime() / 60000 * 60000;
+              Cursor cursor = db.rawQuery(oh.getQuery(EQ.PURCHASE_UNTIL_DATE),
+                new String[]{new Long(user_account._id).toString(), new Long(n_datetime+60000-1).toString()});
+              for(boolean status = cursor.moveToFirst(); status; status = cursor.moveToNext())
+              {
+                Purchase purchase = new Purchase(cursor);
+                long p_datetime = purchase.date_time / 60000 * 60000;
+                if(p_datetime == n_datetime)
+                {
+                  sendNotif(getString(R.string.notify_purchase_time), purchase._id);
+                }
+              }
             }
           }
         }
@@ -320,24 +330,19 @@ main_loop:
     }).start();
   }
 
+  static int notif_id = 0;
   //Создаем уведомление
-  void sendNotif()
+  void sendNotif(String notify, long id_purchase)
   {
-    // 1-я часть
-    Notification notif = new Notification(R.drawable.ic_launcher, "Text in status bar", System.currentTimeMillis());
-    // 3-я часть
+    Notification notif = new Notification(R.drawable.ic_launcher, notify, System.currentTimeMillis());
     Intent intent = new Intent(this, WPurchases.class);
-    //intent.putExtra(Purchase.FILE_NAME, "somefile");
-    PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
-    // 2-я часть
-    notif.setLatestEventInfo(this, "Notification's title", "Notification's text", pIntent);
-
+    intent.putExtra("_id", id_purchase);
+    PendingIntent pIntent = PendingIntent.getActivity(this, notif_id++, intent, 0);
+    notif.setLatestEventInfo(this, "", notify, pIntent);
     Uri ringURI = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
     notif.sound = ringURI;
-
     // ставим флаг, чтобы уведомление пропало после нажатия
     notif.flags |= Notification.FLAG_AUTO_CANCEL;
-
     // отправляем
     notification_manager.notify(1, notif);
   }

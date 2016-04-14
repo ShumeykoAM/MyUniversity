@@ -125,3 +125,9 @@ SELECT MAX(type.id_server) as id_server FROM type;
 SELECT purchase._id, purchase._id_user_account, purchase.id_server, purchase.date_time,
   purchase.state, purchase.is_delete FROM purchase
   WHERE purchase._id_user_account = ? AND purchase.id_server = ?;
+
+-- PURCHASE_UNTIL_DATE
+SELECT purchase._id, purchase._id_user_account, purchase.id_server, purchase.date_time,
+  purchase.state, purchase.is_delete FROM purchase
+  WHERE purchase._id_user_account = ? AND purchase.state = 0 AND purchase.is_delete = 0
+  AND purchase.date_time <= ?;

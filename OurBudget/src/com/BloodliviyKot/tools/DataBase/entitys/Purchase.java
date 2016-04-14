@@ -105,7 +105,9 @@ public class Purchase
         return result;
       }
     });
-    return sql_transaction.runTransaction() ? res_id[0] : -1;
+    long result = sql_transaction.runTransaction() ? res_id[0] : -1;
+    this._id = result != -1 ? result : 0;
+    return result;
   }
   //Обновляет запись если есть что обновлять
   public boolean update(Purchase new_type, final SQLiteDatabase db, final MySQLiteOpenHelper oh, boolean is_sync)

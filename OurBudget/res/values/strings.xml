@@ -112,5 +112,7 @@
         <item>за период</item>
     </string-array>
 
+    <string name="notify_purchase_time">Пора сделать покупку</string>
+    <string name="notify_purchase_planned">Запланирована покупка или плата</string>
 
 </resources>

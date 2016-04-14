@@ -73,6 +73,24 @@ public class WPurchases
     registerForContextMenu(list_purchases);
     startService(new Intent(this, ServiceSynchronization.class));
     w_purchases = this;
+
+    //Читаем параметры переданные из родительской активности
+    Bundle extras = getIntent().getExtras();
+    //setText(extras.getCharSequence(getString(R.string.intent_login)));
+    if(extras != null && extras.containsKey("_id"))
+    {
+      final long id = extras.getLong("_id");
+      extras.remove("_id");
+      final Intent intent = new Intent(this, WDetails.class);
+      list_purchases.post(new Runnable(){
+        @Override
+        public void run()
+        {
+          intent.putExtra(getString(R.string.intent_purchases_id), id);
+          startActivityForResult(intent, R.layout.details); //Запуск активности с onActivityResult
+        }
+      });
+    }
   }
   @Override
   public void onDestroy()
