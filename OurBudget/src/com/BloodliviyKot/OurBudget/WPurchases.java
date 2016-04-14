@@ -128,6 +128,9 @@ public class WPurchases
   {
     //Создаем меню из ресурса
     getMenuInflater().inflate(R.menu.purchases_menu, menu);
+    //Скроем не нужные на данный момент пункты меню
+    MenuItem shareMenuItem = menu.findItem(R.id.m_purchases_delete_db);
+    shareMenuItem.setVisible(false);
     return true;
   }
 

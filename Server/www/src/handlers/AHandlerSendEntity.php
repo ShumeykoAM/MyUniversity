@@ -184,7 +184,7 @@ class AHandlerSendEntity
             $new_rec->id_unit         = $entity->{'id_unit'};
             $new_rec->cost            = $entity->{'cost'};
             $new_rec->is_delete       = $entity->{'is_delete'};
-            if(($result = $result && $detail->update($link, $new_rec)))
+            if(($result && $result = $detail->update($link, $new_rec)))
             {
               //Записываем в хронологию об изменениях
               $chronological = new Chronological(Chronological::$ENUM_CONSTRUCT_FIELD, $user_account->_id_group,

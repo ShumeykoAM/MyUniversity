@@ -131,8 +131,8 @@ class Detail
       $values["is_delete"] = $new_rec->is_delete;
     if(count($values) != 0)
     {
-      $query = "UPDATE detail ".QueryCreator::construct_SET($link, $values)." WHERE detail._id_group_ = ".
-        $this->_id_group." AND Detail._id = ".$this->_id.";";
+      $query = "UPDATE detail ".QueryCreator::construct_SET($link, $values)." WHERE detail._id_group_ = '".
+        $this->_id_group."' AND detail._id = '".$this->_id."';";
       $result = $link->query($query);
     }
     return $result;
