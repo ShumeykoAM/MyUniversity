@@ -86,7 +86,14 @@ class AHandlerCreateGroupCode
           return "";
         break;
       case AHandlerCreateGroupCode::$CHECK:
-
+        $user_account = UserAccount::getUserAccountFromID($link, $user_id);
+        $user_group = UserGroup::getUserGroupFromID($link, $user_account->_id_group);
+        if($user_group->code_for_co_user < 0)
+          $arr = array('MESSAGE' => E_MESSAGEID\CREATE_GROUP_CODE, 'RESULT_CONNECTED' => true);
+        else
+          $arr = array('MESSAGE' => E_MESSAGEID\CREATE_GROUP_CODE, 'RESULT_CONNECTED' => false);
+        $enc = json_encode($arr);
+        return $enc;
         break;
     }
 

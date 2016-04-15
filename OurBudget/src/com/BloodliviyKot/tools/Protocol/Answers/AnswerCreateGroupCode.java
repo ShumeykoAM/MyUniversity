@@ -10,6 +10,7 @@ public class AnswerCreateGroupCode
 {
   public int group_code;
   public boolean result_cancel;
+  public boolean result_connected;
   protected AnswerCreateGroupCode(int _ID, JSONObject JOBJ) throws E_MESSID.MException
   {
     super(_ID);
@@ -25,6 +26,11 @@ public class AnswerCreateGroupCode
       {
         status = true;
         group_code = JOBJ.getInt("GROUP_CODE");
+      }
+      if(JOBJ.has("RESULT_CONNECTED"))
+      {
+        status = true;
+        result_connected = JOBJ.getBoolean("RESULT_CONNECTED");
       }
       if(!status)
         throw new E_MESSID.MException(E_MESSID.MException.ERR.UNKNOWN);

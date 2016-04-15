@@ -97,6 +97,7 @@
     <string name="dialog_become_member_become">Присоединиться</string>
     <string name="dialog_become_member_м_error">Введен неверный код</string>
     <string name="dialog_become_member_м_ок">Вы успешно присоединились к другому пользователю</string>
+    <string name="dialog_invite_member_connected">Пользователь успешно присоединился к вам</string>
     <string name="about_name_application">Наш бюджет.</string>
     <string name="about_developer">Разработчик Шумейко А. М.</string>
     <string name="about_developer_mail">shumeyko.a.m@gmail.com</string>

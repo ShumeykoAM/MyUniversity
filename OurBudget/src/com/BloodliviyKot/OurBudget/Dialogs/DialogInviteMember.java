@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.BloodliviyKot.OurBudget.AlertConnect;
 import com.BloodliviyKot.OurBudget.R;
 import com.BloodliviyKot.tools.Protocol.Answers.AnswerCreateGroupCode;
@@ -96,12 +97,33 @@ public class DialogInviteMember
         e.printStackTrace();
       }
       final String status = String.format(format_status, tick);
+      final int finalTick = tick;
       tv_status.post(new Runnable()
       {
         @Override
         public void run()
         {
           tv_status.setText(status);
+          if(finalTick %3 == 0)
+          {
+            try
+            {
+              ARequestCreateGroupCode request_create_groupCode = new ARequestCreateGroupCode(
+                ARequestCreateGroupCode.OPERATION.CHECK);
+              request_create_groupCode.post();
+              AnswerCreateGroupCode answer_create_group_code = request_create_groupCode.getAnswerFromPost();
+              if(answer_create_group_code.result_connected)
+              {
+                Toast.makeText(v.getContext(), R.string.dialog_invite_member_connected, Toast.LENGTH_LONG).show();
+                need_while = false;
+                dismiss();
+              }
+            }
+            catch(E_MESSID.MException e)
+            {
+              e.printStackTrace();
+            }
+          }
         }
       });
       if(tick == 0)
@@ -141,6 +163,7 @@ public class DialogInviteMember
         ARequestCreateGroupCode.OPERATION.CANCEL);
       request_create_groupCode.post();
       request_create_groupCode.getAnswerFromPost();
+      need_while = false;
     }
     catch(E_MESSID.MException mException)
     {     }
