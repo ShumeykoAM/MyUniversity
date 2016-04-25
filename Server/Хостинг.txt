@@ -20,3 +20,5 @@ Ftp:
 
 Адрес сайта http://diplom.konofeev.ru/
   для моих нужд адрес такой http://diplom.konofeev.ru/RequestHandler.php
+
+Скачать программу можно от сюда http://diplom.konofeev.ru/download.html
