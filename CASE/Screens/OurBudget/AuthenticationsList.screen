@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore" xmlns:o="http://wireframesketcher.com/1.0/model/overrides">
+  <widgets xsi:type="model:Master" id="1" x="8" y="8" measuredWidth="456" measuredHeight="872">
+    <screen xsi:type="model:WidgetGroup" href="assets/Android5/Devices/Nexus%206.screen#Nexus%206"/>
+  </widgets>
+  <widgets xsi:type="model:Master" id="2" x="29" y="113" measuredWidth="410" measuredHeight="63">
+    <screen xsi:type="model:WidgetGroup" href="assets/Android5/Navigation.screen#App%20Bar%20Tablet"/>
+    <overrides>
+      <widgetChanges xsi:type="o:Delete" ref="33"/>
+      <widgets ref="29" width="410" height="63"/>
+      <widgets ref="30" y="19"/>
+      <widgets ref="31" y="15" text="Учетные записи"/>
+      <widgets ref="32" x="374" y="19"/>
+    </overrides>
+  </widgets>
+  <widgets xsi:type="model:Master" id="3" x="29" y="184" width="410" measuredWidth="410" measuredHeight="148">
+    <screen xsi:type="model:WidgetGroup" href="assets/Android5/Lists.screen#List%201%20Line"/>
+    <overrides>
+      <widgets ref="4" width="410"/>
+      <widgets ref="2" width="399" text="mail@one.com&#xA;mail@two.com">
+        <items ref="@items.0" text="mail@one.com"/>
+        <items ref="@items.1" text="mail@two.com"/>
+        <itemChanges xsi:type="o:Delete" ref="@items.2"/>
+      </widgets>
+    </overrides>
+  </widgets>
+  <widgets xsi:type="model:Master" id="4" x="80" y="231" measuredWidth="305" measuredHeight="6">
+    <screen xsi:type="model:WidgetGroup" href="assets/Android5/Lists.screen#List%20Divider"/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="7" x="29" y="724" width="409" height="42" text="Создать учетную запись" measuredWidth="409" measuredHeight="42" background="#eeeeee">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="8" x="29" y="683" width="409" height="42" text="Аутентификация" measuredWidth="409" measuredHeight="42" background="#eeeeee">
+    <font/>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>

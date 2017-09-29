@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore" xmlns:o="http://wireframesketcher.com/1.0/model/overrides">
+  <widgets xsi:type="model:Master" id="1" x="8" y="10" measuredWidth="456" measuredHeight="872">
+    <screen xsi:type="model:WidgetGroup" href="assets/Android5/Devices/Nexus%206.screen#Nexus%206"/>
+    <overrides>
+      <widgetChanges xsi:type="o:Insert" newIndex="4">
+        <object xsi:type="model:Combo" id="13" x="66" y="200" width="317">
+          <font/>
+        </object>
+      </widgetChanges>
+      <widgetChanges xsi:type="o:Insert" newIndex="4">
+        <object xsi:type="model:Button" id="12" x="266" y="261" text="Забыл пароль" background="#eeeeee">
+          <font/>
+        </object>
+      </widgetChanges>
+      <widgetChanges xsi:type="o:Insert" newIndex="4">
+        <object xsi:type="model:TextField" id="10" x="66" y="262" width="183">
+          <font/>
+        </object>
+      </widgetChanges>
+      <widgetChanges xsi:type="o:Insert" newIndex="4">
+        <object xsi:type="model:Checkbox" id="8" x="66" y="302" text="Запомнить">
+          <font/>
+        </object>
+      </widgetChanges>
+      <widgetChanges xsi:type="o:Insert" newIndex="4">
+        <object xsi:type="model:Label" id="7" x="104" y="238" text="Введите пароль">
+          <font/>
+        </object>
+      </widgetChanges>
+      <widgetChanges xsi:type="o:Insert" newIndex="4">
+        <object xsi:type="model:Label" id="6" x="104" y="176" text="Введите адрес электронной почты">
+          <font/>
+        </object>
+      </widgetChanges>
+      <widgetChanges xsi:type="o:Insert" newIndex="4">
+        <object xsi:type="model:Button" id="4" x="66" y="329" width="317" text="OK" background="#eeeeee">
+          <font/>
+        </object>
+      </widgetChanges>
+      <widgetChanges xsi:type="o:Insert" newIndex="4">
+        <object xsi:type="model:Panel" id="3" x="56" y="166" width="337" height="201"/>
+      </widgetChanges>
+    </overrides>
+  </widgets>
+  <widgets xsi:type="model:Master" id="11" x="29" y="528" height="240" measuredWidth="410" measuredHeight="240">
+    <screen xsi:type="model:WidgetGroup" href="assets/Android5/Devices/Nexus%205.screen#Nexus%205%20Keyboard"/>
+    <overrides>
+      <widgets ref="76" width="410" height="240"/>
+      <widgets ref="78" width="36"/>
+      <widgets ref="79" x="40" width="36"/>
+      <widgets ref="80" x="81" width="36"/>
+      <widgets ref="81" x="122" width="36"/>
+      <widgets ref="82" x="163" width="36"/>
+      <widgets ref="83" x="204" width="36"/>
+      <widgets ref="84" x="245" width="36"/>
+      <widgets ref="85" x="287" width="36"/>
+      <widgets ref="86" x="327" width="36"/>
+      <widgets ref="87" x="368" width="36"/>
+      <widgets ref="88" width="36"/>
+      <widgets ref="89" x="41" width="36"/>
+      <widgets ref="90" x="83" width="36"/>
+      <widgets ref="91" x="124" width="36"/>
+      <widgets ref="92" x="166" width="36"/>
+      <widgets ref="93" x="207" width="36"/>
+      <widgets ref="94" x="249" width="36"/>
+      <widgets ref="95" x="291" width="36"/>
+      <widgets ref="96" x="332" width="36"/>
+      <widgets ref="122" width="26"/>
+      <widgets ref="176" width="26"/>
+      <widgets ref="99" x="47" width="36"/>
+      <widgets ref="100" x="89" width="36"/>
+      <widgets ref="101" x="130" width="36"/>
+      <widgets ref="102" x="171" width="36"/>
+      <widgets ref="103" x="212" width="36"/>
+      <widgets ref="104" x="254" width="36"/>
+      <widgets ref="105" x="296" width="36"/>
+      <widgets ref="107" x="350" width="36"/>
+      <widgets ref="119" y="187"/>
+      <widgets ref="114" x="57" width="36"/>
+      <widgets ref="115" x="100" width="198"/>
+      <widgets ref="116" x="304" width="36"/>
+      <widgets ref="117" x="354" width="42"/>
+    </overrides>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font name="Roboto" size="14px"/>
+</model:Screen>

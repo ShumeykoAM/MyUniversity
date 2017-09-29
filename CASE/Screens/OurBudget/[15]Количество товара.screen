@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:WidgetGroup" id="1" x="16" y="160" measuredWidth="361" measuredHeight="135">
+    <widgets xsi:type="model:WidgetGroup" id="2" height="136" measuredWidth="361" measuredHeight="135">
+      <widgets xsi:type="model:Panel" id="3" y="8" width="361" height="127" measuredWidth="361" measuredHeight="127"/>
+      <widgets xsi:type="model:Label" id="5" x="20" width="8" measuredWidth="8" measuredHeight="28">
+        <font size="14px"/>
+      </widgets>
+      <widgets xsi:type="model:TextField" id="8" x="19" y="51" width="225" text="                                                    1" measuredWidth="225" measuredHeight="28">
+        <font size="14px"/>
+      </widgets>
+      <widgets xsi:type="model:Combo" id="9" x="264" y="51" width="73" text="шт." measuredWidth="73" measuredHeight="28">
+        <font size="14px"/>
+      </widgets>
+      <widgets xsi:type="model:Label" id="16" x="19" y="15" text="Батон" measuredWidth="47" measuredHeight="28">
+        <font size="14px"/>
+      </widgets>
+    </widgets>
+    <widgets xsi:type="model:Button" id="18" x="16" y="96" width="330" text="Ок" measuredWidth="330" measuredHeight="25">
+      <font/>
+    </widgets>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>

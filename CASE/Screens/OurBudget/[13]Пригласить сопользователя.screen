@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:WidgetGroup" id="20" x="16" y="96" measuredWidth="361" measuredHeight="145">
+    <widgets xsi:type="model:Panel" id="21" width="361" height="145" measuredWidth="361" measuredHeight="145"/>
+    <widgets xsi:type="model:Label" id="22" x="19" y="13" text="Этот код должен ввести второй пользователь" measuredWidth="325" measuredHeight="28">
+      <font size="14px"/>
+    </widgets>
+    <widgets xsi:type="model:Label" id="23" x="128" y="42" width="113" text="09425" measuredWidth="113" measuredHeight="62">
+      <font size="40px"/>
+    </widgets>
+    <widgets xsi:type="model:Label" id="24" x="10" y="109" width="341" text="Окончание действия этого кода через 58 секунд" measuredWidth="341" measuredHeight="28">
+      <font size="14px"/>
+    </widgets>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>

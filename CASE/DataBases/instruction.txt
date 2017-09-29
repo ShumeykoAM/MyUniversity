@@ -1,0 +1,38 @@
+﻿При создании sql кода *ddl генерации таблиц для SQLite, нужно использовать настройки SQLite_settings.xml
+После генерации файла, обязательно нужно его в фаре сохранить с кодировкой UTF-8 
+   (скопировать все, по Shift+F8 изменить кодировку на UTF-8, вставить с заменой, сохраить)
+   !!! Иначе будут танцы с бубном.
+
+И все равно нужно будет допиливать код, пример ниже:
+
+CREATE TABLE Client
+(
+  _id                  INTEGER PRIMARY KEY, --Эксперименты показывают что лучше не делать составных
+  Name                 TEXT NOT NULL        --  первичных ключей, перестает работать AUTOINCREMENT,
+);                                          --  конечно если сильно нужно то можно ради идентифицирующей связи
+
+CREATE TABLE Investment
+(
+  _id                  INTEGER PRIMARY KEY,
+  _Id_client           INTEGER NOT NULL,
+  Date_purchase        DATE NOT NULL,
+  Date_sale            DATE NOT NULL,
+  Quotation            DECIMAL NOT NULL,
+  FOREIGN KEY (_Id_client) REFERENCES Client (_id) --вторичный ключ
+    ON DELETE RESTRICT                             --Ограничения вторичного ключа
+    ON UPDATE RESTRICT                             --  для ссылочной целостности
+);
+
+CREATE TABLE Security
+(
+  _id                  INTEGER PRIMARY KEY,
+  Name                 TEXT NOT NULL,
+  _id_investment       INTEGER,
+  FOREIGN KEY (_id_investment) REFERENCES Investment (_id)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT
+);
+
+
+Что бы JI парсил *.ddl и *.sql файлы нужно переключить диалект
+  правой кнопкой в области редактирования файла, пункт КМ "Change dialect to"

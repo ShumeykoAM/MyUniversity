@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Panel" id="1" x="32" y="208" width="361" height="169" measuredWidth="361" measuredHeight="169"/>
+  <widgets xsi:type="model:Label" id="2" x="186" y="218" text="Фильтр" measuredWidth="57" measuredHeight="28">
+    <font size="14px"/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="3" x="42" y="336" width="338" text="OK" measuredWidth="338" measuredHeight="25">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Combo" id="6" x="42" y="248" width="338" text="за период" measuredWidth="338" measuredHeight="28">
+    <font size="14px"/>
+  </widgets>
+  <widgets xsi:type="model:TextField" id="7" x="64" y="288" width="123" text="06.02.2016" measuredWidth="123" measuredHeight="28">
+    <font size="14px"/>
+  </widgets>
+  <widgets xsi:type="model:TextField" id="8" x="242" y="288" width="138" text="по 06.02.2016" measuredWidth="138" measuredHeight="28">
+    <font size="14px"/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="9" x="42" y="288" text="с" measuredWidth="13" measuredHeight="28">
+    <font size="14px"/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="10" x="200" y="288" text="по" measuredWidth="24" measuredHeight="28">
+    <font size="14px"/>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>

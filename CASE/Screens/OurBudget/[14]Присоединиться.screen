@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:WidgetGroup" id="1" x="16" y="80" measuredWidth="361" measuredHeight="193">
+    <widgets xsi:type="model:Panel" id="2" width="361" height="193" measuredWidth="361" measuredHeight="193"/>
+    <widgets xsi:type="model:Label" id="3" x="48" y="10" width="278" text="Введите код отображенный на экране" measuredWidth="278" measuredHeight="28">
+      <font size="14px"/>
+    </widgets>
+    <widgets xsi:type="model:Label" id="4" x="96" y="37" width="161" text="первого пользователя" measuredWidth="161" measuredHeight="28">
+      <font size="14px"/>
+    </widgets>
+    <widgets xsi:type="model:TextField" id="5" x="112" y="72" width="123" text="0942" measuredWidth="123" measuredHeight="62">
+      <font size="40px"/>
+    </widgets>
+    <widgets xsi:type="model:Button" id="6" x="10" y="152" width="341" text="Стать сопользователем" measuredWidth="341" measuredHeight="30">
+      <font size="14px"/>
+    </widgets>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>

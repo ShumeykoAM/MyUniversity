@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore" xmlns:o="http://wireframesketcher.com/1.0/model/overrides">
+  <widgets xsi:type="model:Master" id="1" x="8" y="8" measuredWidth="456" measuredHeight="872">
+    <screen xsi:type="model:WidgetGroup" href="assets/Android5/Devices/Nexus%206.screen#Nexus%206"/>
+  </widgets>
+  <widgets xsi:type="model:Master" id="2" x="29" y="113" measuredWidth="410" measuredHeight="63">
+    <screen xsi:type="model:WidgetGroup" href="assets/Android5/Navigation.screen#App%20Bar%20Tablet"/>
+    <overrides>
+      <widgetChanges xsi:type="o:Delete" ref="33"/>
+      <widgets ref="29" width="410" height="63"/>
+      <widgets ref="30" y="19"/>
+      <widgets ref="31" y="15" text="Товары и услуги"/>
+      <widgets ref="32" x="374" y="19"/>
+    </overrides>
+  </widgets>
+  <widgets xsi:type="model:WidgetGroup" id="44" x="39" y="216" measuredWidth="398" measuredHeight="436">
+    <widgets xsi:type="model:List" id="3" width="398" text="Хлеб&#xA;Рыба&#xA;Молоко&#xA;Курица&#xA;Колбаса&#xA;Яйца&#xA;Фейри&#xA;Лосось горный&#xA;Яблоки&#xA;" measuredWidth="398" measuredHeight="436" layoutParams="anchor-left,anchor-right|anchor-top,anchor-bottom" border="false" alpha="0" rowHeight="48">
+      <font size="16px"/>
+      <items x="0" y="2" width="398" height="48" text="Хлеб"/>
+      <items x="0" y="50" width="398" height="48" text="Рыба"/>
+      <items x="0" y="98" width="398" height="48" text="Молоко"/>
+      <items x="0" y="146" width="398" height="48" text="Курица"/>
+      <items x="0" y="194" width="398" height="48" text="Колбаса"/>
+      <items x="0" y="242" width="398" height="48" text="Яйца"/>
+      <items x="0" y="290" width="398" height="48" text="Фейри"/>
+      <items x="0" y="338" width="398" height="48" text="Лосось горный"/>
+      <items x="0" y="386" width="398" height="48" text="Яблоки"/>
+    </widgets>
+    <widgets xsi:type="model:WidgetGroup" id="43" x="50" y="12" measuredWidth="345" measuredHeight="417">
+      <widgets xsi:type="model:Master" id="4" y="32" measuredWidth="305" measuredHeight="6">
+        <screen xsi:type="model:WidgetGroup" href="assets/Android5/Lists.screen#List%20Divider"/>
+      </widgets>
+      <widgets xsi:type="model:Master" id="5" y="80" measuredWidth="305" measuredHeight="6">
+        <screen xsi:type="model:WidgetGroup" href="assets/Android5/Lists.screen#List%20Divider"/>
+      </widgets>
+      <widgets xsi:type="model:Label" id="23" x="314" text="40р" measuredWidth="31" measuredHeight="28">
+        <font/>
+      </widgets>
+      <widgets xsi:type="model:Label" id="24" x="255" text="2шт" measuredWidth="32" measuredHeight="28">
+        <font/>
+      </widgets>
+      <widgets xsi:type="model:Label" id="27" x="304" y="53" text="100р" measuredWidth="39" measuredHeight="28">
+        <font/>
+      </widgets>
+      <widgets xsi:type="model:Label" id="28" x="255" y="53" text="0.8кг" measuredWidth="38" measuredHeight="28">
+        <font/>
+      </widgets>
+      <widgets xsi:type="model:Label" id="31" x="304" y="96" text="25р" measuredWidth="31" measuredHeight="28">
+        <font/>
+      </widgets>
+      <widgets xsi:type="model:Label" id="32" x="255" y="96" text="0.5л" measuredWidth="33" measuredHeight="28">
+        <font/>
+      </widgets>
+      <widgets xsi:type="model:Master" id="50" y="133" measuredWidth="305" measuredHeight="6">
+        <screen xsi:type="model:WidgetGroup" href="assets/Android5/Lists.screen#List%20Divider"/>
+      </widgets>
+      <widgets xsi:type="model:Master" id="51" y="181" measuredWidth="305" measuredHeight="6">
+        <screen xsi:type="model:WidgetGroup" href="assets/Android5/Lists.screen#List%20Divider"/>
+      </widgets>
+      <widgets xsi:type="model:Master" id="52" y="229" measuredWidth="305" measuredHeight="6">
+        <screen xsi:type="model:WidgetGroup" href="assets/Android5/Lists.screen#List%20Divider"/>
+      </widgets>
+      <widgets xsi:type="model:Master" id="53" y="277" measuredWidth="305" measuredHeight="6">
+        <screen xsi:type="model:WidgetGroup" href="assets/Android5/Lists.screen#List%20Divider"/>
+      </widgets>
+      <widgets xsi:type="model:Master" id="54" y="325" measuredWidth="305" measuredHeight="6">
+        <screen xsi:type="model:WidgetGroup" href="assets/Android5/Lists.screen#List%20Divider"/>
+      </widgets>
+      <widgets xsi:type="model:Master" id="55" y="373" measuredWidth="305" measuredHeight="6">
+        <screen xsi:type="model:WidgetGroup" href="assets/Android5/Lists.screen#List%20Divider"/>
+      </widgets>
+      <widgets xsi:type="model:Label" id="57" x="304" y="149" text="25р" measuredWidth="31" measuredHeight="28">
+        <font/>
+      </widgets>
+      <widgets xsi:type="model:Label" id="58" x="255" y="149" text="1.5Кг" measuredWidth="40" measuredHeight="28">
+        <font/>
+      </widgets>
+      <widgets xsi:type="model:Label" id="60" x="304" y="189" text="25р" measuredWidth="31" measuredHeight="28">
+        <font/>
+      </widgets>
+      <widgets xsi:type="model:Label" id="61" x="255" y="189" text="450г" measuredWidth="36" measuredHeight="28">
+        <font/>
+      </widgets>
+      <widgets xsi:type="model:Label" id="63" x="304" y="234" text="25р" measuredWidth="31" measuredHeight="28">
+        <font/>
+      </widgets>
+      <widgets xsi:type="model:Label" id="64" x="255" y="234" text="1дес" measuredWidth="37" measuredHeight="28">
+        <font/>
+      </widgets>
+      <widgets xsi:type="model:Label" id="66" x="304" y="285" text="25р" measuredWidth="31" measuredHeight="28">
+        <font/>
+      </widgets>
+      <widgets xsi:type="model:Label" id="67" x="255" y="285" text="1шт" measuredWidth="32" measuredHeight="28">
+        <font/>
+      </widgets>
+      <widgets xsi:type="model:Label" id="69" x="304" y="333" text="25р" measuredWidth="31" measuredHeight="28">
+        <font/>
+      </widgets>
+      <widgets xsi:type="model:Label" id="70" x="255" y="333" text="200г" measuredWidth="36" measuredHeight="28">
+        <font/>
+      </widgets>
+      <widgets xsi:type="model:Label" id="72" x="304" y="389" text="25р" measuredWidth="31" measuredHeight="28">
+        <font/>
+      </widgets>
+      <widgets xsi:type="model:Label" id="73" x="255" y="389" text="0.8кг" measuredWidth="38" measuredHeight="28">
+        <font/>
+      </widgets>
+    </widgets>
+  </widgets>
+  <widgets xsi:type="model:Label" id="41" x="39" y="736" width="397" text="Итого   12 наименований на сумму            878р. 34к." measuredWidth="397" measuredHeight="28">
+    <font size="14px"/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="42" x="39" y="175" width="397" text="План на 23.02.2016 на сумму     878р. 34к." measuredWidth="397" measuredHeight="28">
+    <font size="14px"/>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="14px"/>
+</model:Screen>

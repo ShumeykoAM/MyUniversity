@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:WidgetGroup" id="1" x="24" y="168" measuredWidth="361" measuredHeight="169">
+    <widgets xsi:type="model:Panel" id="3" width="361" height="169" measuredWidth="361" measuredHeight="169"/>
+    <widgets xsi:type="model:Combo" id="11" x="276" y="88" width="70" text=" г" measuredWidth="70" measuredHeight="28">
+      <font size="14px"/>
+    </widgets>
+    <widgets xsi:type="model:Button" id="19" x="10" y="125" width="338" height="34" text="Сохранить" measuredWidth="338" measuredHeight="34">
+      <font/>
+    </widgets>
+    <widgets xsi:type="model:TextField" id="20" x="10" y="48" width="336" text="Лосось горный" measuredWidth="336" measuredHeight="28">
+      <font size="14px"/>
+    </widgets>
+    <widgets xsi:type="model:Label" id="21" x="10" y="88" text="Единицы измерения" measuredWidth="151" measuredHeight="28">
+      <font size="14px"/>
+    </widgets>
+    <widgets xsi:type="model:Label" id="22" x="80" y="10" text="Название товара или услуги" measuredWidth="204" measuredHeight="28">
+      <font size="14px"/>
+    </widgets>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="14px"/>
+</model:Screen>
